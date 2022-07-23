@@ -1,4 +1,4 @@
-# weHuddle - Client code
+## weHuddle - Client code
 
 **Set up the project** 
 
