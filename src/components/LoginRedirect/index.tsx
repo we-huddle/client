@@ -17,7 +17,7 @@ function LoginRedirect() {
         window.location.href = '/';
       }
     }
-  }, []);
+  }, [userProfile, searchParams]);
 
   return (
     <div>Loading...</div>
