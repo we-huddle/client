@@ -2,9 +2,10 @@
 module.exports = {
   content: [
     "./src/**/*.{ts,tsx}",
+    "node_modules/flowbite-react/**/*.{ts,tsx,js,jsx}"
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("flowbite/plugin")],
 }

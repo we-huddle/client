@@ -1,24 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import {
+  BrowserRouter, Routes, Route,
+} from 'react-router-dom';
+import PublicHome from "./scenes/PublicHome";
+import LoginRedirect from "./components/LoginRedirect";
+import {Profile} from "./types/Profile";
+import {API, TOKEN_KEY} from "./constants";
+import {UserServices} from "./services/userServices";
+import UserContext from "./types/UserContext";
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
+
+  const fetchUserProfile = async () => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token) {
+      API.TOKEN = token;
+      const profile = await UserServices.fetchSelf();
+      setLoggedInUser(profile);
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <UserContext.Provider value={loggedInUser}>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path={"/login/success"}
+              element={<LoginRedirect />}
+            />
+            <Route
+              path={"/"}
+              element={<PublicHome />}
+            />
+          </Routes>
+        </BrowserRouter>
+      </UserContext.Provider>
     </div>
   );
 }
