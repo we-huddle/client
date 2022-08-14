@@ -9,7 +9,7 @@ interface TaskCardProps {
 
 function TaskCard({task, completed}: TaskCardProps) {
   return (
-    <div className="max-w-xs cursor-pointer">
+    <div className="w-80 cursor-pointer">
       <Card>
         <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
           {task.title}

@@ -37,6 +37,7 @@ function App() {
               <Route path={"/badges"} />
               <Route path={"/sprints"} />
               <Route path={"/tasks"} element={<TasksView />}/>
+              <Route path={"/agent/tasks"} element={<TasksView />}/>
               <Route path={"/leaderboard"} />
             </Routes>
           </Layout>

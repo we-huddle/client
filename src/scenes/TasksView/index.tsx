@@ -1,12 +1,17 @@
 import { Button, Dropdown, Badge, Progress } from "flowbite-react";
 import { HiCheck, HiXCircle, HiPlus } from "react-icons/hi";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Task } from "../../types/Task";
 import {TaskService} from "../../services/taskService";
 import TaskCard from "./component/TaskCard";
+import userContext from "../../types/UserContext";
+import {Profile} from "../../types/Profile";
+import {useLocation} from "react-router-dom";
 
 function TasksView() {
+  const profile = useContext(userContext);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const location = useLocation();
 
   useEffect(() => {
     fetchTasks();
@@ -26,15 +31,17 @@ function TasksView() {
         </p>
       </div>
       <div className="space-y-8">
-        <div>
-          <Progress
-            progress={45}
-            color="green"
-            label="Completed"
-            labelPosition="outside"
-            labelProgress={true}
-          />
-        </div>
+        {location.pathname === "/tasks" && (
+          <div>
+            <Progress
+              progress={45}
+              color="green"
+              label="Completed"
+              labelPosition="outside"
+              labelProgress={true}
+            />
+          </div>
+        )}
         <div className="grid grid-cols-2">
           <div className="flex gap-2 items-center">
             <p>Sorted by: </p>
@@ -75,22 +82,28 @@ function TasksView() {
                   <Dropdown.Item>
                     Quiz tasks
                   </Dropdown.Item>
-                  <Dropdown.Item>
-                    Completed
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    Incomplete
-                  </Dropdown.Item>
+                  {location.pathname === "/tasks" && (
+                    <>
+                      <Dropdown.Item>
+                        Completed
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        Incomplete
+                      </Dropdown.Item>
+                    </>
+                  )}
                   <Dropdown.Item>
                     By latest
                   </Dropdown.Item>
                 </Dropdown>
               </div>
             </Button>
-            <Button>
-              Add new task
-              <HiPlus className="ml-2" />
-            </Button>
+            {location.pathname === "/agent/tasks" && profile?.role === Profile.Role.HuddleAgent && (
+              <Button>
+                Add new task
+                <HiPlus className="ml-2" />
+              </Button>
+            )}
           </div>
         </div>
         <div className="flex flex-wrap gap-4">

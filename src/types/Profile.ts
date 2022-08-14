@@ -14,6 +14,6 @@ export interface Profile {
 export namespace Profile {
   export enum Role {
     Huddler = "HUDDLER",
-    HuddleAgent = "HuddleAgent"
+    HuddleAgent = "HUDDLE_AGENT"
   }
 }
