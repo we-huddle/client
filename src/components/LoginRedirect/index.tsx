@@ -9,12 +9,12 @@ function LoginRedirect() {
 
   useEffect(() => {
     if (userProfile) {
-      window.location.href = '/';
+      window.location.href = '/profile';
     } else {
       const sessionString = searchParams.get('session');
       if (sessionString) {
         localStorage.setItem(TOKEN_KEY, sessionString);
-        window.location.href = '/';
+        window.location.href = '/profile';
       }
     }
   }, [userProfile, searchParams]);
