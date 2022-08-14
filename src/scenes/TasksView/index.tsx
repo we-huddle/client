@@ -1,20 +1,30 @@
-import { Button, Dropdown, Badge, Progress } from "flowbite-react";
-import { HiCheck, HiXCircle, HiPlus } from "react-icons/hi";
-import { useContext, useEffect, useState } from "react";
-import { Task } from "../../types/Task";
-import { TaskService } from "../../services/taskService";
+import {Badge, Button, Dropdown, Progress} from "flowbite-react";
+import {HiCheck, HiPlus, HiXCircle} from "react-icons/hi";
+import {useContext, useEffect, useState} from "react";
+import {Task} from "../../types/Task";
+import {TaskService} from "../../services/taskService";
 import TaskCard from "./component/TaskCard";
 import userContext from "../../types/UserContext";
-import { Profile } from "../../types/Profile";
+import {Profile} from "../../types/Profile";
 
 interface TaskViewProps {
   isAgentView: boolean,
+}
+
+enum SortingOption {
+  DEFAULT = "DEFAULT",
+  DEV_TASK = "BY_DEV_TASK",
+  QUIZ_TASK = "BY_QUIZ_TASK",
+  COMPLETED = "BY_COMPLETED",
+  INCOMPLETE = "BY_INCOMPLETE",
+  LATEST = "BY_LATEST",
 }
 
 function TasksView({ isAgentView }: TaskViewProps) {
   const profile = useContext(userContext);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTaskIdList, setCompletedTaskIdList] = useState<string[]>([]);
+  const [selectedSortingOption, setSelectedSortingOption] = useState<SortingOption>(SortingOption.DEFAULT);
 
   useEffect(() => {
     fetchTasks();
@@ -35,12 +45,97 @@ function TasksView({ isAgentView }: TaskViewProps) {
     );
   }
 
+  const sortByDevTask = () => {
+    const map = new Map<Task.Type, number>();
+    map.set(Task.Type.DEV, 2);
+    map.set(Task.Type.QUIZ, 1);
+    const sortedTaskList = tasks.sort(
+      (a, b) => {
+        // @ts-ignore
+        if (map.get(a.type) < map.get(b.type)) {
+          return 1
+        }
+        // @ts-ignore
+        if (map.get(a.type) > map.get(b.type)) {
+          return -1;
+        }
+        return 0
+      }
+    );
+    setTasks(sortedTaskList);
+    setSelectedSortingOption(SortingOption.DEV_TASK);
+  }
+
+  const sortByQuizTask = () => {
+    const map = new Map<Task.Type, number>();
+    map.set(Task.Type.DEV, 2);
+    map.set(Task.Type.QUIZ, 1);
+    const sortedTaskList = tasks.sort(
+      (a, b) => {
+        // @ts-ignore
+        if (map.get(a.type) < map.get(b.type)) {
+          return -1
+        }
+        // @ts-ignore
+        if (map.get(a.type) > map.get(b.type)) {
+          return 1;
+        }
+        return 0
+      }
+    );
+    setTasks(sortedTaskList);
+    setSelectedSortingOption(SortingOption.QUIZ_TASK);
+  }
+
+  const sortByLatest = () => {
+    const sortedTaskList = tasks.sort(
+      (a, b) => b.createdAt - a.createdAt
+    );
+    setTasks(sortedTaskList);
+    setSelectedSortingOption(SortingOption.LATEST)
+  }
+
+  const sortByCompleted = () => {
+    const sortedTaskList = tasks.sort(
+      (a, b) => {
+        const aInCompleted = completedTaskIdList.includes(a.id);
+        const bInCompleted = completedTaskIdList.includes(b.id);
+        if (aInCompleted === bInCompleted) return 0;
+        if (aInCompleted) return -1;
+        if (bInCompleted) return 1;
+        return 0;
+      }
+    );
+    setTasks(sortedTaskList);
+    setSelectedSortingOption(SortingOption.COMPLETED);
+  }
+
+  const sortByIncomplete = () => {
+    const sortedTaskList = tasks.sort(
+      (a, b) => {
+        const aInCompleted = completedTaskIdList.includes(a.id);
+        const bInCompleted = completedTaskIdList.includes(b.id);
+        if (aInCompleted === bInCompleted) return 0;
+        if (aInCompleted) return 1;
+        if (bInCompleted) return -1;
+        return 0;
+      }
+    );
+    setTasks(sortedTaskList);
+    setSelectedSortingOption(SortingOption.INCOMPLETE);
+  }
+
+  const sortByDefault = () => {
+    fetchTasks();
+    setSelectedSortingOption(SortingOption.DEFAULT);
+  }
+
   return (
     <div className="px-8 space-y-8">
       <div className="space-y-2">
         <h1 className="text-3xl font-medium text-gray-900">Tasks</h1>
         <p className="font-normal text-gray-700 dark:text-gray-400">
-          Lorem ipsum dolor sit amet
+          The list of tasks to be completed to achieve badges.
         </p>
       </div>
       <div className="space-y-8">
@@ -60,27 +155,29 @@ function TasksView({ isAgentView }: TaskViewProps) {
             <p>Sorted by: </p>
             <Badge color="info" icon={HiCheck}>
               <div className="px-1">
-                Completed
+                {
+                  {
+                    "DEFAULT" : 'Default',
+                    "BY_DEV_TASK" : 'Dev task',
+                    "BY_QUIZ_TASK" : 'Quiz task',
+                    "BY_COMPLETED" : 'Completed',
+                    "BY_INCOMPLETE" : 'Incomplete',
+                    "BY_LATEST" : 'Latest',
+                  }[selectedSortingOption]
+                }
               </div>
             </Badge>
-            <Badge color="info" icon={HiCheck}>
-              <div className="px-1">
-                Incomplete
-              </div>
-            </Badge>
-            <Badge color="info" icon={HiCheck}>
-              <div className="px-1">
-                By date
-              </div>
-            </Badge>
-            <Button
-              color="gray"
-              size="xs"
-              pill
-            >
-              Clear
-              <HiXCircle className="ml-2" />
-            </Button>
+            {selectedSortingOption !== SortingOption.DEFAULT && (
+              <Button
+                color="gray"
+                size="xs"
+                onClick={sortByDefault}
+                pill
+              >
+                Clear
+                <HiXCircle className="ml-2" />
+              </Button>
+            )}
           </div>
           <div className="flex justify-end items-center gap-2">
             <Button color="gray">
@@ -89,23 +186,23 @@ function TasksView({ isAgentView }: TaskViewProps) {
                   label="Sort"
                   inline={true}
                 >
-                  <Dropdown.Item>
+                  <Dropdown.Item onClick={sortByDevTask}>
                     Dev tasks
                   </Dropdown.Item>
-                  <Dropdown.Item>
+                  <Dropdown.Item onClick={sortByQuizTask}>
                     Quiz tasks
                   </Dropdown.Item>
                   {!isAgentView && (
                     <>
-                      <Dropdown.Item>
+                      <Dropdown.Item onClick={sortByCompleted}>
                         Completed
                       </Dropdown.Item>
-                      <Dropdown.Item>
+                      <Dropdown.Item onClick={sortByIncomplete}>
                         Incomplete
                       </Dropdown.Item>
                     </>
                   )}
-                  <Dropdown.Item>
+                  <Dropdown.Item onClick={sortByLatest}>
                     By latest
                   </Dropdown.Item>
                 </Dropdown>
