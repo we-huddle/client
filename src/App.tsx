@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PublicHome from "./scenes/PublicHome";
 import LoginRedirect from "./components/LoginRedirect";
-import Sidebarr from "./components/Layout";
 import { Profile } from "./types/Profile";
 import { API, TOKEN_KEY } from "./constants";
 import { UserServices } from "./services/userServices";
