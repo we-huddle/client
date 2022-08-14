@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import UserContext from "../../types/UserContext";
 import { SessionService } from "../../services/sessionService";
 import { API, TOKEN_KEY } from "../../constants";
@@ -78,9 +78,11 @@ function Layout(props: LayoutProps) {
                             : ""
                         }`}
                       >
-                        <Sidebar.Item href={route.matcher} icon={route.icon}>
-                          {route.name}
-                        </Sidebar.Item>
+                        <Link to={route.matcher}>
+                          <Sidebar.Item icon={route.icon}>
+                            {route.name}
+                          </Sidebar.Item>
+                        </Link>
                       </div>
                     );
                   })}
@@ -114,7 +116,7 @@ function Layout(props: LayoutProps) {
                 <Navbar.Toggle />
               </div>
             </Navbar>
-            <main>{children}</main>
+            <main className="h-full overflow-x-hidden overflow-y-scroll">{children}</main>
           </div>
         </div>
       ) : (
