@@ -92,31 +92,25 @@ function Layout(props: LayoutProps) {
             <Navbar className="bg-gray-600">
               <div />
               <div className="flex justify-end">
-                {userProfile ? (
-                  <Dropdown
-                    arrowIcon={false}
-                    inline={true}
-                    label={
-                      <Avatar
-                        alt="User profile"
-                        img={userProfile.photo}
-                        rounded={true}
-                      />
-                    }
-                  >
-                    <Dropdown.Header>
-                      <span className="block text-sm">{userProfile.name}</span>
-                      <span className="block truncate text-sm font-medium">
-                        {userProfile.githubUsername}
-                      </span>
-                    </Dropdown.Header>
-                    <Dropdown.Item onClick={handleLogout}>
-                      Sign out
-                    </Dropdown.Item>
-                  </Dropdown>
-                ) : (
-                  <Button href={authUrl}>Login using github</Button>
-                )}
+                <Dropdown
+                  arrowIcon={false}
+                  inline={true}
+                  label={
+                    <Avatar
+                      alt="User profile"
+                      img={userProfile.photo}
+                      rounded={true}
+                    />
+                  }
+                >
+                  <Dropdown.Header>
+                    <span className="block text-sm">{userProfile.name}</span>
+                    <span className="block truncate text-sm font-medium">
+                      {userProfile.githubUsername}
+                    </span>
+                  </Dropdown.Header>
+                  <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
+                </Dropdown>
                 <Navbar.Toggle />
               </div>
             </Navbar>
