@@ -1,6 +1,6 @@
 import { Task } from "../../../../types/Task";
-import {Badge, Card} from "flowbite-react";
-import {HiCheck} from "react-icons/hi";
+import { Badge, Card } from "flowbite-react";
+import { HiCheck } from "react-icons/hi";
 
 interface TaskCardProps {
   task: Task,
@@ -18,11 +18,12 @@ function TaskCard({task, completed}: TaskCardProps) {
           {task.description}
         </p>
         <div className="flex flex-wrap items-center gap-2">
-          {task.type === Task.Type.DEV ? (
-            <Badge color="info">Dev</Badge>
-          ) : (
-            <Badge color="info">Quiz</Badge>
-          )}
+          {
+            {
+              "DEV" : <Badge color="info">Dev</Badge>,
+              "QUIZ" : <Badge color="info">Quiz</Badge>,
+            }[task.type]
+          }
           {completed && (
             <Badge color="success" icon={HiCheck}>
               <div className="px-1">

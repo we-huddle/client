@@ -72,6 +72,7 @@ function Layout(props: LayoutProps) {
                   {huddler_routes.map((route) => {
                     return (
                       <div
+                        key={route.name}
                         className={`rounded-lg ${
                           location.pathname === route.matcher
                             ? "bg-gray-100"

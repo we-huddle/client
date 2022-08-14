@@ -1,7 +1,22 @@
-import {Card, Button, Dropdown, Badge, Progress} from "flowbite-react";
+import { Button, Dropdown, Badge, Progress } from "flowbite-react";
 import { HiCheck, HiXCircle, HiPlus } from "react-icons/hi";
+import { useEffect, useState } from "react";
+import { Task } from "../../types/Task";
+import {TaskService} from "../../services/taskService";
+import TaskCard from "./component/TaskCard";
 
 function TasksView() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    const taskList = await TaskService.getTasks();
+    setTasks(taskList);
+  }
+
   return (
     <div className="px-8 space-y-8">
       <div className="space-y-2">
@@ -79,114 +94,9 @@ function TasksView() {
           </div>
         </div>
         <div className="flex flex-wrap gap-4">
-          <div className="max-w-xs cursor-pointer">
-            <Card>
-              <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-              <p className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
-              </p>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge color="info">Dev</Badge>
-                <Badge color="success" icon={HiCheck}>
-                  <div className="px-1">
-                    Completed
-                  </div>
-                </Badge>
-              </div>
-            </Card>
-          </div>
-          <div className="max-w-xs cursor-pointer">
-            <Card>
-              <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-              <p className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
-              </p>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge color="info">Dev</Badge>
-                <Badge color="success" icon={HiCheck}>
-                  <div className="px-1">
-                    Completed
-                  </div>
-                </Badge>
-              </div>
-            </Card>
-          </div>
-          <div className="max-w-xs cursor-pointer">
-            <Card>
-              <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-              <p className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
-              </p>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge color="info">Dev</Badge>
-                <Badge color="success" icon={HiCheck}>
-                  <div className="px-1">
-                    Completed
-                  </div>
-                </Badge>
-              </div>
-            </Card>
-          </div>
-          <div className="max-w-xs cursor-pointer">
-            <Card>
-              <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-              <p className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
-              </p>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge color="info">Dev</Badge>
-                <Badge color="success" icon={HiCheck}>
-                  <div className="px-1">
-                    Completed
-                  </div>
-                </Badge>
-              </div>
-            </Card>
-          </div>
-          <div className="max-w-xs cursor-pointer">
-            <Card>
-              <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-              <p className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
-              </p>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge color="info">Dev</Badge>
-                <Badge color="success" icon={HiCheck}>
-                  <div className="px-1">
-                    Completed
-                  </div>
-                </Badge>
-              </div>
-            </Card>
-          </div>
-          <div className="max-w-xs cursor-pointer">
-            <Card>
-              <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-              <p className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
-              </p>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge color="info">Dev</Badge>
-                <Badge color="success" icon={HiCheck}>
-                  <div className="px-1">
-                    Completed
-                  </div>
-                </Badge>
-              </div>
-            </Card>
-          </div>
+          {tasks.map((task) => {
+            return <TaskCard key={task.id} task={task} />
+          })}
         </div>
       </div>
     </div>
