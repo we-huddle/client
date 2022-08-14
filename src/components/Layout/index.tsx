@@ -1,5 +1,5 @@
-import { useContext, useEffect } from "react";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import UserContext from "../../types/UserContext";
 import { SessionService } from "../../services/sessionService";
 import { API, TOKEN_KEY } from "../../constants";
@@ -20,7 +20,7 @@ interface LayoutProps {
 }
 
 function Layout(props: LayoutProps) {
-  const { children, className } = props;
+  const { children } = props;
 
   const userProfile = useContext(UserContext);
   const authUrl = `${API.BASE}/authorize`;
@@ -73,7 +73,7 @@ function Layout(props: LayoutProps) {
                     return (
                       <div
                         className={`rounded-lg ${
-                          location.pathname == route.matcher
+                          location.pathname === route.matcher
                             ? "bg-gray-100"
                             : ""
                         }`}
