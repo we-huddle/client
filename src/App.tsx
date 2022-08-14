@@ -36,8 +36,8 @@ function App() {
               <Route path={"/profile"} />
               <Route path={"/badges"} />
               <Route path={"/sprints"} />
-              <Route path={"/tasks"} element={<TasksView />}/>
-              <Route path={"/agent/tasks"} element={<TasksView />}/>
+              <Route path={"/tasks"} element={<TasksView  isAgentView={false} />}/>
+              <Route path={"/agent/tasks"} element={<TasksView isAgentView={true} />}/>
               <Route path={"/leaderboard"} />
             </Routes>
           </Layout>

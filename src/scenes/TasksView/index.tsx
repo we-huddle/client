@@ -2,24 +2,37 @@ import { Button, Dropdown, Badge, Progress } from "flowbite-react";
 import { HiCheck, HiXCircle, HiPlus } from "react-icons/hi";
 import { useContext, useEffect, useState } from "react";
 import { Task } from "../../types/Task";
-import {TaskService} from "../../services/taskService";
+import { TaskService } from "../../services/taskService";
 import TaskCard from "./component/TaskCard";
 import userContext from "../../types/UserContext";
-import {Profile} from "../../types/Profile";
-import {useLocation} from "react-router-dom";
+import { Profile } from "../../types/Profile";
 
-function TasksView() {
+interface TaskViewProps {
+  isAgentView: boolean,
+}
+
+function TasksView({ isAgentView }: TaskViewProps) {
   const profile = useContext(userContext);
   const [tasks, setTasks] = useState<Task[]>([]);
-  const location = useLocation();
+  const [completedTaskIdList, setCompletedTaskIdList] = useState<string[]>([]);
 
   useEffect(() => {
     fetchTasks();
+    if (!isAgentView) {
+      fetchCompletedTasks()
+    }
   }, []);
 
   const fetchTasks = async () => {
     const taskList = await TaskService.getTasks();
     setTasks(taskList);
+  }
+
+  const fetchCompletedTasks = async () => {
+    const completedTaskList = await TaskService.getCompletedTasks();
+    setCompletedTaskIdList(
+      completedTaskList.map((task) => task.id)
+    );
   }
 
   return (
@@ -31,10 +44,10 @@ function TasksView() {
         </p>
       </div>
       <div className="space-y-8">
-        {location.pathname === "/tasks" && (
+        {!isAgentView && (
           <div>
             <Progress
-              progress={45}
+              progress={Math.round((completedTaskIdList.length/tasks.length)*100)}
               color="green"
               label="Completed"
               labelPosition="outside"
@@ -82,7 +95,7 @@ function TasksView() {
                   <Dropdown.Item>
                     Quiz tasks
                   </Dropdown.Item>
-                  {location.pathname === "/tasks" && (
+                  {!isAgentView && (
                     <>
                       <Dropdown.Item>
                         Completed
@@ -98,7 +111,7 @@ function TasksView() {
                 </Dropdown>
               </div>
             </Button>
-            {location.pathname === "/agent/tasks" && profile?.role === Profile.Role.HuddleAgent && (
+            {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
               <Button>
                 Add new task
                 <HiPlus className="ml-2" />
@@ -108,7 +121,13 @@ function TasksView() {
         </div>
         <div className="flex flex-wrap gap-4">
           {tasks.map((task) => {
-            return <TaskCard key={task.id} task={task} />
+            return (
+              <TaskCard
+                key={task.id}
+                task={task}
+                completed={!isAgentView && completedTaskIdList.includes(task.id)}
+              />
+            );
           })}
         </div>
       </div>
