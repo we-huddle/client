@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import UserContext from "../../types/UserContext";
 import { SessionService } from "../../services/sessionService";
 import { API, TOKEN_KEY } from "../../constants";
@@ -13,6 +13,7 @@ import {
 
 import { FaUser, FaAward, FaListUl, FaClipboardList } from "react-icons/fa";
 import { MdLeaderboard } from "react-icons/md";
+import { Profile } from "../../types/Profile";
 
 interface LayoutProps {
   children: React.ReactElement;
@@ -61,6 +62,14 @@ function Layout(props: LayoutProps) {
     },
   ];
 
+  const agent_routes = [
+    {
+      name: "Tasks",
+      icon: FaClipboardList,
+      matcher: "/agent/tasks",
+    },
+  ]
+
   return (
     <div className="h-screen w-screen">
       {userProfile ? (
@@ -68,23 +77,49 @@ function Layout(props: LayoutProps) {
           <div className="w-fit shadow-xl rounded-tr-2xl rounded-br-2xl z-40">
             <Sidebar>
               <Sidebar.Items>
-                <Sidebar.ItemGroup>
-                  {huddler_routes.map((route) => {
-                    return (
-                      <div
-                        className={`rounded-lg ${
-                          location.pathname === route.matcher
-                            ? "bg-gray-100"
-                            : ""
-                        }`}
-                      >
-                        <Sidebar.Item href={route.matcher} icon={route.icon}>
-                          {route.name}
-                        </Sidebar.Item>
-                      </div>
-                    );
-                  })}
-                </Sidebar.ItemGroup>
+                {location.pathname.includes("agent") ? (
+                  <Sidebar.ItemGroup>
+                    {agent_routes.map((route) => {
+                      return (
+                        <div
+                          key={route.name}
+                          className={`rounded-lg ${
+                            location.pathname === route.matcher
+                              ? "bg-gray-100"
+                              : ""
+                          }`}
+                        >
+                          <Link to={route.matcher}>
+                            <Sidebar.Item icon={route.icon}>
+                              {route.name}
+                            </Sidebar.Item>
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </Sidebar.ItemGroup>
+                ) : (
+                  <Sidebar.ItemGroup>
+                    {huddler_routes.map((route) => {
+                      return (
+                        <div
+                          key={route.name}
+                          className={`rounded-lg ${
+                            location.pathname === route.matcher
+                              ? "bg-gray-100"
+                              : ""
+                          }`}
+                        >
+                          <Link to={route.matcher}>
+                            <Sidebar.Item icon={route.icon}>
+                              {route.name}
+                            </Sidebar.Item>
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </Sidebar.ItemGroup>
+                )}
               </Sidebar.Items>
             </Sidebar>
           </div>
@@ -109,12 +144,25 @@ function Layout(props: LayoutProps) {
                       {userProfile.githubUsername}
                     </span>
                   </Dropdown.Header>
+                  {userProfile.role === Profile.Role.HuddleAgent && (
+                    <>
+                      {location.pathname.includes("agent") ? (
+                        <Link to={"/profile"}>
+                          <Dropdown.Item>Switch to huddler mode</Dropdown.Item>
+                        </Link>
+                      ) : (
+                        <Link to={"/agent/tasks"}>
+                          <Dropdown.Item>Switch to agent mode</Dropdown.Item>
+                        </Link>
+                      )}
+                    </>
+                  )}
                   <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
               </div>
             </Navbar>
-            <main>{children}</main>
+            <main className="h-full overflow-x-hidden overflow-y-scroll">{children}</main>
           </div>
         </div>
       ) : (
