@@ -33,7 +33,7 @@ function TasksView({ isAgentView }: TaskViewProps) {
     if (!isAgentView) {
       fetchCompletedTasks()
     }
-  }, []);
+  }, [isAgentView]);
 
   const fetchTasks = async () => {
     const taskList = await TaskService.getTasks();
