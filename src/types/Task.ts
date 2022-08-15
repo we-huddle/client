@@ -8,6 +8,13 @@ export interface TaskPayload {
   updatedAt: number,
 }
 
+export interface PartialTask {
+  title: string,
+  description: string,
+  type: Task.Type,
+  details: string,
+}
+
 export interface Task {
   id: string,
   title: string,

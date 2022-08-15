@@ -1,4 +1,4 @@
-import {Badge, Button, Dropdown, Progress} from "flowbite-react";
+import {Badge, Button, Dropdown, Progress, Modal} from "flowbite-react";
 import {HiCheck, HiPlus, HiXCircle} from "react-icons/hi";
 import {useContext, useEffect, useState} from "react";
 import {Task} from "../../types/Task";
@@ -6,6 +6,7 @@ import {TaskService} from "../../services/taskService";
 import TaskCard from "./component/TaskCard";
 import userContext from "../../types/UserContext";
 import {Profile} from "../../types/Profile";
+import CreateNewTaskPrompt from "./component/CreateNewTaskPrompt";
 
 interface TaskViewProps {
   isAgentView: boolean,
@@ -25,6 +26,7 @@ function TasksView({ isAgentView }: TaskViewProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTaskIdList, setCompletedTaskIdList] = useState<string[]>([]);
   const [selectedSortingOption, setSelectedSortingOption] = useState<SortingOption>(SortingOption.DEFAULT);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTasks();
@@ -130,8 +132,14 @@ function TasksView({ isAgentView }: TaskViewProps) {
     setSelectedSortingOption(SortingOption.DEFAULT);
   }
 
+  const onCreateModalClose = () => {
+    setIsCreateModalVisible(false)
+    fetchTasks();
+  }
+
   return (
     <div className="px-8 space-y-8">
+      <CreateNewTaskPrompt show={isCreateModalVisible} onClose={onCreateModalClose} />
       <div className="space-y-2">
         <h1 className="text-3xl font-medium text-gray-900">Tasks</h1>
         <p className="font-normal text-gray-700 dark:text-gray-400">
@@ -209,13 +217,20 @@ function TasksView({ isAgentView }: TaskViewProps) {
               </div>
             </Button>
             {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
-              <Button>
+              <Button onClick={() => setIsCreateModalVisible(true)}>
                 Add new task
                 <HiPlus className="ml-2" />
               </Button>
             )}
           </div>
         </div>
+        {tasks.length === 0 && (
+          <div className="flex justify-center">
+            <h5 className="text-sm tracking-tight text-gray-900 dark:text-white">
+              No tasks found
+            </h5>
+          </div>
+        )}
         <div className="flex flex-wrap gap-4">
           {tasks.map((task) => {
             return (

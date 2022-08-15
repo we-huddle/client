@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API } from "../constants";
-import {Task, TaskPayload, TaskPayloadToTask} from "../types/Task";
+import {PartialTask, Task, TaskPayload, TaskPayloadToTask} from "../types/Task";
 
 export class TaskService {
   static async getTasks(): Promise<Task[]> {
@@ -30,6 +30,22 @@ export class TaskService {
         }
       );
       return response.data.map((taskPayload) => TaskPayloadToTask(taskPayload));
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+  static async createTask(partialTask: PartialTask) {
+    try {
+      await axios.post<TaskPayload[]>(
+        `${API.BASE}/tasks`,
+        partialTask,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
     } catch (e) {
       throw new Error();
     }
