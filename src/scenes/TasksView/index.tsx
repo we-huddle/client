@@ -1,4 +1,4 @@
-import {Badge, Button, Dropdown, Progress, Modal} from "flowbite-react";
+import {Badge, Button, Dropdown, Progress} from "flowbite-react";
 import {HiCheck, HiPlus, HiXCircle} from "react-icons/hi";
 import {useContext, useEffect, useState} from "react";
 import {Task} from "../../types/Task";
@@ -33,7 +33,7 @@ function TasksView({ isAgentView }: TaskViewProps) {
     if (!isAgentView) {
       fetchCompletedTasks()
     }
-  }, []);
+  });
 
   const fetchTasks = async () => {
     const taskList = await TaskService.getTasks();
