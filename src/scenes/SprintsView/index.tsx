@@ -7,6 +7,7 @@ import {Sprint} from "../../types/Sprint";
 import {SprintsAndIssuesService} from "../../services/sprintsAndIssuesService";
 import SprintRow from "./components/SprintRow";
 import CreateNewSprintPrompt from "./components/CreateNewSprintPrompt";
+import {Link} from "react-router-dom";
 
 interface SprintsViewProps {
   isAgentView: boolean,
@@ -128,7 +129,11 @@ function SprintsView({ isAgentView }: SprintsViewProps) {
       )}
       <div className="space-y-4">
         {filteredSprints.map((sprint) => {
-          return <SprintRow key={sprint.number} sprint={sprint} />
+          return (
+            <Link to={`${window.location.pathname}/${sprint.id}`} >
+              <SprintRow key={sprint.number} sprint={sprint} />
+            </Link>
+          )
         })}
       </div>
     </div>

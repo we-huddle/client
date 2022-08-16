@@ -20,6 +20,22 @@ export class SprintsAndIssuesService {
     }
   }
 
+  static async getSprintById(sprintId: string): Promise<Sprint> {
+    try {
+      const response = await axios.get<Sprint>(
+        `${API.BASE}/sprints/${sprintId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
   static async createSprint(partialSprint: PartialSprint) {
     try {
       await axios.post(

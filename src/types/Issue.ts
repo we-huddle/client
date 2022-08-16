@@ -16,9 +16,10 @@ export interface GithubUser {
   id: number,
   login: string,
   html_url: string,
+  avatar_url: string,
 }
 
 export enum IssueState {
   open = "open",
-  close = "close",
+  closed = "closed",
 }
