@@ -1,11 +1,12 @@
 import {Badge, Button, Dropdown} from "flowbite-react";
 import {HiCheck, HiPlus, HiXCircle} from "react-icons/hi";
 import {Profile} from "../../types/Profile";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import userContext from "../../types/UserContext";
 import {Sprint} from "../../types/Sprint";
 import {SprintsAndIssuesService} from "../../services/sprintsAndIssuesService";
 import SprintRow from "./components/SprintRow";
+import CreateNewSprintPrompt from "./components/CreateNewSprintPrompt";
 
 interface SprintsViewProps {
   isAgentView: boolean,
@@ -20,18 +21,48 @@ enum FilterOption {
 function SprintsView({ isAgentView }: SprintsViewProps) {
   const profile = useContext(userContext);
   const [selectedFilterOption, setSelectedFilterOption] = useState<FilterOption>(FilterOption.DEFAULT);
-  const [sprints, setSprints] = useState<Sprint[]>([]);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
+  const sprints = useRef<Sprint[]>([]);
+  const [filteredSprints, setFilteredSprints] = useState<Sprint[]>([]);
 
   useEffect(() => {
     fetchSprints();
   }, []);
 
   const fetchSprints = async () => {
-    setSprints(await SprintsAndIssuesService.getSprints());
+    sprints.current = await SprintsAndIssuesService.getSprints()
+    setFilteredSprints(sprints.current);
+  }
+
+  const onPromptClose = () => {
+    setIsCreateModalVisible(false);
+    fetchSprints();
+  }
+
+  const filterOngoingSprints = () => {
+    const currentTime = new Date().getTime()
+    setFilteredSprints(sprints.current.filter(
+      (sprint) => sprint.deadline * 1000 > currentTime
+    ));
+    setSelectedFilterOption(FilterOption.ONGOING);
+  }
+
+  const filterPastSprints = () => {
+    const currentTime = new Date().getTime()
+    setFilteredSprints(sprints.current.filter(
+      (sprint) => sprint.deadline * 1000 <= currentTime
+    ));
+    setSelectedFilterOption(FilterOption.PAST);
+  }
+
+  const filterDefault = () => {
+    setFilteredSprints(sprints.current);
+    setSelectedFilterOption(FilterOption.DEFAULT);
   }
 
   return (
     <div className="px-8 space-y-8">
+      <CreateNewSprintPrompt show={isCreateModalVisible} onClose={onPromptClose} />
       <div className="space-y-2">
         <h1 className="text-3xl font-medium text-gray-900">Sprints</h1>
         <p className="font-normal text-gray-700 dark:text-gray-400">
@@ -56,6 +87,7 @@ function SprintsView({ isAgentView }: SprintsViewProps) {
             <Button
               color="gray"
               size="xs"
+              onClick={filterDefault}
               pill
             >
               Clear
@@ -70,32 +102,32 @@ function SprintsView({ isAgentView }: SprintsViewProps) {
                 label="Filter"
                 inline={true}
               >
-                <Dropdown.Item>
+                <Dropdown.Item onClick={filterOngoingSprints}>
                   Ongoing
                 </Dropdown.Item>
-                <Dropdown.Item>
+                <Dropdown.Item onClick={filterPastSprints}>
                   Past
                 </Dropdown.Item>
               </Dropdown>
             </div>
           </Button>
           {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
-            <Button>
+            <Button onClick={() => setIsCreateModalVisible(true)}>
               Create new sprint
               <HiPlus className="ml-2" />
             </Button>
           )}
         </div>
       </div>
-      {sprints.length === 0 && (
+      {filteredSprints.length === 0 && (
         <div className="flex justify-center">
           <h5 className="text-sm tracking-tight text-gray-900 dark:text-white">
-            No tasks found
+            No sprints found
           </h5>
         </div>
       )}
       <div className="space-y-4">
-        {sprints.map((sprint) => {
+        {filteredSprints.map((sprint) => {
           return <SprintRow key={sprint.number} sprint={sprint} />
         })}
       </div>
