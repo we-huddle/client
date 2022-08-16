@@ -19,9 +19,9 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
     const partialTask: PartialTask = {
       title: data.get("title")!.toString(),
       description: data.get("description")!!.toString(),
-      details: JSON.stringify({
+      details: {
         noOfPulls: parseInt(data.get("noOfPulls")!!.toString()),
-      }),
+      },
       type: selectedTaskType,
     }
     await TaskService.createTask(partialTask);
