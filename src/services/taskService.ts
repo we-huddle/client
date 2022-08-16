@@ -1,11 +1,11 @@
 import axios from "axios";
 import { API } from "../constants";
-import {PartialTask, Task, TaskPayload, TaskPayloadToTask} from "../types/Task";
+import {PartialTask, Task} from "../types/Task";
 
 export class TaskService {
   static async getTasks(): Promise<Task[]> {
     try {
-      const response = await axios.get<TaskPayload[]>(
+      const response = await axios.get<Task[]>(
         `${API.BASE}/tasks`,
         {
           headers: {
@@ -13,7 +13,7 @@ export class TaskService {
           }
         }
       );
-      return response.data.map((taskPayload) => TaskPayloadToTask(taskPayload));
+      return response.data;
     } catch (e) {
       throw new Error();
     }
@@ -21,7 +21,7 @@ export class TaskService {
 
   static async getCompletedTasks(): Promise<Task[]> {
     try {
-      const response = await axios.get<TaskPayload[]>(
+      const response = await axios.get<Task[]>(
         `${API.BASE}/tasks/completed`,
         {
           headers: {
@@ -29,7 +29,7 @@ export class TaskService {
           }
         }
       );
-      return response.data.map((taskPayload) => TaskPayloadToTask(taskPayload));
+      return response.data;
     } catch (e) {
       throw new Error();
     }
@@ -37,7 +37,7 @@ export class TaskService {
 
   static async createTask(partialTask: PartialTask) {
     try {
-      await axios.post<TaskPayload[]>(
+      await axios.post(
         `${API.BASE}/tasks`,
         partialTask,
         {
