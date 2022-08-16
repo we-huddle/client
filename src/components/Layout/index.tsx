@@ -64,6 +64,11 @@ function Layout(props: LayoutProps) {
 
   const agent_routes = [
     {
+      name: "Sprint & Issues",
+      icon: FaListUl,
+      matcher: "/agent/sprints",
+    },
+    {
       name: "Tasks",
       icon: FaClipboardList,
       matcher: "/agent/tasks",

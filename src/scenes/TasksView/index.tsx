@@ -3,10 +3,10 @@ import {HiCheck, HiPlus, HiXCircle} from "react-icons/hi";
 import {useContext, useEffect, useState} from "react";
 import {Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
-import TaskCard from "./component/TaskCard";
+import TaskCard from "./components/TaskCard";
 import userContext from "../../types/UserContext";
 import {Profile} from "../../types/Profile";
-import CreateNewTaskPrompt from "./component/CreateNewTaskPrompt";
+import CreateNewTaskPrompt from "./components/CreateNewTaskPrompt";
 
 interface TaskViewProps {
   isAgentView: boolean,
