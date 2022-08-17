@@ -1,5 +1,5 @@
 import { Badge, Button, Dropdown, Progress, Card } from "flowbite-react";
-import { HiCheck, HiPlus, HiXCircle } from "react-icons/hi";
+import { HiCheck, HiPlus } from "react-icons/hi";
 import { useContext, useState } from "react";
 import userContext from "../../types/UserContext";
 import { Profile } from "../../types/Profile";
@@ -16,7 +16,7 @@ enum SortingOption {
 
 function Badges({ isAgentView }: BadgesProps) {
   const profile = useContext(userContext);
-  const [selectedSortingOption, setSelectedSortingOption] =
+  const [selectedSortingOption] =
     useState<SortingOption>(SortingOption.DEFAULT);
   const badges = [
     {
