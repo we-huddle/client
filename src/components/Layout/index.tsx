@@ -84,7 +84,7 @@ function Layout(props: LayoutProps) {
     <div className="h-screen w-screen">
       {userProfile ? (
         <div className="flex h-full">
-          <div className="w-fit shadow-xl rounded-tr-2xl rounded-br-2xl z-40 h-ful">
+          <div className="w-fit shadow-xl rounded-tr-2xl rounded-br-2xl z-40">
             <Sidebar>
               <Sidebar.Items>
                 {location.pathname.includes("agent") ? (
