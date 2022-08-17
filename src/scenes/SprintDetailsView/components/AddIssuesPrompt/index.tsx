@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {Button, Label, Modal, TextInput} from "flowbite-react";
 import {useEffect, useState} from "react";
 import {HiPlus, HiSearch, HiXCircle} from "react-icons/hi";
@@ -133,7 +134,7 @@ function AddIssuesPrompt({ show, onClose, sprint, alreadyAddedIssueIds }: AddIss
                   </div>
                   <div className="col-span-4">
                     <p className="text-sm text-blue-500 hover:underline">
-                      <a href={issue.repoUrl} target="_blank">{issue.repoName}</a>
+                      <a href={issue.repoUrl} target="_blank" rel="noreferrer">{issue.repoName}</a>
                     </p>
                   </div>
                   <div>

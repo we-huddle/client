@@ -30,7 +30,7 @@ function IssueRow({ issue }: IssueRowProps) {
             Opened on {intlDateFormatter.format(new Date(issue.openedAt * 1000))} by {issue.githubUser.login}
           </p>
           <p className="text-sm text-blue-500 hover:underline">
-            <a href={issue.repoUrl} target="_blank">{issue.repoName}</a>
+            <a href={issue.repoUrl} target="_blank" rel="noreferrer">{issue.repoName}</a>
           </p>
         </div>
       </div>

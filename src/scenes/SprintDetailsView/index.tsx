@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {Badge, Button, Dropdown, Progress} from "flowbite-react";
 import {HiCheck, HiOutlineArrowLeft, HiPlus, HiXCircle} from "react-icons/hi";
 import {Profile} from "../../types/Profile";
