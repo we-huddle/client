@@ -1,5 +1,5 @@
 import {Badge, Button, Dropdown, Progress} from "flowbite-react";
-import {HiBackspace, HiCheck, HiOutlineArrowLeft, HiPlus, HiXCircle} from "react-icons/hi";
+import {HiCheck, HiOutlineArrowLeft, HiPlus, HiXCircle} from "react-icons/hi";
 import {Profile} from "../../types/Profile";
 import {useContext, useEffect, useRef, useState} from "react";
 import userContext from "../../types/UserContext";
@@ -8,6 +8,7 @@ import {Issue, IssueState} from "../../types/Issue";
 import {useNavigate, useParams} from "react-router-dom";
 import {Sprint} from "../../types/Sprint";
 import IssueRow from "./components/IssueRow";
+import AddIssuesPrompt from "./components/AddIssuesPrompt";
 
 interface SprintDetailsViewProps {
   isAgentView: boolean,
@@ -28,6 +29,7 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
   const [filteredIssues, setFilteredIssues] = useState<Issue[]>([]);
   const [selectedFilterOption, setSelectedFilterOption] = useState<FilterOption>(FilterOption.DEFAULT);
   const [progress, setProgress] = useState<number>(0);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
   const intlDateFormatter = Intl.DateTimeFormat('en', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 
   useEffect(() => {
@@ -44,6 +46,11 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
     const closedCount = issues.current.filter((issue) => issue.state === IssueState.closed).length;
     setProgress((closedCount/issues.current.length)*100)
     setFilteredIssues(issues.current);
+  }
+
+  const onPromptClose = () => {
+    setIsCreateModalVisible(false);
+    fetchIssues();
   }
 
   const filterOpenIssues = () => {
@@ -69,6 +76,12 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
     <div>
       {sprint == null? "loading" : (
         <div className="px-8 space-y-8">
+          <AddIssuesPrompt
+            show={isCreateModalVisible}
+            onClose={onPromptClose}
+            sprint={sprint}
+            alreadyAddedIssueIds={issues.current.map((issue) => issue.id)}
+          />
           <div>
             <Button
               color="gray"
@@ -155,7 +168,7 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
                 </div>
               </Button>
               {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
-                <Button>
+                <Button onClick={() => setIsCreateModalVisible(true)}>
                   Add issues
                   <HiPlus className="ml-2" />
                 </Button>

@@ -79,8 +79,8 @@ export class SprintsAndIssuesService {
           }
         }
       );
-    } catch (e) {
-      throw new Error();
+    } catch (e: any) {
+      throw new Error(e.response.data);
     }
   }
 
