@@ -8,6 +8,8 @@ import { UserServices } from "./services/userServices";
 import UserContext from "./types/UserContext";
 import Layout from "./components/Layout";
 import TasksView from "./scenes/TasksView";
+import SprintsView from "./scenes/SprintsView";
+import SprintDetailsView from "./scenes/SprintDetailsView";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<Profile | null>(null);
@@ -35,7 +37,10 @@ function App() {
               <Route path={"/"} element={<PublicHome />} />
               <Route path={"/profile"} />
               <Route path={"/badges"} />
-              <Route path={"/sprints"} />
+              <Route path={"/sprints"} element={<SprintsView isAgentView={false} />} />
+              <Route path={"/sprints/:id"} element={<SprintDetailsView isAgentView={false} />} />
+              <Route path={"/agent/sprints"} element={<SprintsView isAgentView={true} />} />
+              <Route path={"/agent/sprints/:id"} element={<SprintDetailsView isAgentView={true} />} />
               <Route path={"/tasks"} element={<TasksView  isAgentView={false} />}/>
               <Route path={"/agent/tasks"} element={<TasksView isAgentView={true} />}/>
               <Route path={"/leaderboard"} />
