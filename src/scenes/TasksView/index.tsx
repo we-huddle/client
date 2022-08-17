@@ -8,7 +8,7 @@ import userContext from "../../types/UserContext";
 import {Profile} from "../../types/Profile";
 import CreateNewTaskPrompt from "./components/CreateNewTaskPrompt";
 import { Link } from "react-router-dom";
-
+import ViewSingleTaskPrompt from "./component/ViewSingleTaskPrompt";
 
 interface TaskViewProps {
   isAgentView: boolean,
@@ -29,6 +29,10 @@ function TasksView({ isAgentView }: TaskViewProps) {
   const [completedTaskIdList, setCompletedTaskIdList] = useState<string[]>([]);
   const [selectedSortingOption, setSelectedSortingOption] = useState<SortingOption>(SortingOption.DEFAULT);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
+  const [isViewModalVisible, setIsViewModalVisible] = useState<boolean>(false);
+  const [selectedTask, SetSelectedTask] = useState<Task>();
+
+  console.log(selectedTask);
 
   useEffect(() => {
     fetchTasks();
@@ -139,6 +143,11 @@ function TasksView({ isAgentView }: TaskViewProps) {
     fetchTasks();
   }
 
+  const onViewModalClose = () => {
+    setIsViewModalVisible(false)
+    fetchTasks();
+  }
+
   return (
     <div className="px-8 space-y-8">
       <CreateNewTaskPrompt show={isCreateModalVisible} onClose={onCreateModalClose} />
@@ -233,18 +242,21 @@ function TasksView({ isAgentView }: TaskViewProps) {
             </h5>
           </div>
         )}
+        {/*<ViewSingleTaskPrompt show={isViewModalVisible} onClose={onViewModalClose} task={selectedTask}/>*/}
         <div className="flex flex-wrap gap-4">
           {tasks.map((task) => {
             return (
-              <Link to = {`${window.location.pathname}/details`}> 
-              <TaskCard
-                key={task.id}
-                task={task}
-                completed={!isAgentView && completedTaskIdList.includes(task.id)}
-              />
-              </Link>
+                <div onClick={() => {setIsViewModalVisible(true); SetSelectedTask(task)}}>
+                    <Link to = {`${window.location.pathname}/details`}>
+                      <TaskCard
+                        key={task.id}
+                        task={task}
+                        completed={!isAgentView && completedTaskIdList.includes(task.id)}
+                      />
+                  </Link>
+                </div>
             );
-          })}        
+          })}
         </div>
       </div>
     </div>
