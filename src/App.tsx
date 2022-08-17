@@ -12,6 +12,7 @@ import SprintsView from "./scenes/SprintsView";
 import SprintDetailsView from "./scenes/SprintDetailsView";
 import ProfileView from "./scenes/ProfileView";
 import Badges from "./scenes/Badges";
+
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<Profile | null>(null);
 
