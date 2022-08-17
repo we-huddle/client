@@ -128,58 +128,62 @@ function Layout(props: LayoutProps) {
               </Sidebar.Items>
             </Sidebar>
           </div>
-          <div className="w-full">
-            <Navbar className="bg-gray-600">
-              <div />
-              <div className="flex justify-end">
-                <Dropdown
-                  arrowIcon={false}
-                  inline={true}
-                  label={
-                    <Avatar
-                      alt="User profile"
-                      img={userProfile.photo}
-                      rounded={true}
-                    />
-                  }
-                >
-                  <Dropdown.Header>
-                    <span className="block text-sm">{userProfile.name}</span>
-                    <span className="block truncate text-sm font-medium">
+          <div className="w-full h-full overflow-x-hidden overflow-y-scroll relative">
+            <div className="sticky left-0 top-0">
+              <Navbar className="bg-gray-600">
+                <div />
+                <div className="flex justify-end">
+                  <Dropdown
+                    arrowIcon={false}
+                    inline={true}
+                    label={
+                      <Avatar
+                        alt="User profile"
+                        img={userProfile.photo}
+                        rounded={true}
+                      />
+                    }
+                  >
+                    <Dropdown.Header>
+                      <span className="block text-sm">{userProfile.name}</span>
+                      <span className="block truncate text-sm font-medium">
                       {userProfile.githubUsername}
                     </span>
-                  </Dropdown.Header>
-                  {userProfile.role === Profile.Role.HuddleAgent && (
-                    <>
-                      {location.pathname.includes("agent") ? (
-                        <Link to={"/profile"}>
-                          <Dropdown.Item>Switch to huddler mode</Dropdown.Item>
-                        </Link>
-                      ) : (
-                        <Link to={"/agent/tasks"}>
-                          <Dropdown.Item>Switch to agent mode</Dropdown.Item>
-                        </Link>
-                      )}
-                    </>
-                  )}
-                  <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
-                </Dropdown>
-                <Navbar.Toggle />
-              </div>
-            </Navbar>
-            <main className="h-full overflow-x-hidden overflow-y-scroll">{children}</main>
+                    </Dropdown.Header>
+                    {userProfile.role === Profile.Role.HuddleAgent && (
+                      <>
+                        {location.pathname.includes("agent") ? (
+                          <Link to={"/profile"}>
+                            <Dropdown.Item>Switch to huddler mode</Dropdown.Item>
+                          </Link>
+                        ) : (
+                          <Link to={"/agent/tasks"}>
+                            <Dropdown.Item>Switch to agent mode</Dropdown.Item>
+                          </Link>
+                        )}
+                      </>
+                    )}
+                    <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
+                  </Dropdown>
+                  <Navbar.Toggle />
+                </div>
+              </Navbar>
+            </div>
+            <main className="mb-10">{children}</main>
           </div>
         </div>
       ) : (
-        <div className="w-full">
-          <Navbar className="bg-gray-600">
-            <div />
-            <div className="flex justify-end">
-              <Button href={authUrl}>Login using github</Button>
-              <Navbar.Toggle />
-            </div>
-          </Navbar>
-          <main>{children}</main>
+        <div className="w-full h-full overflow-x-hidden overflow-y-scroll relative">
+          <div className="sticky left-0 top-0">
+            <Navbar className="bg-gray-600">
+              <div />
+              <div className="flex justify-end">
+                <Button href={authUrl}>Login using github</Button>
+                <Navbar.Toggle />
+              </div>
+            </Navbar>
+          </div>
+          <main className="mb-10">{children}</main>
         </div>
       )}
     </div>
