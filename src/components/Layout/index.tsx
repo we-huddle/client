@@ -73,7 +73,12 @@ function Layout(props: LayoutProps) {
       icon: FaClipboardList,
       matcher: "/agent/tasks",
     },
-  ]
+    {
+      name: "Badges",
+      icon: FaAward,
+      matcher: "/agent/badges",
+    },
+  ];
 
   return (
     <div className="h-screen w-screen">
