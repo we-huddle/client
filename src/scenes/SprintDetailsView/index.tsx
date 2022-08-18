@@ -26,7 +26,7 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [sprint, setSprint] = useState<Sprint | null>(null);
-  const issues = useRef<Issue[]>([]);
+  const issues = useRef<Issue[] | null>(null);
   const [filteredIssues, setFilteredIssues] = useState<Issue[]>([]);
   const [selectedFilterOption, setSelectedFilterOption] = useState<FilterOption>(FilterOption.DEFAULT);
   const [progress, setProgress] = useState<number>(0);
@@ -55,21 +55,21 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
   }
 
   const filterOpenIssues = () => {
-    setFilteredIssues(issues.current.filter(
+    setFilteredIssues(issues.current!.filter(
       (issue) => issue.state === IssueState.open
     ));
     setSelectedFilterOption(FilterOption.OPEN);
   }
 
   const filterPastSprints = () => {
-    setFilteredIssues(issues.current.filter(
+    setFilteredIssues(issues.current!.filter(
       (issue) => issue.state === IssueState.closed
     ));
     setSelectedFilterOption(FilterOption.CLOSED);
   }
 
   const filterDefault = () => {
-    setFilteredIssues(issues.current);
+    setFilteredIssues(issues.current!);
     setSelectedFilterOption(FilterOption.DEFAULT);
   }
 
@@ -77,12 +77,14 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
     <div>
       {sprint == null? "loading" : (
         <div className="px-8 space-y-8">
-          <AddIssuesPrompt
-            show={isCreateModalVisible}
-            onClose={onPromptClose}
-            sprint={sprint}
-            alreadyAddedIssueIds={issues.current.map((issue) => issue.id)}
-          />
+          {issues.current && (
+            <AddIssuesPrompt
+              show={isCreateModalVisible}
+              onClose={onPromptClose}
+              sprint={sprint}
+              alreadyAddedIssueIds={issues.current.map((issue) => issue.id)}
+            />
+          )}
           <div>
             <Button
               color="gray"
