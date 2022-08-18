@@ -11,7 +11,6 @@ import TasksView from "./scenes/TasksView";
 import SprintsView from "./scenes/SprintsView";
 import SprintDetailsView from "./scenes/SprintDetailsView";
 import ProfileView from "./scenes/ProfileView";
-import Badges from "./scenes/Badges";
 import TaskDetailsView from "./scenes/TaskDetailsView";
 import BadgesView from "./scenes/BadgesView";
 import LeaderboardView from "./scenes/LeaderboardView";
