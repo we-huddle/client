@@ -236,7 +236,7 @@ function TasksView({ isAgentView }: TaskViewProps) {
         <div className="flex flex-wrap gap-4">
           {tasks.map((task) => {
             return (
-              <Link to = {`${window. location. pathname}/details`}> 
+              <Link to = {`${window.location.pathname}/details`}> 
               <TaskCard
                 key={task.id}
                 task={task}
