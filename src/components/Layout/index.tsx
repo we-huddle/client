@@ -78,6 +78,11 @@ function Layout(props: LayoutProps) {
       icon: FaAward,
       matcher: "/agent/badges",
     },
+    {
+      name: "Leaderboard",
+      icon: MdLeaderboard,
+      matcher: "/agent/leaderboard",
+    },
   ];
 
   return (
