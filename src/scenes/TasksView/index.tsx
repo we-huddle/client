@@ -233,12 +233,10 @@ function TasksView({ isAgentView }: TaskViewProps) {
             </h5>
           </div>
         )}
- 
-        {!isAgentView && (
         <div className="flex flex-wrap gap-4">
           {tasks.map((task) => {
             return (
-              <Link to="/tasks/details">
+              <Link to = {`${window. location. pathname}/details`}> 
               <TaskCard
                 key={task.id}
                 task={task}
@@ -248,24 +246,6 @@ function TasksView({ isAgentView }: TaskViewProps) {
             );
           })}        
         </div>
-        )}
-
-        {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
-        <div className="flex flex-wrap gap-4">
-          {tasks.map((task) => {
-            return (
-              <Link to="/agent/tasks/details">
-              <TaskCard
-                key={task.id}
-                task={task}
-                completed={!isAgentView && completedTaskIdList.includes(task.id)}
-              />
-              </Link>
-           );
-         })}
-       </div>
-        )}
-
       </div>
     </div>
   )
