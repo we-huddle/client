@@ -11,7 +11,7 @@ import TasksView from "./scenes/TasksView";
 import SprintsView from "./scenes/SprintsView";
 import SprintDetailsView from "./scenes/SprintDetailsView";
 import ProfileView from "./scenes/ProfileView";
-import Badges from "./scenes/Badges";
+import BadgesView from "./scenes/BadgesView";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<Profile | null>(null);
@@ -65,11 +65,11 @@ function App() {
               <Route path={"/leaderboard"} />
               <Route
                 path={"/badges"}
-                element={<Badges isAgentView={false} />}
+                element={<BadgesView isAgentView={false} />}
               />
               <Route
                 path={"/agent/badges"}
-                element={<Badges isAgentView={true} />}
+                element={<BadgesView isAgentView={true} />}
               />
             </Routes>
           </Layout>

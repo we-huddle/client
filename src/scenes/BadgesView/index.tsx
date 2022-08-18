@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import userContext from "../../types/UserContext";
 import { Profile } from "../../types/Profile";
 
-interface BadgesProps {
+interface BadgesViewProps {
   isAgentView: boolean;
 }
 
@@ -14,7 +14,7 @@ enum SortingOption {
   INCOMPLETE = "BY_INCOMPLETE",
 }
 
-function Badges({ isAgentView }: BadgesProps) {
+function BadgesView ({ isAgentView }: BadgesViewProps) {
   const profile = useContext(userContext);
   const [selectedSortingOption] =
     useState<SortingOption>(SortingOption.DEFAULT);
@@ -128,4 +128,4 @@ function Badges({ isAgentView }: BadgesProps) {
   );
 }
 
-export default Badges;
+export default BadgesView;
