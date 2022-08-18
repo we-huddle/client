@@ -3,6 +3,7 @@ import { API } from "../constants";
 import {PartialTask, Task} from "../types/Task";
 
 export class TaskService {
+  
   static async getTasks(): Promise<Task[]> {
     try {
       const response = await axios.get<Task[]>(
@@ -50,4 +51,5 @@ export class TaskService {
       throw new Error();
     }
   }
+  
 }

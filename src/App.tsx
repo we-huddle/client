@@ -11,8 +11,10 @@ import TasksView from "./scenes/TasksView";
 import SprintsView from "./scenes/SprintsView";
 import SprintDetailsView from "./scenes/SprintDetailsView";
 import ProfileView from "./scenes/ProfileView";
+import TaskDetailsView from "./scenes/TaskDetailsView";
 import BadgesView from "./scenes/BadgesView";
 import LeaderboardView from "./scenes/LeaderboardView";
+
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<Profile | null>(null);
@@ -63,6 +65,8 @@ function App() {
                 path={"/agent/tasks"}
                 element={<TasksView isAgentView={true} />}
               />
+              <Route path={"/tasks/details"} element={<TaskDetailsView  isAgentView={false} />}/>
+              <Route path={"/agent/tasks/details"} element={<TaskDetailsView  isAgentView={true} />}/>
               <Route
                 path={"/leaderboard"}
                 element={<LeaderboardView />}

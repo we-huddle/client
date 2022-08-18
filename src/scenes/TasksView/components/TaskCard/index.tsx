@@ -38,3 +38,5 @@ function TaskCard({task, completed}: TaskCardProps) {
 }
 
 export default TaskCard;
+
+
