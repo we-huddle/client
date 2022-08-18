@@ -7,13 +7,10 @@ interface TaskCardProps {
   completed?: boolean,
 }
 
-function TaskCard({task, completed}: TaskCardProps): JSX.Element{
-
-     return (
+function TaskCard({task, completed}: TaskCardProps) {
+  return (
     <div className="w-80 cursor-pointer">
-
-       <Card>      
-        
+      <Card>
         <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
           {task.title}
         </h5>
@@ -35,7 +32,6 @@ function TaskCard({task, completed}: TaskCardProps): JSX.Element{
             </Badge>
           )}
         </div>
-       
       </Card>
     </div>
   );
