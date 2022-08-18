@@ -12,7 +12,7 @@ import SprintsView from "./scenes/SprintsView";
 import SprintDetailsView from "./scenes/SprintDetailsView";
 import ProfileView from "./scenes/ProfileView";
 import Badges from "./scenes/Badges";
-import TaskDetails from "./scenes/TaskDetails";
+import TaskDetailsView from "./scenes/TaskDetailsView";
 
 
 function App() {
@@ -64,8 +64,8 @@ function App() {
                 path={"/agent/tasks"}
                 element={<TasksView isAgentView={true} />}
               />
-              <Route path={"/tasks/details"} element={<TaskDetails  isAgentView={false} />}/>
-              <Route path={"/agent/tasks/details"} element={<TaskDetails  isAgentView={true} />}/>
+              <Route path={"/tasks/details"} element={<TaskDetailsView  isAgentView={false} />}/>
+              <Route path={"/agent/tasks/details"} element={<TaskDetailsView  isAgentView={true} />}/>
               <Route path={"/leaderboard"} />
               <Route
                 path={"/badges"}

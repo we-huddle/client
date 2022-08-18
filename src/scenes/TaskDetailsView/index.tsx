@@ -5,11 +5,11 @@ import {Badge, Button, Card} from "flowbite-react";
 import {HiCheck, HiPencil, HiTrash} from "react-icons/hi";
 
 
-interface TaskViewProps {
+interface TaskDetailsViewProps {
     isAgentView: boolean,
   }
 
-function TaskDetails({ isAgentView }: TaskViewProps){
+function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
 
     const profile = useContext(userContext);
 
@@ -68,6 +68,6 @@ function TaskDetails({ isAgentView }: TaskViewProps){
 
 
 
-  export default TaskDetails
+  export default TaskDetailsView
 
 
