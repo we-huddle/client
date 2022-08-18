@@ -13,6 +13,8 @@ import SprintDetailsView from "./scenes/SprintDetailsView";
 import ProfileView from "./scenes/ProfileView";
 import Badges from "./scenes/Badges";
 import TaskDetailsView from "./scenes/TaskDetailsView";
+import BadgesView from "./scenes/BadgesView";
+import LeaderboardView from "./scenes/LeaderboardView";
 
 
 function App() {
@@ -66,14 +68,21 @@ function App() {
               />
               <Route path={"/tasks/details"} element={<TaskDetailsView  isAgentView={false} />}/>
               <Route path={"/agent/tasks/details"} element={<TaskDetailsView  isAgentView={true} />}/>
-              <Route path={"/leaderboard"} />
+              <Route
+                path={"/leaderboard"}
+                element={<LeaderboardView />}
+              />
+              <Route
+                path={"/agent/leaderboard"}
+                element={<LeaderboardView />}
+              />
               <Route
                 path={"/badges"}
-                element={<Badges isAgentView={false} />}
+                element={<BadgesView isAgentView={false} />}
               />
               <Route
                 path={"/agent/badges"}
-                element={<Badges isAgentView={true} />}
+                element={<BadgesView isAgentView={true} />}
               />
             </Routes>
           </Layout>
