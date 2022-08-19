@@ -9,7 +9,6 @@ import {Profile} from "../../types/Profile";
 import CreateNewTaskPrompt from "./components/CreateNewTaskPrompt";
 import { Link } from "react-router-dom";
 
-
 interface TaskViewProps {
   isAgentView: boolean,
 }
@@ -236,15 +235,15 @@ function TasksView({ isAgentView }: TaskViewProps) {
         <div className="flex flex-wrap gap-4">
           {tasks.map((task) => {
             return (
-              <Link to = {`${window.location.pathname}/details`}> 
-              <TaskCard
-                key={task.id}
-                task={task}
-                completed={!isAgentView && completedTaskIdList.includes(task.id)}
-              />
+              <Link to = {`${window.location.pathname}/${task.id}`}>
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  completed={!isAgentView && completedTaskIdList.includes(task.id)}
+                />
               </Link>
             );
-          })}        
+          })}
         </div>
       </div>
     </div>

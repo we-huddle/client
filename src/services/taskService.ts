@@ -20,6 +20,22 @@ export class TaskService {
     }
   }
 
+  static async getTaskById(taskId: string): Promise<Task> {
+    try {
+      const response = await axios.get<Task>(
+        `${API.BASE}/tasks/${taskId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
   static async getCompletedTasks(): Promise<Task[]> {
     try {
       const response = await axios.get<Task[]>(
