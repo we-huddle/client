@@ -33,7 +33,10 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
           <div className="space-y-2">
             <h1 className="text-3xl font-medium text-gray-900">{task?.title}</h1>
             <div className="flex flex-wrap items-center gap-2">
-              <Badge color="info">Developer Task</Badge>
+              {task?.type === "DEV"
+                  ? <Badge color="info">Developer Task</Badge>
+                  : <Badge color="info">Quiz Task</Badge>
+              }
               {!isAgentView && (
                 <Badge color="success" icon={HiCheck}>
                   <div className="px-1">
