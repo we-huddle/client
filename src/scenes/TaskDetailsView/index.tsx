@@ -19,13 +19,14 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
 
   useEffect(() => {
     fetchTask();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchTask = async () => {
     setTask(await TaskService.getTaskById(id!));
   }
 
-    return(
+  return(
     <div className="px-5">
       <Card>
         <div className="px-5 space-y-8">
@@ -66,7 +67,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
         </div>
       </Card>
     </div>
-  )
+  );
 }
 
 export default TaskDetailsView
