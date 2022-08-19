@@ -7,7 +7,7 @@ import {Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
 import {useParams} from "react-router-dom";
 import DeletePrompt from "./components/DeletePrompt";
-import EditTaskPromt from "../TaskDetailsView/components/EditTaskPrompt"
+import EditTaskPrompt from "../TaskDetailsView/components/EditTaskPrompt"
 
 
 
@@ -53,7 +53,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
           />
 
 
-        <EditTaskPromt show={isEditModalVisible} onClose={onEditModalClose} />
+        <EditTaskPrompt show={isEditModalVisible} onClose={onEditModalClose} />
 
 
           <div className="space-y-2">
@@ -83,7 +83,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
           <div className="flex justify-end items-center gap-2">
             {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
               <>
-              <Button>
+              <Button onClick={() => setIsEditModalVisible(true)}>
                 Edit
                 <HiPencil className="ml-2" />
               </Button>
