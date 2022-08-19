@@ -66,7 +66,7 @@ function App() {
                 element={<TasksView isAgentView={true} />}
               />
               <Route path={"/tasks/details"} element={<TaskDetailsView  isAgentView={false} />}/>
-              <Route path={"/agent/tasks/details"} element={<TaskDetailsView  isAgentView={true} />}/>
+              <Route path={"/agent/tasks/:id"} element={<TaskDetailsView  isAgentView={true} />}/>
               <Route
                 path={"/leaderboard"}
                 element={<LeaderboardView />}
