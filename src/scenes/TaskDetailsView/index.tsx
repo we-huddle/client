@@ -6,6 +6,7 @@ import {HiCheck, HiPencil, HiTrash} from "react-icons/hi";
 import {Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
 import {useParams} from "react-router-dom";
+import DeletePrompt from "./components/DeletePrompt";
 
 
 interface TaskDetailsViewProps {
@@ -16,6 +17,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   const profile = useContext(userContext);
   const { id } = useParams();
   const [task ,setTask] = useState<Task | null>(null);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTask();
@@ -26,10 +28,20 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
     setTask(await TaskService.getTaskById(id!));
   }
 
+  const onPromptClose = () => {
+    setIsCreateModalVisible(false);
+  }
+
   return(
     <div className="px-5">
+      {task == null? "loading" : (
       <Card>
         <div className="px-5 space-y-8">
+          <DeletePrompt
+            show={isCreateModalVisible}
+            onClose={onPromptClose} 
+            task={task}          
+          />
           <div className="space-y-2">
             <h1 className="text-3xl font-medium text-gray-900">{task?.title}</h1>
             <div className="flex flex-wrap items-center gap-2">
@@ -61,7 +73,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
                 Edit
                 <HiPencil className="ml-2" />
               </Button>
-              <Button color="failure">
+              <Button color="failure" onClick={() => setIsCreateModalVisible(true)}>
                 Delete
                 <HiTrash className="ml-2" />
               </Button></>
@@ -69,6 +81,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
           </div>
         </div>
       </Card>
+      )}
     </div>
   );
 }
