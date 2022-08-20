@@ -1,5 +1,5 @@
 import {Avatar} from "flowbite-react/lib/esm/components";
-import {Issue} from "../../../../types/Issue";
+import {Issue, IssueState} from "../../../../types/Issue";
 
 interface IssueRowProps {
   issue: Issue,
@@ -11,9 +11,11 @@ function IssueRow({ issue }: IssueRowProps) {
   return (
     <div className="flex justify-between items-center px-4 py-4 border-b-2 gap-20 border-gray-300 hover:bg-gray-50 cursor-pointer">
       <div className="flex gap-8 items-center">
-        <div className="text-center">
-          <p className="text-lg text-blue-500 hover:underline">#{issue.number}</p>
-          <p className="mt-1 text-sm text-blue-500">
+        <div className={`text-center ${issue.state === IssueState.open? 'text-blue-500': 'text-purple-900'}`}>
+          <a href={issue.url} target="_blank" rel="noreferrer">
+            <p className="text-lg hover:underline">#{issue.number}</p>
+          </a>
+          <p className="mt-1 text-sm">
             {
               {
                 "open": "Open",

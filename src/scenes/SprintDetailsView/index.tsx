@@ -45,7 +45,7 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
   const fetchIssues = async () => {
     issues.current = await SprintsAndIssuesService.getIssuesOfSprint(id!)
     const closedCount = issues.current.filter((issue) => issue.state === IssueState.closed).length;
-    setProgress((closedCount/issues.current.length)*100)
+    setProgress(Math.round((closedCount/issues.current.length)*100));
     setFilteredIssues(issues.current);
   }
 
