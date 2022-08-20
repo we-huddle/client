@@ -3,7 +3,6 @@ import { API } from "../constants";
 import {PartialTask, Task} from "../types/Task";
 
 export class TaskService {
-  
   static async getTasks(): Promise<Task[]> {
     try {
       const response = await axios.get<Task[]>(
@@ -54,8 +53,9 @@ export class TaskService {
 
   static async createTask(partialTask: PartialTask) {
     try {
+      const type = partialTask.type === Task.Type.DEV ? "dev" : "quiz"
       await axios.post(
-        `${API.BASE}/tasks`,
+        `${API.BASE}/tasks/create/${type}`,
         partialTask,
         {
           headers: {
@@ -82,5 +82,4 @@ export class TaskService {
       throw new Error();
     }
   }
-  
 }
