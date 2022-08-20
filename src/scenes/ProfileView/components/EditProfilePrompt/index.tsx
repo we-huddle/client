@@ -1,5 +1,5 @@
 import { Button, Label, Modal, Textarea, TextInput } from "flowbite-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Profile, PartialProfile } from "../../../../types/Profile";
 import { UserServices } from "../../../../services/userServices";
 

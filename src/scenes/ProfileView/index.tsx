@@ -19,7 +19,7 @@ function ProfileView() {
 
   useEffect(() => {
     fetchProfile();
-  }, []);
+  });
 
   const fetchProfile = async () => {
     setProfile(await UserServices.getProfileById(id!));
@@ -126,7 +126,11 @@ function ProfileView() {
 
                 <div className="flex gap-3 mt-5">
                   {profile?.links.github && (
-                    <a target="_blank" href={profile.links.github}>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={profile.links.github}
+                    >
                       <FaGithub
                         className="text-gray-800 hover:text-gray-500"
                         size="20px"
@@ -134,7 +138,11 @@ function ProfileView() {
                     </a>
                   )}
                   {profile?.links.linkedin && (
-                    <a target="_blank" href={profile.links.linkedin}>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={profile.links.linkedin}
+                    >
                       <FaLinkedinIn
                         className="text-gray-800 hover:text-gray-500"
                         size="20px"
@@ -142,7 +150,11 @@ function ProfileView() {
                     </a>
                   )}
                   {profile?.links.stackoverflow && (
-                    <a target="_blank" href={profile.links.stackoverflow}>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={profile.links.stackoverflow}
+                    >
                       <FaStackOverflow
                         className="text-gray-800 hover:text-gray-500"
                         size="20px"
@@ -150,7 +162,11 @@ function ProfileView() {
                     </a>
                   )}
                   {profile?.links.twitter && (
-                    <a target="_blank" href={profile.links.twitter}>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={profile.links.twitter}
+                    >
                       <FaTwitter
                         className="text-gray-800 hover:text-gray-500"
                         size="20px"
