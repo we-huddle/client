@@ -67,5 +67,20 @@ export class TaskService {
       throw new Error();
     }
   }
+
+  static async deleteTask(taskId: string) {
+    try {
+      await axios.delete(
+        `${API.BASE}/tasks/${taskId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
   
 }
