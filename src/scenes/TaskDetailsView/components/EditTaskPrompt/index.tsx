@@ -1,26 +1,13 @@
 import {Button, Label, Modal, Textarea, TextInput} from "flowbite-react";
 import {Task} from "../../../../types/Task";
-import {TaskService} from "../../../../services/taskService";
-import {useParams} from "react-router-dom";
-import { useEffect, useState } from "react";
 
 interface EditTaskPromptProps {
   show: boolean,
   onClose: () => void,
+  task: Task,
 }
 
-function EditTaskPrompt({ show, onClose }: EditTaskPromptProps) {
-  const { id } = useParams();
-  const [task ,setTask] = useState<Task | null>(null);
-
-  useEffect(() => {
-    fetchTask();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchTask = async () => {
-    setTask(await TaskService.getTaskById(id!));
-  }
+function EditTaskPrompt({ show, onClose, task}: EditTaskPromptProps) {
   
   return (
     <Modal show={show} onClose={onClose}>
@@ -41,7 +28,7 @@ function EditTaskPrompt({ show, onClose }: EditTaskPromptProps) {
                 id="title"
                 name="title"
                 type="text"
-                value={task?.title}
+                value={task.title}
                 required
               />
             </div>
@@ -55,7 +42,7 @@ function EditTaskPrompt({ show, onClose }: EditTaskPromptProps) {
               <Textarea
                 id="description"
                 name="description"
-                value={task?.description}
+                value={task.description}
                 required
               />
             </div>
@@ -70,8 +57,8 @@ function EditTaskPrompt({ show, onClose }: EditTaskPromptProps) {
                   id="noOfPulls"
                   name="noOfPulls"
                   type="number"
+                  value={task.details.noOfPulls}
                   min={1}
-                  value={task?.details.noOfPulls}
                   required
                 />
               </div>
@@ -85,6 +72,9 @@ function EditTaskPrompt({ show, onClose }: EditTaskPromptProps) {
       </Modal.Body>
     </Modal>
   );
-}
+    
+    }
+    
+
 
 export default EditTaskPrompt;

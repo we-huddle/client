@@ -7,9 +7,7 @@ import {Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
 import {useParams} from "react-router-dom";
 import DeletePrompt from "./components/DeletePrompt";
-import EditTaskPrompt from "../TaskDetailsView/components/EditTaskPrompt"
-
-
+import EditTaskPrompt from "./components/EditTaskPrompt";
 
 interface TaskDetailsViewProps {
     isAgentView: boolean,
@@ -53,7 +51,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
           />
 
 
-        <EditTaskPrompt show={isEditModalVisible} onClose={onEditModalClose} />
+        <EditTaskPrompt show={isEditModalVisible} onClose={onEditModalClose} task={task}/>
 
 
           <div className="space-y-2">
