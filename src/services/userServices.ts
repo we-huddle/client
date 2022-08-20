@@ -18,11 +18,14 @@ export class UserServices {
 
   static async getProfileById(profileId: string) {
     try {
-      const response = await axios.get<Profile>(`${API.BASE}/profile/${profileId}`, {
-        headers: {
-          Authorization: `Bearer ${API.TOKEN}`,
-        },
-      });
+      const response = await axios.get<Profile>(
+        `${API.BASE}/profile/${profileId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
+        }
+      );
       return response.data;
     } catch (e) {
       throw new Error();

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {Link, useLocation} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import UserContext from "../../types/UserContext";
 import { SessionService } from "../../services/sessionService";
 import { API, TOKEN_KEY } from "../../constants";
@@ -157,14 +157,16 @@ function Layout(props: LayoutProps) {
                     <Dropdown.Header>
                       <span className="block text-sm">{userProfile.name}</span>
                       <span className="block truncate text-sm font-medium">
-                      {userProfile.githubUsername}
-                    </span>
+                        {userProfile.githubUsername}
+                      </span>
                     </Dropdown.Header>
                     {userProfile.role === Profile.Role.HuddleAgent && (
                       <>
                         {location.pathname.includes("agent") ? (
-                          <Link to={"/profile/"+userProfile?.id}>
-                            <Dropdown.Item>Switch to huddler mode</Dropdown.Item>
+                          <Link to={"/profile/" + userProfile?.id}>
+                            <Dropdown.Item>
+                              Switch to huddler mode
+                            </Dropdown.Item>
                           </Link>
                         ) : (
                           <Link to={"/agent/tasks"}>
@@ -173,7 +175,9 @@ function Layout(props: LayoutProps) {
                         )}
                       </>
                     )}
-                    <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
+                    <Dropdown.Item onClick={handleLogout}>
+                      Sign out
+                    </Dropdown.Item>
                   </Dropdown>
                   <Navbar.Toggle />
                 </div>

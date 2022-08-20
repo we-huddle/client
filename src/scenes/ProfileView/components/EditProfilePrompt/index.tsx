@@ -35,8 +35,8 @@ function EditProfilePrompt({
     onClose();
   };
 
-    return (
-      <Modal show={show} onClose={onClose}>
+  return (
+    <Modal show={show} onClose={onClose}>
       <Modal.Header>Edit Profile</Modal.Header>
       <Modal.Body>
         <div>
@@ -117,7 +117,6 @@ function EditProfilePrompt({
         </div>
       </Modal.Body>
     </Modal>
-    
   );
 }
 

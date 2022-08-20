@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import {useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Card, Progress } from "flowbite-react/lib/esm/components";
 import {
   FaStackOverflow,
