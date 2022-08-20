@@ -7,7 +7,7 @@ import {Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
 import {useParams} from "react-router-dom";
 import DeletePrompt from "./components/DeletePrompt";
-
+import EditTaskPrompt from "./components/EditTaskPrompt";
 
 interface TaskDetailsViewProps {
     isAgentView: boolean,
@@ -19,10 +19,17 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   const [task ,setTask] = useState<Task | null>(null);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
 
+
   useEffect(() => {
     fetchTask();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+    const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
+
+    const onEditModalClose = () => {
+      setIsEditModalVisible(false)
+    }
 
   const fetchTask = async () => {
     setTask(await TaskService.getTaskById(id!));
@@ -42,6 +49,11 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
             onClose={onPromptClose} 
             task={task}          
           />
+
+
+        <EditTaskPrompt show={isEditModalVisible} onClose={onEditModalClose} task={task}/>
+
+
           <div className="space-y-2">
             <h1 className="text-3xl font-medium text-gray-900">{task?.title}</h1>
             <div className="flex flex-wrap items-center gap-2">
@@ -69,7 +81,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
           <div className="flex justify-end items-center gap-2">
             {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
               <>
-              <Button>
+              <Button onClick={() => setIsEditModalVisible(true)}>
                 Edit
                 <HiPencil className="ml-2" />
               </Button>
