@@ -19,7 +19,7 @@ function ProfileView() {
 
   useEffect(() => {
     fetchProfile();
-  });
+  }, []);
 
   const fetchProfile = async () => {
     setProfile(await UserServices.getProfileById(id!));
@@ -125,7 +125,7 @@ function ProfileView() {
                 )}
 
                 <div className="flex gap-3 mt-5">
-                  {profile?.links.github && (
+                  {profile?.links?.github && (
                     <a
                       target="_blank"
                       rel="noreferrer"
@@ -137,7 +137,7 @@ function ProfileView() {
                       />
                     </a>
                   )}
-                  {profile?.links.linkedin && (
+                  {profile?.links?.linkedin && (
                     <a
                       target="_blank"
                       rel="noreferrer"
@@ -149,7 +149,7 @@ function ProfileView() {
                       />
                     </a>
                   )}
-                  {profile?.links.stackoverflow && (
+                  {profile?.links?.stackoverflow && (
                     <a
                       target="_blank"
                       rel="noreferrer"
@@ -161,7 +161,7 @@ function ProfileView() {
                       />
                     </a>
                   )}
-                  {profile?.links.twitter && (
+                  {profile?.links?.twitter && (
                     <a
                       target="_blank"
                       rel="noreferrer"
