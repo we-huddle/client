@@ -69,7 +69,7 @@ function EditProfilePrompt({
                 name="github"
                 type="url"
                 placeholder="https://www.github.com/example"
-                defaultValue={userProfile?.links.github}
+                defaultValue={userProfile?.links?.github}
               />
             </div>
             <div>
@@ -81,7 +81,7 @@ function EditProfilePrompt({
                 name="linkedin"
                 type="url"
                 placeholder="https://www.linkedin.com/in/example"
-                defaultValue={userProfile?.links.linkedin}
+                defaultValue={userProfile?.links?.linkedin}
               />
             </div>
             <div>
@@ -93,7 +93,7 @@ function EditProfilePrompt({
                 name="stackoverflow"
                 type="url"
                 placeholder="https://stackoverflow.com/u/example"
-                defaultValue={userProfile?.links.stackoverflow}
+                defaultValue={userProfile?.links?.stackoverflow}
               />
             </div>
             <div>
@@ -105,7 +105,7 @@ function EditProfilePrompt({
                 name="twitter"
                 type="url"
                 placeholder="https://twitter.com/u/example"
-                defaultValue={userProfile?.links.twitter}
+                defaultValue={userProfile?.links?.twitter}
               />
             </div>
             <div className="flex justify-end text-right">
