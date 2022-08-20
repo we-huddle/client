@@ -1,9 +1,34 @@
-import { useContext } from "react";
-import userContext from "../../types/UserContext";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Card, Progress } from "flowbite-react/lib/esm/components";
+import {
+  FaStackOverflow,
+  FaGithub,
+  FaLinkedinIn,
+  FaTwitter,
+} from "react-icons/fa";
+import { MdLocationOn } from "react-icons/md";
+import EditProfilePrompt from "./components/EditProfilePrompt";
+import { UserServices } from "../../services/userServices";
+import { Profile } from "../../types/Profile";
 
 function ProfileView() {
-  const profile = useContext(userContext);
+  const { id } = useParams();
+  const [profile, setProfile] = useState<Profile>();
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchProfile();
+  });
+
+  const fetchProfile = async () => {
+    setProfile(await UserServices.getProfileById(id!));
+  };
+
+  const onPromptClose = () => {
+    setIsModalVisible(false);
+    fetchProfile();
+  };
 
   const badges = [
     {
@@ -24,7 +49,6 @@ function ProfileView() {
       level: "3",
       img: "https://sefglobal.org/developers/images/3.png",
     },
-
   ];
 
   const prs = [
@@ -58,6 +82,11 @@ function ProfileView() {
   return (
     <div>
       <div className="px-8 w-full">
+        <EditProfilePrompt
+          show={isModalVisible}
+          onClose={onPromptClose}
+          userProfile={profile!!}
+        />
         <div className="grid grid-cols-5 gap-4">
           <div className="space-y-4 col-span-2">
             <Card>
@@ -72,12 +101,78 @@ function ProfileView() {
                   <p className="text-sm text-gray-400">
                     @{profile?.githubUsername}
                   </p>
-                  <a
-                    href={"https://github.com/" + profile?.githubUsername}
-                    className="inline-flex items-center rounded-lg bg-blue-700 py-2 px-3 mt-2 text-center text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  <button
+                    className="inline-flex items-center rounded-md bg-blue-700 py-2 px-3 mt-2 text-center text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    onClick={() => setIsModalVisible(true)}
                   >
-                    Visit Github Profile
-                  </a>
+                    Edit Profile
+                  </button>
+                </div>
+              </div>
+              <div>
+                {profile?.bio && (
+                  <div>
+                    <p className="font-semibold text-gray-800">Bio</p>
+                    <p className="text-sm text-gray-600">{profile.bio}</p>
+                  </div>
+                )}
+
+                {profile?.city && (
+                  <div className="flex items-center mt-3 -ml-1">
+                    <MdLocationOn className="text-gray-800" size="25px" />
+                    <p className="text-sm text-gray-600">{profile.city}</p>
+                  </div>
+                )}
+
+                <div className="flex gap-3 mt-5">
+                  {profile?.links.github && (
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={profile.links.github}
+                    >
+                      <FaGithub
+                        className="text-gray-800 hover:text-gray-500"
+                        size="20px"
+                      />
+                    </a>
+                  )}
+                  {profile?.links.linkedin && (
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={profile.links.linkedin}
+                    >
+                      <FaLinkedinIn
+                        className="text-gray-800 hover:text-gray-500"
+                        size="20px"
+                      />
+                    </a>
+                  )}
+                  {profile?.links.stackoverflow && (
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={profile.links.stackoverflow}
+                    >
+                      <FaStackOverflow
+                        className="text-gray-800 hover:text-gray-500"
+                        size="20px"
+                      />
+                    </a>
+                  )}
+                  {profile?.links.twitter && (
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={profile.links.twitter}
+                    >
+                      <FaTwitter
+                        className="text-gray-800 hover:text-gray-500"
+                        size="20px"
+                      />
+                    </a>
+                  )}
                 </div>
               </div>
             </Card>
