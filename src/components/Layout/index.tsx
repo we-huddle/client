@@ -38,7 +38,7 @@ function Layout(props: LayoutProps) {
     {
       name: "Profile",
       icon: FaUser,
-      matcher: "/profile",
+      matcher: "/profile/" + userProfile?.id,
     },
     {
       name: "Badges",
@@ -163,7 +163,7 @@ function Layout(props: LayoutProps) {
                     {userProfile.role === Profile.Role.HuddleAgent && (
                       <>
                         {location.pathname.includes("agent") ? (
-                          <Link to={"/profile"}>
+                          <Link to={"/profile/"+userProfile?.id}>
                             <Dropdown.Item>Switch to huddler mode</Dropdown.Item>
                           </Link>
                         ) : (
