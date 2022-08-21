@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import userContext from "../../types/UserContext";
 import {Badge, Button, Card} from "flowbite-react";
 import {HiCheck, HiPencil, HiTrash} from "react-icons/hi";
-import {Task} from "../../types/Task";
+import {DevTaskDetails, Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
 import {useParams} from "react-router-dom";
 import DeletePrompt from "./components/DeletePrompt";
@@ -11,7 +11,7 @@ import EditTaskPrompt from "./components/EditTaskPrompt";
 
 interface TaskDetailsViewProps {
     isAgentView: boolean,
-  }
+}
 
 function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   const profile = useContext(userContext);
@@ -75,7 +75,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
           </div>
           <div className="space-y-3">
             <h2 className="font-semibold text-gray-700 dark:text-gray-400 space-y-4">
-            Number of pull requests to complete: {task?.details.noOfPulls}
+              Number of pull requests to complete: {(task?.details as DevTaskDetails).noOfPulls}
             </h2>
           </div>
           <div className="flex justify-end items-center gap-2">
