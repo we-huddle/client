@@ -1,11 +1,11 @@
 import {Profile} from "../../types/Profile";
 import {useContext, useEffect, useState} from "react";
 import userContext from "../../types/UserContext";
-import {Badge, Button, Card} from "flowbite-react";
-import {HiCheck, HiPencil, HiTrash} from "react-icons/hi";
-import {DevTaskDetails, Task} from "../../types/Task";
+import {Badge, Button, Dropdown} from "flowbite-react";
+import {HiCheck, HiChip, HiOutlineArrowLeft, HiPencil} from "react-icons/hi";
+import {Answer, AnswerStatus, DevTaskDetails, Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import DeletePrompt from "./components/DeletePrompt";
 import EditTaskPrompt from "./components/EditTaskPrompt";
 
@@ -16,12 +16,17 @@ interface TaskDetailsViewProps {
 function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   const profile = useContext(userContext);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [task ,setTask] = useState<Task | null>(null);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [answers, setAnswers] = useState<Answer[]>([]);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
+  const intlDateFormatter = Intl.DateTimeFormat('en', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 
   useEffect(() => {
     fetchTask();
+    fetchAnswers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -33,56 +38,132 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
     setTask(await TaskService.getTaskById(id!));
   }
 
+  const fetchAnswers = async () => {
+    const answerList = await TaskService.getAnswers(id!);
+    setAnswers(answerList);
+    setIsCompleted(
+      answerList.filter((answer) => answer.status === AnswerStatus.COMPLETED).length !== 0
+    );
+  }
+
   const onPromptClose = () => {
     setIsCreateModalVisible(false);
   }
 
   return(
-    <div className="px-5">
+    <div>
       {task == null? "loading" : (
-      <Card>
-        <DeletePrompt show={isCreateModalVisible} onClose={onPromptClose} task={task}/>
-        <EditTaskPrompt show={isEditModalVisible} onClose={onEditModalClose} task={task}/>
-        <div className="px-5 space-y-8">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-medium text-gray-900">{task?.title}</h1>
-            <div className="flex flex-wrap items-center gap-2">
-              {task?.type === "DEV"
-                  ? <Badge color="info">Developer Task</Badge>
-                  : <Badge color="info">Quiz Task</Badge>
-              }
-              {!isAgentView && (
-                <Badge color="success" icon={HiCheck}>
-                  <div className="px-1">
-                    Completed
-                  </div>
-                </Badge>
-              )}
-            </div>
-          </div>
-          <div className="space-y-3">
-            <p className="font-normal text-gray-700 dark:text-gray-400 space-y-4"> {task?.description}</p>
-          </div>
-          <div className="space-y-3">
-            <h2 className="font-semibold text-gray-700 dark:text-gray-400 space-y-4">
-              Number of pull requests to complete: {(task?.details as DevTaskDetails).noOfPulls}
-            </h2>
-          </div>
-          <div className="flex justify-end items-center gap-2">
+        <div className="px-8 space-y-8">
+          <DeletePrompt show={isCreateModalVisible} onClose={onPromptClose} task={task}/>
+          <EditTaskPrompt show={isEditModalVisible} onClose={onEditModalClose} task={task}/>
+          <div className="flex justify-between items-center">
+            <Button
+              color="gray"
+              size="md"
+              onClick={() => navigate(-1)}
+              pill
+            >
+              <HiOutlineArrowLeft />
+            </Button>
             {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
-              <>
-              <Button onClick={() => setIsEditModalVisible(true)}>
-                Edit
-                <HiPencil className="ml-2" />
+              <Button color="gray">
+                <div className="text-left">
+                  <Dropdown
+                    label=""
+                    inline={true}
+                  >
+                    <Dropdown.Item onClick={() => setIsEditModalVisible(true)}>
+                      Edit task
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setIsCreateModalVisible(true)}>
+                      Delete task
+                    </Dropdown.Item>
+                  </Dropdown>
+                </div>
               </Button>
-              <Button color="failure" onClick={() => setIsCreateModalVisible(true)}>
-                Delete
-                <HiTrash className="ml-2" />
-              </Button></>
             )}
           </div>
+          <div className="flex justify-between items-start">
+            <div className="space-y-4">
+              <h1 className="text-3xl font-medium text-gray-900">{task.title}</h1>
+              <p className="font-normal text-gray-700 dark:text-gray-400">
+                {task.description}
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                {task?.type === "DEV"
+                  ? (
+                    <Badge color="info" icon={HiChip}>
+                      <div className="px-1">
+                        Developer Task
+                      </div>
+                    </Badge>
+                  ) : (
+                    <Badge color="info" icon={HiPencil}>
+                      <div className="px-1">
+                        Quiz Task
+                      </div>
+                    </Badge>
+                  )
+                }
+                {!isAgentView && isCompleted && (
+                  <Badge color="success" icon={HiCheck}>
+                    <div className="px-1">
+                      Completed
+                    </div>
+                  </Badge>
+                )}
+              </div>
+            </div>
+            {task.type === Task.Type.DEV && (
+              <div className="text-center p-5 bg-gray-50 rounded-xl">
+                <p className="text-7xl font-bold">{(task?.details as DevTaskDetails).noOfPulls}</p>
+                <p className="text-sm">Pull requests to complete</p>
+              </div>
+            )}
+          </div>
+          {!isAgentView && (
+            <div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h1 className="text-xl font-medium text-gray-900">Submissions</h1>
+                  {task.type === Task.Type.QUIZ && !isCompleted && (
+                    <Button>Attempt quiz</Button>
+                  )}
+                </div>
+                {answers.length === 0 && (
+                  <div className="flex justify-center">
+                    <h5 className="text-sm tracking-tight text-gray-900 dark:text-white">
+                      No answers found
+                    </h5>
+                  </div>
+                )}
+                {answers.map((answer, index) => {
+                  return (
+                    <div key={answer.id} className="flex justify-between items-center px-4 py-4 border-b-2 gap-20 border-gray-300 hover:bg-gray-50 cursor-pointer">
+                      <div className="flex gap-12 items-center">
+                        <p className="text-lg text-blue-500 hover:underline">#{index + 1}</p>
+                        <p className="text-sm font-normal text-gray-900 dark:text-gray-400">
+                          Submitted on {intlDateFormatter.format(new Date(answer.createdAt * 1000))}
+                        </p>
+                      </div>
+                      <div>
+                        {answer.status === AnswerStatus.COMPLETED ? (
+                          <p className="text-sm text-green-500 font-normal dark:text-gray-400">
+                            Completed
+                          </p>
+                        ) : (
+                          <p className="text-sm font-normal text-red-500 dark:text-gray-400">
+                            Failed
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
-      </Card>
       )}
     </div>
   );

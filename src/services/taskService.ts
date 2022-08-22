@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API } from "../constants";
-import {PartialTask, Task} from "../types/Task";
+import {Answer, PartialTask, Task} from "../types/Task";
 
 export class TaskService {
   static async getTasks(): Promise<Task[]> {
@@ -95,6 +95,22 @@ export class TaskService {
           }
         }
       );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+  static async getAnswers(taskId: string): Promise<Answer[]> {
+    try {
+      const response = await axios.get<Answer[]>(
+        `${API.BASE}/tasks/${taskId}/answer`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+      return response.data;
     } catch (e) {
       throw new Error();
     }
