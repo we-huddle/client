@@ -68,6 +68,23 @@ export class TaskService {
     }
   }
 
+  static async updateTask(taskId: string, partialTask: PartialTask) {
+    try {
+      const type = partialTask.type === Task.Type.DEV ? "dev" : "quiz"
+      await axios.put(
+          `${API.BASE}/tasks/${taskId}/${type}`,
+          partialTask,
+          {
+            headers: {
+              Authorization: `Bearer ${API.TOKEN}`
+            }
+          }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
   static async deleteTask(taskId: string) {
     try {
       await axios.delete(

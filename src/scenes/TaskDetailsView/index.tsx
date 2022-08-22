@@ -18,18 +18,16 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   const { id } = useParams();
   const [task ,setTask] = useState<Task | null>(null);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
-
+  const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTask();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-    const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
-
-    const onEditModalClose = () => {
-      setIsEditModalVisible(false)
-    }
+  const onEditModalClose = () => {
+    setIsEditModalVisible(false)
+  }
 
   const fetchTask = async () => {
     setTask(await TaskService.getTaskById(id!));
@@ -43,17 +41,9 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
     <div className="px-5">
       {task == null? "loading" : (
       <Card>
-        <div className="px-5 space-y-8">
-          <DeletePrompt
-            show={isCreateModalVisible}
-            onClose={onPromptClose} 
-            task={task}          
-          />
-
-
+        <DeletePrompt show={isCreateModalVisible} onClose={onPromptClose} task={task}/>
         <EditTaskPrompt show={isEditModalVisible} onClose={onEditModalClose} task={task}/>
-
-
+        <div className="px-5 space-y-8">
           <div className="space-y-2">
             <h1 className="text-3xl font-medium text-gray-900">{task?.title}</h1>
             <div className="flex flex-wrap items-center gap-2">
