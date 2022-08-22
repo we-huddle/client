@@ -29,7 +29,6 @@ function EditTaskPrompt({ show, onClose, task}: EditTaskPromptProps) {
       details: details,
       type: task.type,
     }
-    console.log(partialTask);
     await TaskService.updateTask(id!, partialTask);
     setIsProcessing(false);
     onClose();
