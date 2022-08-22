@@ -1,5 +1,5 @@
 import {Button, Label, Modal, Textarea, TextInput} from "flowbite-react";
-import {Task} from "../../../../types/Task";
+import {DevTaskDetails, Task} from "../../../../types/Task";
 
 interface EditTaskPromptProps {
   show: boolean,
@@ -57,7 +57,7 @@ function EditTaskPrompt({ show, onClose, task}: EditTaskPromptProps) {
                   id="noOfPulls"
                   name="noOfPulls"
                   type="number"
-                  value={task.details.noOfPulls}
+                  value={(task.details as DevTaskDetails).noOfPulls}
                   min={1}
                   required
                 />
