@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API } from "../constants";
-import {Answer, PartialTask, Task} from "../types/Task";
+import {Answer, PartialTask, QuizAnswerPayload, Task} from "../types/Task";
 
 export class TaskService {
   static async getTasks(): Promise<Task[]> {
@@ -19,10 +19,10 @@ export class TaskService {
     }
   }
 
-  static async getTaskById(taskId: string): Promise<Task> {
+  static async getTaskById(taskId: string, isAgent: boolean): Promise<Task> {
     try {
       const response = await axios.get<Task>(
-        `${API.BASE}/tasks/${taskId}`,
+        `${API.BASE}/tasks/${taskId}${isAgent? '/agent' : ''}`,
         {
           headers: {
             Authorization: `Bearer ${API.TOKEN}`
@@ -113,6 +113,22 @@ export class TaskService {
       return response.data;
     } catch (e) {
       throw new Error();
+    }
+  }
+
+  static async submitQuizAnswers(taskId: string, quizAnswers: QuizAnswerPayload) {
+    try {
+      await axios.post(
+        `${API.BASE}/tasks/${taskId}/answer`,
+        quizAnswers,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+    } catch (e: any) {
+      throw new Error(e.message());
     }
   }
 }

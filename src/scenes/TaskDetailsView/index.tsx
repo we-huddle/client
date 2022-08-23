@@ -3,11 +3,12 @@ import {useContext, useEffect, useState} from "react";
 import userContext from "../../types/UserContext";
 import {Badge, Button, Dropdown} from "flowbite-react";
 import {HiCheck, HiChip, HiOutlineArrowLeft, HiPencil} from "react-icons/hi";
-import {Answer, AnswerStatus, DevTaskDetails, Task} from "../../types/Task";
+import {Answer, AnswerStatus, DevTaskDetails, QuizTaskDetails, Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
 import {useNavigate, useParams} from "react-router-dom";
 import DeletePrompt from "./components/DeletePrompt";
 import EditTaskPrompt from "./components/EditTaskPrompt";
+import AnswerQuizPrompt from "./components/AnswerQuizPrompt";
 
 interface TaskDetailsViewProps {
     isAgentView: boolean,
@@ -22,7 +23,8 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
-  const intlDateFormatter = Intl.DateTimeFormat('en', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+  const [isAnswerModalVisible, setIsAnswerModalVisible] = useState<boolean>(false);
+  const intlDateFormatter = Intl.DateTimeFormat('en', { hour: "numeric", minute: "numeric", weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 
   useEffect(() => {
     fetchTask();
@@ -35,7 +37,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   }
 
   const fetchTask = async () => {
-    setTask(await TaskService.getTaskById(id!));
+    setTask(await TaskService.getTaskById(id!, isAgentView));
   }
 
   const fetchAnswers = async () => {
@@ -48,6 +50,11 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
 
   const onPromptClose = () => {
     setIsCreateModalVisible(false);
+  }
+
+  const onAnswerQuizPromptClose = () => {
+    setIsAnswerModalVisible(false);
+    fetchAnswers();
   }
 
   return(
@@ -114,20 +121,28 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
                 )}
               </div>
             </div>
-            {task.type === Task.Type.DEV && (
+            {task.type === Task.Type.DEV ? (
               <div className="text-center p-5 bg-gray-50 rounded-xl">
                 <p className="text-7xl font-bold">{(task?.details as DevTaskDetails).noOfPulls}</p>
                 <p className="text-sm">Pull requests to complete</p>
+              </div>
+            ) : (
+              <div className="text-center p-5 bg-gray-50 rounded-xl">
+                <p className="text-7xl font-bold">{(task?.details as QuizTaskDetails).passMark}</p>
+                <p className="text-sm">Score to complete</p>
               </div>
             )}
           </div>
           {!isAgentView && (
             <div>
+              {task.type === Task.Type.QUIZ && (
+                <AnswerQuizPrompt show={isAnswerModalVisible} onClose={onAnswerQuizPromptClose} task={task} />
+              )}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h1 className="text-xl font-medium text-gray-900">Submissions</h1>
                   {task.type === Task.Type.QUIZ && !isCompleted && (
-                    <Button>Attempt quiz</Button>
+                    <Button onClick={() => setIsAnswerModalVisible(true)}>Attempt quiz</Button>
                   )}
                 </div>
                 {answers.length === 0 && (
@@ -161,6 +176,24 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
                   );
                 })}
               </div>
+            </div>
+          )}
+          {isAgentView && profile?.role === Profile.Role.HuddleAgent && task.type === Task.Type.QUIZ && (
+            <div className="space-y-2">
+              {(task.details as QuizTaskDetails).questions.map((question) => {
+                return (
+                  <div key={question.number} className="space-y-4 p-5 bg-gray-50 rounded-lg">
+                    <p className="text-sm text-gray-900">{question.number}. {question.question}</p>
+                    <div className="space-y-1 ml-4">
+                      <p className="text-sm text-gray-900">a. {question.options.a}</p>
+                      <p className="text-sm text-gray-900">b. {question.options.b}</p>
+                      <p className="text-sm text-gray-900">c. {question.options.c}</p>
+                      <p className="text-sm text-gray-900">d. {question.options.d}</p>
+                    </div>
+                    <p className="text-sm text-green-500">Correct answer: {question.correctAnswerKey}</p>
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>

@@ -46,6 +46,11 @@ export interface Answer {
   updatedAt: number,
 }
 
+export interface QuizAnswerPayload {
+  taskId: string,
+  answers: Object,
+}
+
 export enum AnswerStatus {
   COMPLETED = "COMPLETED",
   INCOMPLETE = "INCOMPLETE"
