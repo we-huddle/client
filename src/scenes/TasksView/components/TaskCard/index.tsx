@@ -14,7 +14,7 @@ function TaskCard({task, completed}: TaskCardProps) {
         <h5 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">
           {task.title}
         </h5>
-        <p className="text-sm font-normal text-gray-700 dark:text-gray-400">
+        <p className="text-sm line-clamp-2 font-normal text-gray-700 dark:text-gray-400">
           {task.description}
         </p>
         <div className="flex flex-wrap items-center gap-2">
