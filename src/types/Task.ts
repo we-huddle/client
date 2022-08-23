@@ -36,6 +36,26 @@ export interface Question {
   },
 }
 
+export interface Answer {
+  id: string,
+  profileId: string,
+  taskId: string,
+  details: DevTaskDetails | QuizTaskDetails,
+  status: AnswerStatus,
+  createdAt: number,
+  updatedAt: number,
+}
+
+export interface QuizAnswerPayload {
+  taskId: string,
+  answers: Object,
+}
+
+export enum AnswerStatus {
+  COMPLETED = "COMPLETED",
+  INCOMPLETE = "INCOMPLETE"
+}
+
 export namespace Task {
   export enum Type {
     QUIZ = "QUIZ",

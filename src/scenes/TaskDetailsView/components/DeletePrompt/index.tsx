@@ -34,7 +34,7 @@ function DeletePrompt({ show, onClose, task }: DeletePromptProps) {
   }
 
   return (
-    <Modal show={show} onClose={onClose} size="3xl">
+    <Modal show={show} onClose={onClose} size="lg">
         <Modal.Header>
             Delete Task
         </Modal.Header>
