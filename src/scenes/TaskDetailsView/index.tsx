@@ -134,7 +134,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
               </div>
             ) : (
               <div className="text-center p-5 bg-gray-50 rounded-xl">
-                <p className="text-7xl font-bold">{(task?.details as QuizTaskDetails).passMark}</p>
+                <p className="text-7xl font-bold">{Math.round((task?.details as QuizTaskDetails).passMark)}</p>
                 <p className="text-sm">Score to complete</p>
               </div>
             )}
