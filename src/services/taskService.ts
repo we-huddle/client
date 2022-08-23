@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API } from "../constants";
 import {Answer, PartialTask, QuizAnswerPayload, Task} from "../types/Task";
+import {Profile} from "../types/Profile";
 
 export class TaskService {
   static async getTasks(): Promise<Task[]> {
@@ -129,6 +130,22 @@ export class TaskService {
       );
     } catch (e: any) {
       throw new Error(e.message());
+    }
+  }
+
+  static async getCompletedByProfiles(taskId: string): Promise<Profile[]> {
+    try {
+      const response = await axios.get<Profile[]>(
+        `${API.BASE}/tasks/${taskId}/completed/users`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw new Error();
     }
   }
 }

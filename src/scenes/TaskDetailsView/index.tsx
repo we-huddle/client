@@ -1,11 +1,11 @@
 import {Profile} from "../../types/Profile";
 import {useContext, useEffect, useState} from "react";
 import userContext from "../../types/UserContext";
-import {Badge, Button, Dropdown} from "flowbite-react";
+import {Badge, Button, Dropdown, Avatar, Tooltip} from "flowbite-react";
 import {HiCheck, HiChip, HiOutlineArrowLeft, HiPencil} from "react-icons/hi";
 import {Answer, AnswerStatus, DevTaskDetails, QuizTaskDetails, Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import DeletePrompt from "./components/DeletePrompt";
 import EditTaskPrompt from "./components/EditTaskPrompt";
 import AnswerQuizPrompt from "./components/AnswerQuizPrompt";
@@ -21,6 +21,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   const [task ,setTask] = useState<Task | null>(null);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [answers, setAnswers] = useState<Answer[]>([]);
+  const [completedBy, setCompletedBy] = useState<Profile[]>([]);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
   const [isAnswerModalVisible, setIsAnswerModalVisible] = useState<boolean>(false);
@@ -29,6 +30,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
   useEffect(() => {
     fetchTask();
     fetchAnswers();
+    fetchCompletedBy();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,6 +40,10 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
 
   const fetchTask = async () => {
     setTask(await TaskService.getTaskById(id!, isAgentView));
+  }
+
+  const fetchCompletedBy = async () => {
+    setCompletedBy(await TaskService.getCompletedByProfiles(id!));
   }
 
   const fetchAnswers = async () => {
@@ -196,6 +202,20 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
               })}
             </div>
           )}
+          <div className="space-y-8">
+            <h1 className="text-xl font-medium text-gray-900">Completed by {completedBy.length}</h1>
+            <div className="flex flex-wrap gap-6">
+              {completedBy.map((profile) => {
+                return (
+                  <Link to={`/profile/${profile.id}`}>
+                    <Tooltip content={profile.githubUsername}>
+                      <Avatar key={profile.id} img={profile.photo} size="md" rounded />
+                    </Tooltip>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
         </div>
       )}
     </div>
