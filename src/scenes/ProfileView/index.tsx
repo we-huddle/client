@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Card, Progress } from "flowbite-react/lib/esm/components";
 import {
   FaStackOverflow,
@@ -11,6 +11,8 @@ import { MdLocationOn } from "react-icons/md";
 import EditProfilePrompt from "./components/EditProfilePrompt";
 import { UserServices } from "../../services/userServices";
 import { Profile } from "../../types/Profile";
+import BadgeShowMorePrompt from "./components/Badges/BadgeShowMorePrompt";
+import CompletedTasks from "./components/CompletedTasks";
 
 function ProfileView() {
   const { id } = useParams();
@@ -50,6 +52,36 @@ function ProfileView() {
       level: "3",
       img: "https://sefglobal.org/developers/images/3.png",
     },
+    {
+      id: 4,
+      name: "badge 4",
+      level: "4",
+      img: "https://sefglobal.org/developers/images/4.png",
+    },
+    {
+      id: 5,
+      name: "badge 5",
+      level: "5",
+      img: "https://sefglobal.org/developers/images/4.png",
+    },
+    {
+      id: 6,
+      name: "badge 6",
+      level: "6",
+      img: "https://sefglobal.org/developers/images/4.png",
+    },
+    {
+      id: 7,
+      name: "badge 7",
+      level: "7",
+      img: "https://sefglobal.org/developers/images/4.png",
+    },
+        {
+      id: 8,
+      name: "badge 8",
+      level: "8",
+      img: "https://sefglobal.org/developers/images/4.png",
+    },
   ];
 
   const prs = [
@@ -82,14 +114,14 @@ function ProfileView() {
 
   return (
     <div>
-      <div className="px-8 w-full">
+      <div className="px-8 w-full mt-3">
         <EditProfilePrompt
           show={isModalVisible}
           onClose={onPromptClose}
           userProfile={profile!!}
         />
-        <div className="grid grid-cols-5 gap-4">
-          <div className="space-y-4 col-span-2">
+        <div className="grid grid-cols-10 gap-4">
+          <div className="space-y-4 col-span-4">
             <Card>
               <div className="flex">
                 <img
@@ -97,7 +129,7 @@ function ProfileView() {
                   src={profile?.photo}
                   alt=""
                 />
-                <div className="mt-5 ml-3 mr-10">
+                <div className="mt-5 ml-6 mr-10">
                   <p className="text-lg font-semibold">{profile?.name}</p>
                   <p className="text-sm text-gray-400">
                     @{profile?.githubUsername}
@@ -179,58 +211,77 @@ function ProfileView() {
                 </div>
               </div>
             </Card>
-            <Card>
-              <p className="font-semibold">Recent Pull Requests</p>
-
-              {prs.map((pr) => {
-                return (
-                  <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
-                    <p className="w-13">#{pr.prNo}</p>
-                    <p className="truncate">{pr.title}</p>
-                  </div>
-                );
-              })}
-            </Card>
           </div>
-          <div className="col-span-3">
+          <div className="col-span-6">
             <Card>
-              <div className="flex gap-6 mt-5">
-                <div className="bg-gray-50 rounded-lg w-40 h-24 py-3 px-6">
-                  <p className="font-semibold text-4xl text-gray-700">21</p>
-                  <p className="text-gray-600">PR Count</p>
-                </div>
-                <div className="bg-gray-50 rounded-lg h-24 py-3 px-6">
-                  <p className="font-semibold text-4xl text-gray-700">7</p>
-                  <p className="text-gray-600">Tasks Completed</p>
-                </div>
-                <div className="bg-gray-50 rounded-lg w-40 h-24 py-3 px-6">
-                  <p className="font-semibold text-4xl text-gray-700">3</p>
-                  <p className="text-gray-600">Badges Earned</p>
+              <div className="flex flex-col items-center pb-3">
+                <div className="flex gap-6 mt-5 center">
+                  <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg w-40 h-20 py-3 px-6">
+                    <p className="font-semibold text-3xl text-gray-700">3</p>
+                    <p className="text-gray-600">Badges Earned</p>
+                  </div>
+                  <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg h-20 py-3 px-6">
+                    <p className="font-semibold text-3xl text-gray-700">7</p>
+                    <p className="text-gray-600">Tasks Completed</p>
+                  </div>
+                  <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg w-40 h-20 py-3 px-6">
+                    <p className="font-semibold text-3xl text-gray-700">21</p>
+                    <p className="text-gray-600">PR Count</p>
+                  </div>
                 </div>
               </div>
-              <div className="mt-5">
-                <Progress
-                  progress={Math.round((3 / 10) * 100)}
-                  color="green"
-                  size="lg"
-                  label={3 + " badges earned out of " + 10}
-                  labelPosition="outside"
-                />
-                <div className="mt-10">
-                  <div className="grid grid-cols-4 mt-10 justify-items-center">
-                    {badges.map((badge) => {
+              
+                  <div className="mt-3">
+                    <Progress
+                      progress={Math.round((3 / 10) * 100)}
+                      color="green"
+                      size="lg"
+                      label={3 + " badges earned out of " + 10}
+                      labelPosition="outside"
+                    />
+                    <div className="mt-5">
+                      <div className="flex flex-wrap gap-8">
+                        {badges.slice(0,4).map((badge) => {
+                          return (
+                            <div className="mx-auto content-center place-items-center text-center mb-10">
+                              <img className="h-20.5 w-20" src={badge.img} alt="" />
+                              <p className="font-medium text-md text-gray-800">
+                                {badge.name}
+                              </p>
+                            </div>
+                          );
+                        })}
+                        </div>
+                    <BadgeShowMorePrompt>
+                      <div className="flex flex-wrap gap-8">
+                        {badges.slice(6).map((badge) => {
+                          return (
+                            <div className="mx-auto content-center place-items-center text-center mb-10">
+                              <img className="h-20.5 w-20" src={badge.img} alt="" />
+                              <p className="font-medium text-md text-gray-800">
+                                {badge.name}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </BadgeShowMorePrompt>                    
+                    </div>
+                    </div>
+                
+                <p className="font-semibold">Recent Completed Tasks</p>
+                <CompletedTasks/> 
+              
+                    <p className="font-semibold">Recent Pull Requests</p>
+                    {prs.slice(0,3).map((pr) => {
                       return (
-                        <div className="mx-auto content-center place-items-center text-center mb-10">
-                          <img className="h-20.5 w-20" src={badge.img} alt="" />
-                          <p className="font-medium text-md text-gray-800">
-                            {badge.name}
-                          </p>
+                        <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
+                          <p className="w-13">#{pr.prNo}</p>
+                          <p className="truncate">{pr.title}</p>
                         </div>
                       );
                     })}
-                  </div>
-                </div>
-              </div>
+              
             </Card>
           </div>
         </div>
