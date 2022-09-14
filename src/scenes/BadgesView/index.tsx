@@ -29,7 +29,6 @@ function BadgesView ({ isAgentView }: BadgesViewProps) {
 
   const onCreateModalClose = () => {
     setIsCreateModalVisible(false);
-    fetchBadges();
   }
 
   const fetchBadges = async () => {
@@ -100,7 +99,7 @@ function BadgesView ({ isAgentView }: BadgesViewProps) {
           {badges.map((badge) => {
             return (
               <Card key={badge.id}>
-                <div className="flex gap-4 h-28">
+                <div className="flex gap-4 h-28 items-center">
                   <img className="h-24 w-24" src={badge.photo} alt="" />
                   <div>
                     <p className="text-md font-semibold">{badge.title}</p>

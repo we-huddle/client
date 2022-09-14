@@ -50,7 +50,7 @@ function AddIssuesPrompt({ show, onClose, sprint, alreadyAddedIssueIds }: AddIss
 
   const handlePickIssue = (issueId: string) => {
     setIssueIdsToPickFrom(issueIdsToPickFrom.filter((unpickedIssueId) => unpickedIssueId !== issueId));
-    setPickedIssueIds([...pickedIssueIds, issueId])
+    setPickedIssueIds([...pickedIssueIds, issueId]);
   }
 
   const handleRemoveFromPicked = (issueId: string) => {
