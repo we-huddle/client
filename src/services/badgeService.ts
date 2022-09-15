@@ -1,12 +1,28 @@
 import axios from "axios";
 import { API } from "../constants";
-import {BadgeDto, PartialBadge} from "../types/HuddlerBadge";
+import {BadgeDto, BadgeWithDependencies, PartialBadge} from "../types/HuddlerBadge";
 
 export class BadgeService {
   static async getBadges(): Promise<BadgeDto[]> {
     try {
       const response = await axios.get<BadgeDto[]>(
         `${API.BASE}/badges`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+  static async getBadgeById(id: string): Promise<BadgeWithDependencies> {
+    try {
+      const response = await axios.get<BadgeWithDependencies>(
+        `${API.BASE}/badges/${id}`,
         {
           headers: {
             Authorization: `Bearer ${API.TOKEN}`

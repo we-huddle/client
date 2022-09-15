@@ -6,6 +6,7 @@ import { Profile } from "../../types/Profile";
 import CreateNewBadgePrompt from "./components/CreateNewBadgePrompt";
 import {BadgeDto} from "../../types/HuddlerBadge";
 import {BadgeService} from "../../services/badgeService";
+import {Link} from "react-router-dom";
 
 interface BadgesViewProps {
   isAgentView: boolean;
@@ -83,7 +84,6 @@ function BadgesView ({ isAgentView }: BadgesViewProps) {
     setBadges(sortedBadgeList);
     setSelectedSortingOption(SortingOption.LATEST)
   }
-
 
   const sortByDefault = () => {
     fetchBadges();
@@ -172,22 +172,24 @@ function BadgesView ({ isAgentView }: BadgesViewProps) {
         <div className="grid grid-cols-3 gap-6 mb-10">
           {badges.map((badge) => {
             return (
-              <Card key={badge.id}>
-                <div className="flex gap-4 h-28 items-center">
-                  <img className="h-24 w-24" src={badge.photo} alt="" />
-                  <div className="space-y-2">
-                    <p className="text-md font-semibold">{badge.title}</p>
-                    <p className="line-clamp-2 text-sm text-gray-500">{badge.description}</p>
-                    {!isAgentView && completedBadgeIds.includes(badge.id) && (
-                      <Badge color="success" icon={HiCheck}>
-                        <div className="px-1">
-                          Completed
-                        </div>
-                      </Badge>
-                    )}
+              <Link key={badge.id} to={`${window.location.pathname}/${badge.id}`}>
+                <Card>
+                  <div className="flex gap-4 h-28 items-center">
+                    <img className="h-24 w-24" src={badge.photo} alt="" />
+                    <div className="space-y-2">
+                      <p className="text-md font-semibold">{badge.title}</p>
+                      <p className="line-clamp-2 text-sm text-gray-500">{badge.description}</p>
+                      {!isAgentView && completedBadgeIds.includes(badge.id) && (
+                        <Badge color="success" icon={HiCheck}>
+                          <div className="px-1">
+                            Completed
+                          </div>
+                        </Badge>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             );
           })}
         </div>

@@ -20,7 +20,7 @@ export interface BadgeWithDependencies {
   description: string,
   photo: string,
   depBadges: BadgeDto[],
-  depTasks: Task,
+  depTasks: Task[],
   createdAt: number,
   updatedAt: number,
 }
