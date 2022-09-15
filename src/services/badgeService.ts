@@ -35,6 +35,22 @@ export class BadgeService {
     }
   }
 
+  static async getCompletedBadges(): Promise<BadgeDto[]> {
+    try {
+      const response = await axios.get<BadgeDto[]>(
+        `${API.BASE}/badges/completed`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
   static async uploadBadgeImage(data: FormData): Promise<string> {
     try {
       const response = await axios.post<string>(
