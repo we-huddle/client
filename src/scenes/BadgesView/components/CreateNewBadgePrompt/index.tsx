@@ -4,7 +4,7 @@ import {BadgeService} from "../../../../services/badgeService";
 import {BadgeDto, PartialBadge} from "../../../../types/HuddlerBadge";
 import {TaskService} from "../../../../services/taskService";
 import {Task} from "../../../../types/Task";
-import {HiCheck, HiPlus, HiSearch, HiXCircle} from "react-icons/hi";
+import {HiPlus, HiSearch, HiXCircle} from "react-icons/hi";
 
 interface CreateNewBadgePromptProps {
   show: boolean,

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {Profile} from "../../types/Profile";
 import {useContext, useEffect, useState} from "react";
 import userContext from "../../types/UserContext";
