@@ -1,6 +1,4 @@
 import {Modal, Table} from "flowbite-react";
-import {Task} from "../../../../types/Task";
-import { TaskService } from "../../../../services/taskService";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Profile } from "../../../../types/Profile";
@@ -24,7 +22,7 @@ function PRModalPrompt({ show, onClose}: PRModalPromptProps) {
     useEffect(() => {
         fetchPullRequests();
         fetchProfile();
-      }, []);
+      },);
     
 
 
@@ -68,21 +66,21 @@ function PRModalPrompt({ show, onClose}: PRModalPromptProps) {
                         <Table.Row className="bg-white dark:border-blue-700 dark:bg-gray-800">
                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                             <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
-                                <a href={`${pullRequest.url}`} target="_blank"> 
+                                <a href={`${pullRequest.url}`}> 
                                     #{pullRequest.number} 
                                 </a>
                             </div>
                         </Table.Cell>
                         <Table.Cell className="whitespace-nowrap">
                             <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
-                                <a href={`${pullRequest.url}`} target="_blank"> 
+                                <a href={`${pullRequest.url}`}> 
                                     {pullRequest.title}
                                 </a>
                             </div>
                         </Table.Cell>
                         <Table.Cell  className="whitespace-nowrap">
                             <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
-                                <a href={`${pullRequest.repo_url}`} target="_blank"> 
+                                <a href={`${pullRequest.repo_url}`}> 
                                     {pullRequest.repo_name}
                                 </a>
                             </div>

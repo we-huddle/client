@@ -12,12 +12,12 @@ interface CompletedTaskProps {
 
 function CompletedTaskCard({task}: CompletedTaskProps){
     const [answers, setAnswers] = useState<Answer[]>([]);
-    const [isCompleted, setIsCompleted] = useState<boolean>(false);
+    const [, setIsCompleted] = useState<boolean>(false);
     const intlDateFormatter = Intl.DateTimeFormat('en', { hour: "numeric", minute: "numeric", weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 
     useEffect(() => {
         fetchAnswers();
-      }, []);
+      },);
 
       const fetchAnswers = async () => {
         const answerList = await TaskService.getAnswers(task.id);

@@ -56,7 +56,7 @@ function BadgesModalPrompt({ show, onClose}: BadgesModalPromptProps) {
 
   useEffect(() => {
       fetchProfile();
-    }, []);
+    }, );
 
   const fetchProfile = async () => {
       setProfile(await UserServices.getProfileById(id!));

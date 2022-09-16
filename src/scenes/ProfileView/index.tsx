@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 import { Card, Progress } from "flowbite-react/lib/esm/components";
 import {
   FaStackOverflow,
@@ -30,14 +30,13 @@ function ProfileView() {
   const [isTaskModalVisible, setIsTaskModalVisible] = useState<boolean>(false);
   const [isPRModalVisible, setIsPRModalVisible] = useState<boolean>(false);
   const [task, setTask] = useState<Task[]>([]);
-  const [badge, setBadge] = useState<Badge[]>([]);
   const [pullRequest, setPullRequest] = useState<PullRequest[]>([]);
   
   useEffect(() => {
     fetchProfile();
     fetchTasks();
     fetchPullRequests();
-  }, []);
+  },);
 
   const fetchProfile = async () => {
     setProfile(await UserServices.getProfileById(id!));

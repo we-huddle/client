@@ -1,5 +1,5 @@
 import {Task} from "../../../../types/Task";
-import { Badge, Button, Card, Timeline } from "flowbite-react";
+import { Badge, Button, Timeline } from "flowbite-react";
 import { HiArrowNarrowRight, HiCalendar, HiChip, HiPencil } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import {Answer, AnswerStatus,} from "../../../../types/Task"
@@ -12,12 +12,12 @@ interface CompletedTaskProps {
 
 function CompletedTaskList({task}: CompletedTaskProps){
     const [answers, setAnswers] = useState<Answer[]>([]);
-    const [isCompleted, setIsCompleted] = useState<boolean>(false);
+    const [, setIsCompleted] = useState<boolean>(false);
     const intlDateFormatter = Intl.DateTimeFormat('en', { hour: "numeric", minute: "numeric", weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 
     useEffect(() => {
         fetchAnswers();
-      }, []);
+      },);
 
       const fetchAnswers = async () => {
         const answerList = await TaskService.getAnswers(task.id);

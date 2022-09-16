@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Profile } from "../../../../types/Profile";
 import { UserServices } from "../../../../services/userServices";
-import CompletedTaskCard from "./CompletedTasksCard";
 import CompletedTaskList from "./CompletedTasksList";
 
 interface TaskModalPromptProps {
@@ -22,7 +21,7 @@ function TasksModalPrompt({ show, onClose}: TaskModalPromptProps) {
     useEffect(() => {
         fetchTasks();
         fetchProfile();
-      }, []);
+      },);
     
     const fetchTasks = async () => {
     const taskList = await TaskService.getUserCompletedTasks(id!);
