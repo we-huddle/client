@@ -50,9 +50,7 @@ function Layout(props: LayoutProps) {
   };
 
   const onNotifBellClick = () => {
-    {
-      isNotifVisible ? setIsNotifVisible(false) : setIsNotifVisible(true);
-    }
+    isNotifVisible ? setIsNotifVisible(false) : setIsNotifVisible(true);
   };
 
   const dismissNotif = async (id: string) => {
@@ -208,7 +206,7 @@ function Layout(props: LayoutProps) {
                               return (
                                 <div className="flex mb-2">
                                   <div className="flex text-gray-700 w-full hover:underline hover:text-blue-600">
-                                    {notif.type == "TASK" ? (
+                                    {notif.type === "TASK" ? (
                                       <Link
                                         className="mt-2 w-11/12 hover:underline hover:text-blue-600"
                                         to={"/tasks/" + notif.linkId}
