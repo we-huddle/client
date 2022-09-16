@@ -11,17 +11,32 @@ import { MdLocationOn } from "react-icons/md";
 import EditProfilePrompt from "./components/EditProfilePrompt";
 import { UserServices } from "../../services/userServices";
 import { Profile } from "../../types/Profile";
-import BadgeShowMorePrompt from "./components/Badges/BadgeShowMorePrompt";
-import CompletedTasks from "./components/CompletedTasks";
+import { Task } from "../../types/Task";
+import { TaskService } from "../../services/taskService";
+import { HiChevronRight } from "react-icons/hi";
+import { PullRequest } from "../../types/PullRequest";
+import { PRService } from "../../services/prService";
+import BadgesModalPrompt from "./components/Badges/BadgesModalPrompt";
+import { Badge } from "../../types/Badge";
+import TasksModalPrompt from "./components/Tasks/TasksModalPrompt";
+import CompletedTaskCard from "./components/Tasks/CompletedTasksCard";
+import PRModalPrompt from "./components/PullRequests/PRModalPrompt";
 
 function ProfileView() {
   const { id } = useParams();
   const [profile, setProfile] = useState<Profile>();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
+  const [isBadgeModalVisible, setIsBadgeModalVisible] = useState<boolean>(false);
+  const [isTaskModalVisible, setIsTaskModalVisible] = useState<boolean>(false);
+  const [isPRModalVisible, setIsPRModalVisible] = useState<boolean>(false);
+  const [task, setTask] = useState<Task[]>([]);
+  const [badge, setBadge] = useState<Badge[]>([]);
+  const [pullRequest, setPullRequest] = useState<PullRequest[]>([]);
+  
   useEffect(() => {
     fetchProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchTasks();
+    fetchPullRequests();
   }, []);
 
   const fetchProfile = async () => {
@@ -32,6 +47,28 @@ function ProfileView() {
     setIsModalVisible(false);
     fetchProfile();
   };
+
+  const fetchTasks = async () => {
+      const taskList = await TaskService.getUserCompletedTasks(id!);
+      setTask(taskList);
+    }
+
+  const fetchPullRequests = async () => {
+    const prList = await PRService.getUserPR(id!);
+    setPullRequest(prList);
+  }
+
+  const onBadgeModalClose = () => {
+    setIsBadgeModalVisible(false)
+  }
+
+  const onTaskModalClose = () => {
+    setIsTaskModalVisible(false)
+  }
+
+  const onPRModalClose = () => {
+    setIsPRModalVisible(false)
+  }
 
   const badges = [
     {
@@ -57,58 +94,6 @@ function ProfileView() {
       name: "badge 4",
       level: "4",
       img: "https://sefglobal.org/developers/images/4.png",
-    },
-    {
-      id: 5,
-      name: "badge 5",
-      level: "5",
-      img: "https://sefglobal.org/developers/images/4.png",
-    },
-    {
-      id: 6,
-      name: "badge 6",
-      level: "6",
-      img: "https://sefglobal.org/developers/images/4.png",
-    },
-    {
-      id: 7,
-      name: "badge 7",
-      level: "7",
-      img: "https://sefglobal.org/developers/images/4.png",
-    },
-        {
-      id: 8,
-      name: "badge 8",
-      level: "8",
-      img: "https://sefglobal.org/developers/images/4.png",
-    },
-  ];
-
-  const prs = [
-    {
-      prNo: 10,
-      title:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    },
-    {
-      prNo: 12,
-      title:
-        "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    },
-    {
-      prNo: 19,
-      title:
-        "Sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
-    },
-    {
-      prNo: 21,
-      title:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    },
-    {
-      prNo: 34,
-      title:
-        "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
   ];
 
@@ -221,66 +206,119 @@ function ProfileView() {
                     <p className="text-gray-600">Badges Earned</p>
                   </div>
                   <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg h-20 py-3 px-6">
-                    <p className="font-semibold text-3xl text-gray-700">7</p>
+                    <p className="font-semibold text-3xl text-gray-700">{task.length}</p>
                     <p className="text-gray-600">Tasks Completed</p>
                   </div>
                   <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg w-40 h-20 py-3 px-6">
-                    <p className="font-semibold text-3xl text-gray-700">21</p>
+                    <p className="font-semibold text-3xl text-gray-700">{pullRequest.length}</p>
                     <p className="text-gray-600">PR Count</p>
                   </div>
                 </div>
               </div>
               
-                  <div className="mt-3">
-                    <Progress
-                      progress={Math.round((3 / 10) * 100)}
-                      color="green"
-                      size="lg"
-                      label={3 + " badges earned out of " + 10}
-                      labelPosition="outside"
-                    />
-                    <div className="mt-5">
-                      <div className="flex flex-wrap gap-8">
-                        {badges.slice(0,4).map((badge) => {
-                          return (
-                            <div className="mx-auto content-center place-items-center text-center mb-10">
-                              <img className="h-20.5 w-20" src={badge.img} alt="" />
-                              <p className="font-medium text-md text-gray-800">
-                                {badge.name}
-                              </p>
-                            </div>
-                          );
-                        })}
-                        </div>
-                    <BadgeShowMorePrompt>
-                      <div className="flex flex-wrap gap-8">
-                        {badges.slice(6).map((badge) => {
-                          return (
-                            <div className="mx-auto content-center place-items-center text-center mb-10">
-                              <img className="h-20.5 w-20" src={badge.img} alt="" />
-                              <p className="font-medium text-md text-gray-800">
-                                {badge.name}
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </BadgeShowMorePrompt>                    
-                    </div>
-                    </div>
-                
-                <p className="font-semibold">Recent Completed Tasks</p>
-                <CompletedTasks/> 
-              
-                    <p className="font-semibold">Recent Pull Requests</p>
-                    {prs.slice(0,3).map((pr) => {
+              <div className="mt-3">
+                <Progress
+                  progress={Math.round((3 / 10) * 100)}
+                  color="green"
+                  size="lg"
+                  label={3 + " badges earned out of " + 10}
+                  labelPosition="outside"
+                />
+                <div className="mt-5">
+                  <div className="flex flex-wrap gap-8">
+                    {badges.slice(0,4).map((badge) => {
                       return (
-                        <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
-                          <p className="w-13">#{pr.prNo}</p>
-                          <p className="truncate">{pr.title}</p>
+                        <div className="mx-auto content-center place-items-center text-center mb-10">
+                          <img className="h-20.5 w-20" src={badge.img} alt="" />
+                          <p className="font-medium text-md text-gray-800">
+                            {badge.name}
+                          </p>
                         </div>
                       );
                     })}
+                  </div>
+                  <div className="flex justify-end mt-5">
+                    <button onClick={() => setIsBadgeModalVisible(true)}>
+                        <div className="flex">
+                          <p className="text-sm font-semibold">Show All Badges</p> 
+                          <HiChevronRight className="ml-2 mt-0.5" />
+                        </div>
+                    </button> 
+                  </div>
+                  <BadgesModalPrompt show={isBadgeModalVisible} onClose={onBadgeModalClose} />
+                </div>
+              </div>
+
+              <hr className="mt-2"/>
+                
+              <p className="font-semibold">Recent Completed Tasks</p>
+              {task.length === 0 && (
+              <div className="flex justify-center">
+                <h5 className="text-sm tracking-tight text-gray-900 dark:text-white">
+                  - No Completed Tasks - 
+                </h5>
+              </div>
+              )}
+              <div className="flex flex-wrap gap-4">
+              {task.slice(0,2).map((task) => {
+                return (
+                  <CompletedTaskCard
+                    key={task.id}
+                    task={task}
+                  />
+                );
+              })}
+              </div>
+              
+              <TasksModalPrompt show={isTaskModalVisible} onClose={onTaskModalClose}/>
+              {task.length !== 0 && (
+                <div className="flex justify-end mt-5">
+                  <button onClick={() => setIsTaskModalVisible(true)}>
+                      <div className="flex text-m">
+                          <p className="text-sm font-semibold">Show All Tasks</p>
+                          <HiChevronRight className="ml-2 mt-0.5" />
+                      </div>
+                  </button>
+                </div>
+              )}
+                
+
+              <hr className="mt-2"/>
+
+
+
+              <p className="font-semibold">Recent Pull Requests</p>
+              {pullRequest.length === 0 && (
+                <div className="flex justify-center">
+                  <h5 className="text-sm tracking-tight text-gray-900 dark:text-white">
+                    - No Pull Requests - 
+                  </h5>
+                </div>
+              )}
+                {pullRequest.slice(0,3).map((pullRequest) => {
+                  return (
+                    <div>
+                    <a href={`${pullRequest.url}`} target="_blank"> 
+                      <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
+                        <p className="w-13">#{pullRequest.number}</p>
+                        <p className="truncate">{pullRequest.title}</p>
+                      </div>
+                    </a>
+                    <hr/>
+                    </div>
+                  );
+                })}
+              <PRModalPrompt show={isPRModalVisible} onClose={onPRModalClose}/>
+              {pullRequest.length !== 0 && (
+                <div className="flex justify-end mt-5">
+                  <button onClick={() => setIsPRModalVisible(true)}>
+                      <div className="flex text-m">
+                          <p className="text-sm font-semibold">Show All Pull Requests</p>
+                          <HiChevronRight className="ml-2 mt-0.5" />
+                      </div>
+                  </button>
+                </div>
+              )}
               
             </Card>
           </div>
@@ -291,3 +329,7 @@ function ProfileView() {
 }
 
 export default ProfileView;
+function fetchTasks() {
+  throw new Error("Function not implemented.");
+}
+
