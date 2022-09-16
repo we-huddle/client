@@ -76,6 +76,7 @@ function EditSprintPrompt({ show, onClose, sprint}: EditSprintPromptProps) {
                   id="deadline"
                   name="deadline"
                   type="date"
+                  // defaultValue="2022-08-05"
                   defaultValue={sprint.deadline}
                   required
                 />
