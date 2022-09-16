@@ -38,7 +38,6 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
       details: details,
       type: selectedTaskType,
     }
-    console.log(partialTask);
     await TaskService.createTask(partialTask);
     setIsProcessing(false);
     onClose();

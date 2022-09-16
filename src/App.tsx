@@ -14,6 +14,7 @@ import ProfileView from "./scenes/ProfileView";
 import TaskDetailsView from "./scenes/TaskDetailsView";
 import BadgesView from "./scenes/BadgesView";
 import LeaderboardView from "./scenes/LeaderboardView";
+import BadgeDetailsView from "./scenes/BadgeDetailsView";
 
 
 function App() {
@@ -83,6 +84,8 @@ function App() {
                 path={"/agent/badges"}
                 element={<BadgesView isAgentView={true} />}
               />
+              <Route path={"/badges/:id"} element={<BadgeDetailsView  isAgentView={false} />}/>
+              <Route path={"/agent/badges/:id"} element={<BadgeDetailsView  isAgentView={true} />}/>
             </Routes>
           </Layout>
         </BrowserRouter>
