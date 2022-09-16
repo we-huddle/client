@@ -17,7 +17,6 @@ import { HiChevronRight } from "react-icons/hi";
 import { PullRequest } from "../../types/PullRequest";
 import { PRService } from "../../services/prService";
 import BadgesModalPrompt from "./components/Badges/BadgesModalPrompt";
-import { Badge } from "../../types/Badge";
 import TasksModalPrompt from "./components/Tasks/TasksModalPrompt";
 import CompletedTaskCard from "./components/Tasks/CompletedTasksCard";
 import PRModalPrompt from "./components/PullRequests/PRModalPrompt";
@@ -297,7 +296,7 @@ function ProfileView() {
                 {pullRequest.slice(0,3).map((pullRequest) => {
                   return (
                     <div>
-                    <a href={`${pullRequest.url}`} target="_blank"> 
+                    <a href={`${pullRequest.url}`}> 
                       <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
                         <p className="w-13">#{pullRequest.number}</p>
                         <p className="truncate">{pullRequest.title}</p>
@@ -328,7 +327,5 @@ function ProfileView() {
 }
 
 export default ProfileView;
-function fetchTasks() {
-  throw new Error("Function not implemented.");
-}
+
 
