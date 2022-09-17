@@ -21,14 +21,15 @@ export class NotificationService {
 
   static async dismissNotification(id: string) {
     try {
-        await axios.put(
-            `${API.BASE}/notifications/${id}`, id,
-            {
-              headers: {
-               Authorization: `Bearer ${API.TOKEN}`
-              },
-            }
-        );
+      await axios.put(
+        `${API.BASE}/notifications/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
+        }
+      );
     } catch (e: any) {
       throw new Error(e.response.data);
     }
@@ -36,11 +37,15 @@ export class NotificationService {
 
   static async dismissAllNotifications() {
     try {
-      await axios.put(`${API.BASE}/notifications`, 10,{
-        headers: {
-          Authorization: `Bearer ${API.TOKEN}`
-        },
-      });
+      await axios.put(
+        `${API.BASE}/notifications`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
+        }
+      );
     } catch (e) {
       throw new Error();
     }
