@@ -220,6 +220,7 @@ function EditTaskPrompt({ show, onClose, task}: EditTaskPromptProps) {
                                       </div>
                                       <div className="flex text-gray-500">
                                         <HiOutlinePencil className="mr-3" onClick={() => {
+                                          // eslint-disable-next-line no-lone-blocks
                                           {editQuestionPrompt? (
                                               (document.getElementById("question-edit-form")! as HTMLFormElement).reset()
                                           ) : (
