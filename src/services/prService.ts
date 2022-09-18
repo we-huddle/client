@@ -6,7 +6,7 @@ export class PRService{
     static async getUserPR(profileId: string): Promise<PullRequest[]> {
         try {
           const response = await axios.get<PullRequest[]>(
-            `${API.BASE}/pullRequests/${profileId}`,
+            `${API.BASE}/pullRequests/merged/byUser/${profileId}`,
             {
               headers: {
                 Authorization: `Bearer ${API.TOKEN}`
