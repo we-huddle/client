@@ -218,20 +218,23 @@ function EditTaskPrompt({ show, onClose, task}: EditTaskPromptProps) {
                                           <p className="text-sm text-green-500">Correct answer: {question.correctAnswerKey}</p>
                                           <p className="text-sm text-blue-500">Answer weight: {question.answerWeightKey}</p>
                                       </div>
-                                      <div className="flex text-gray-500">
-                                        <HiOutlinePencil className="mr-3" onClick={() => {
-                                          // eslint-disable-next-line no-lone-blocks
-                                          {editQuestionPrompt? (
-                                              (document.getElementById("question-edit-form")! as HTMLFormElement).reset()
-                                          ) : (
-                                              (document.getElementById("question-form")! as HTMLFormElement).reset()
-                                          )}
-                                          setEditQuestionPrompt(questions[question.number - 1]);
+                                    {!editQuestionPrompt && (
+                                        <div className="flex text-gray-500">
+                                          <HiOutlinePencil className="mr-3" onClick={() => {
+                                            // eslint-disable-next-line no-lone-blocks
+                                            {editQuestionPrompt? (
+                                                (document.getElementById("question-edit-form")! as HTMLFormElement).reset()
+                                            ) : (
+                                                (document.getElementById("question-form")! as HTMLFormElement).reset()
+                                            )}
+                                            setEditQuestionPrompt(questions[question.number - 1]);
+                                            setTotalMark(totalMark - parseInt(question.answerWeightKey!.toString()));
+                                          }}/>
+                                        <HiX onClick={() => {removeQuestion(question.number);
                                           setTotalMark(totalMark - parseInt(question.answerWeightKey!.toString()));
                                         }}/>
-                                        <HiX onClick={() => {removeQuestion(question.number);
-                                          setTotalMark(totalMark - parseInt(question.answerWeightKey!.toString()));                                        }}/>
                                       </div>
+                                    )}
                                   </div>
                               );
                             })}
@@ -372,7 +375,10 @@ function EditTaskPrompt({ show, onClose, task}: EditTaskPromptProps) {
                             </Select>
                           </div>
                           <div className="flex justify-between text-right">
-                            <Button disabled={isProcessing} onClick={() => setEditQuestionPrompt(undefined)}>
+                            <Button disabled={isProcessing} onClick={() => {
+                              setEditQuestionPrompt(undefined);
+                              setTotalMark(totalMark + parseInt(editQuestionPrompt?.answerWeightKey));
+                            }}>
                               <HiBackspace />
                             </Button>
                             <Button type="submit" disabled={isProcessing}>
