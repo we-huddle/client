@@ -9,3 +9,4 @@ export interface PullRequest {
     repo_url:string,
     openedAt:number,
   }
+  
