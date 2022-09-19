@@ -68,6 +68,21 @@ export class SprintsAndIssuesService {
     }
   }
 
+  static async deleteSprint(sprintId: string) {
+    try {
+      await axios.delete(
+        `${API.BASE}/sprints/${sprintId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
   static async getIssuesOfSprint(sprintId: string): Promise<Issue[]> {
     try {
       const response = await axios.get<Issue[]>(
