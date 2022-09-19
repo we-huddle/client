@@ -171,8 +171,8 @@ function Layout(props: LayoutProps) {
             <div className="sticky left-0 top-0">
               <Navbar className="bg-gray-600">
                 <div />
-                <div className="flex justify-end items-center space-x-5">
-                  <div className="relative">
+                <div className="flex justify-end items-center">
+                  <div className="relative mr-5">
                     <div>
                       <MdNotifications
                         className="text-gray-600 cursor-pointer"
