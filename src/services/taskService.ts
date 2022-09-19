@@ -148,4 +148,22 @@ export class TaskService {
       throw new Error();
     }
   }
+
+  static async getUserCompletedTasks(profileId: string): Promise<Task[]> {
+    try {
+      const response = await axios.get<Task[]>(
+        `${API.BASE}/tasks/completedByUser/${profileId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+
 }
