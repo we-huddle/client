@@ -10,6 +10,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Sprint} from "../../types/Sprint";
 import IssueRow from "./components/IssueRow";
 import AddIssuesPrompt from "./components/AddIssuesPrompt";
+import EditSprintPrompt from "./components/EditSprintPrompt";
 
 interface SprintDetailsViewProps {
   isAgentView: boolean,
@@ -31,12 +32,17 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
   const [selectedFilterOption, setSelectedFilterOption] = useState<FilterOption>(FilterOption.DEFAULT);
   const [progress, setProgress] = useState<number>(0);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
   const intlDateFormatter = Intl.DateTimeFormat('en', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 
   useEffect(() => {
     fetchSprint();
     fetchIssues();
   }, []);
+
+  const onEditModalClose = () => {
+    setIsEditModalVisible(false)
+  }
 
   const fetchSprint = async () => {
     setSprint(await SprintsAndIssuesService.getSprintById(id!));
@@ -85,7 +91,8 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
               alreadyAddedIssueIds={issues.current.map((issue) => issue.id)}
             />
           )}
-          <div>
+          <EditSprintPrompt show={isEditModalVisible} onClose={onEditModalClose} sprint={sprint}/>
+          <div className="flex justify-between items-center">
             <Button
               color="gray"
               size="md"
@@ -94,6 +101,20 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
             >
               <HiOutlineArrowLeft />
             </Button>
+            {isAgentView && profile?.role === Profile.Role.HuddleAgent && (
+              <Button color="gray">
+                <div className="text-left">
+                  <Dropdown
+                    label=""
+                    inline={true}
+                  >
+                    <Dropdown.Item onClick={() => setIsEditModalVisible(true)}>
+                      Edit sprint
+                    </Dropdown.Item>
+                  </Dropdown>
+                </div>
+              </Button>
+            )}
           </div>
           <div className="space-y-2">
             <h1 className="text-3xl font-medium text-gray-900">#{sprint.number} {sprint?.title}</h1>
