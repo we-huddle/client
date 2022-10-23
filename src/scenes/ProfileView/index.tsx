@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {useParams } from "react-router-dom";
+import {useLocation, useParams } from "react-router-dom";
 import { Card, Progress } from "flowbite-react/lib/esm/components";
 import {
   FaStackOverflow,
@@ -30,6 +30,7 @@ function ProfileView() {
   const [isPRModalVisible, setIsPRModalVisible] = useState<boolean>(false);
   const [task, setTask] = useState<Task[]>([]);
   const [pullRequest, setPullRequest] = useState<PullRequest[]>([]);
+  const location = useLocation();
   
   useEffect(() => {
     fetchProfile();
@@ -117,14 +118,14 @@ function ProfileView() {
                   <p className="text-sm text-gray-400">
                     @{profile?.githubUsername}
                   </p>
-                  {profile?.id === id && (
+                  {location.pathname !== `/profile/user/${profile?.id}` && 
                   <button
                     className="inline-flex items-center rounded-md bg-blue-700 py-2 px-3 mt-2 text-center text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     onClick={() => setIsModalVisible(true)}
                   >
                     Edit Profile
                   </button>
-                  )}
+                  }
                 </div>
               </div>
               <div>
