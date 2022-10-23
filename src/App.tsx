@@ -57,6 +57,7 @@ function App() {
                 path={"/agent/sprints/:id"}
                 element={<SprintDetailsView isAgentView={true} />}
               />
+              <Route path={"/profile/user/:id"} element={<ProfileView />} />
               <Route path={"/profile/:id"} element={<ProfileView />} />
               <Route path={"/profile/user/:id"} element={<ProfileView />} />
               <Route
