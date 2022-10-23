@@ -36,6 +36,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
 
   const onEditModalClose = () => {
     setIsEditModalVisible(false)
+    fetchTask();
   }
 
   const fetchTask = async () => {
@@ -82,7 +83,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
               <Button color="gray">
                 <div className="text-left">
                   <Dropdown
-                    label=""
+                    label="Options"
                     inline={true}
                   >
                     <Dropdown.Item onClick={() => setIsEditModalVisible(true)}>
@@ -197,6 +198,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
                       <p className="text-sm text-gray-900">d. {question.options.d}</p>
                     </div>
                     <p className="text-sm text-green-500">Correct answer: {question.correctAnswerKey}</p>
+                    <p className="text-sm text-blue-500">Answer weight: {question.answerWeightKey}</p>
                   </div>
                 )
               })}

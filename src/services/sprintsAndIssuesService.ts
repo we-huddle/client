@@ -52,6 +52,37 @@ export class SprintsAndIssuesService {
     }
   }
 
+  static async editSprint(sprintId: string, partialSprint: PartialSprint) {
+    try {
+      await axios.put(
+          `${API.BASE}/sprints/${sprintId}`,
+          partialSprint,
+          {
+            headers: {
+              Authorization: `Bearer ${API.TOKEN}`
+            }
+          }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+  static async deleteSprint(sprintId: string) {
+    try {
+      await axios.delete(
+        `${API.BASE}/sprints/${sprintId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
   static async getIssuesOfSprint(sprintId: string): Promise<Issue[]> {
     try {
       const response = await axios.get<Issue[]>(

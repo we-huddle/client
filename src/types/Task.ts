@@ -20,7 +20,9 @@ export interface DevTaskDetails {
 }
 
 export interface QuizTaskDetails {
+  pointsToPass: number,
   passMark: number,
+  questionPoints: number,
   questions: Question[],
 }
 
@@ -28,6 +30,7 @@ export interface Question {
   number: number,
   question: string,
   correctAnswerKey: string,
+  answerWeightKey: string,
   options: {
     a: string,
     b: string,

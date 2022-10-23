@@ -13,6 +13,7 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
   const [selectedTaskType, setSelectedTaskType] = useState<Task.Type>(Task.Type.DEV);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [totalMark, setTotalMark] = useState(0);
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsProcessing(true);
@@ -27,7 +28,9 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
         break;
       case Task.Type.QUIZ:
         details  = {
-          passMark: (parseInt(data.get("noOfQuestionsToPass")!.toString())/questions.length)*100,
+          pointsToPass: (parseInt(data.get("pointsToPass")!.toString())),
+          passMark: (parseInt(data.get("pointsToPass")!.toString())/totalMark)*100,
+          questionPoints: totalMark,
           questions: questions,
         };
         break;
@@ -51,6 +54,7 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
       number: questions.length + 1,
       question: data.get("question")!.toString(),
       correctAnswerKey: data.get("correctAnswer")!.toString(),
+      answerWeightKey: data.get("answerWeight")!.toString(),
       options: {
         a: data.get("a")!.toString(),
         b: data.get("b")!.toString(),
@@ -59,6 +63,7 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
       }
     }
     setQuestions([...questions, question]);
+    setTotalMark(totalMark + parseInt(data.get("answerWeight")!.toString()));
     (document.getElementById("question-form")! as HTMLFormElement).reset();
     setIsProcessing(false);
   }
@@ -158,16 +163,21 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
                   <div className="space-y-4">
                     <div className="mb-2 block">
                       <Label
-                        htmlFor="noOfQuestionsToPass"
-                        value="Number of questions to pass the quiz"
+                        htmlFor="pointsToPass"
+                        value="Total points needed to pass the quiz - "
                       />
+                      <Label
+                        htmlFor="totalMarks"
+                        value="Out of marks : "
+                      />
+                      {totalMark}
                     </div>
                     <TextInput
-                      id="noOfQuestionsToPass"
-                      name="noOfQuestionsToPass"
+                      id="pointsToPass"
+                      name="pointsToPass"
                       type="number"
                       min={1}
-                      max={questions.length}
+                      max={totalMark}
                       required
                     />
                   </div>
@@ -195,6 +205,7 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
                                   <p className="text-sm text-gray-900">d. {question.options.d}</p>
                                 </div>
                                 <p className="text-sm text-green-500">Correct answer: {question.correctAnswerKey}</p>
+                                <p className="text-sm text-blue-500">Answer weight: {question.answerWeightKey}</p>
                               </div>
                               <div className="text-gray-500">
                                 <HiX onClick={() => removeQuestion(question.number)}/>
@@ -313,6 +324,21 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
                       <option value="b">b</option>
                       <option value="c">c</option>
                       <option value="d">d</option>
+                    </Select>
+                  </div>
+                  <div className="space-y-4">
+                    <Label
+                        htmlFor="answerWeightPicker"
+                        value="Answer weight"
+                    />
+                    <Select
+                        id="answerWeightPicker"
+                        name="answerWeight"
+                        required
+                    >
+                      <option value="1">Easy</option>
+                      <option value="2">Medium</option>
+                      <option value="3">Hard</option>
                     </Select>
                   </div>
                   <div className="flex justify-end text-right">
