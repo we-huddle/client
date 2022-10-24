@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {useLocation, useParams } from "react-router-dom";
+import {Link, useLocation, useParams } from "react-router-dom";
 import { Card, Progress } from "flowbite-react/lib/esm/components";
 import {
   FaStackOverflow,
@@ -20,6 +20,8 @@ import BadgesModalPrompt from "./components/Badges/BadgesModalPrompt";
 import TasksModalPrompt from "./components/Tasks/TasksModalPrompt";
 import CompletedTaskCard from "./components/Tasks/CompletedTasksCard";
 import PRModalPrompt from "./components/PullRequests/PRModalPrompt";
+import { BadgeService } from "../../services/badgeService";
+import { BadgeDto } from "../../types/HuddlerBadge";
 
 function ProfileView() {
   const { id } = useParams();
@@ -31,11 +33,15 @@ function ProfileView() {
   const [task, setTask] = useState<Task[]>([]);
   const [pullRequest, setPullRequest] = useState<PullRequest[]>([]);
   const location = useLocation();
+  const [badge, setBadge] = useState<BadgeDto[]>([]);
+  const [allBadges, setAllBadges] = useState<BadgeDto[]>([]);
   
   useEffect(() => {
     fetchProfile();
     fetchTasks();
     fetchPullRequests();
+    fetchUserBadges();
+    fetchAllBadges();
   },);
 
   const fetchProfile = async () => {
@@ -46,6 +52,16 @@ function ProfileView() {
     setIsModalVisible(false);
     fetchProfile();
   };
+
+  const fetchUserBadges = async () => {
+    const badgeList = await BadgeService.getCompletedBadgesbyUser(id!);
+    setBadge(badgeList);
+  }
+
+  const fetchAllBadges = async () => {
+    const badgeList = await BadgeService.getBadges();
+    setAllBadges(badgeList);
+  }
 
   const fetchTasks = async () => {
       const taskList = await TaskService.getUserCompletedTasks(id!);
@@ -68,33 +84,7 @@ function ProfileView() {
   const onPRModalClose = () => {
     setIsPRModalVisible(false)
   }
-
-  const badges = [
-    {
-      id: 1,
-      name: "badge 1",
-      level: "1",
-      img: "https://sefglobal.org/developers/images/1.png",
-    },
-    {
-      id: 2,
-      name: "badge 2",
-      level: "2",
-      img: "https://sefglobal.org/developers/images/2.png",
-    },
-    {
-      id: 3,
-      name: "badge 3",
-      level: "3",
-      img: "https://sefglobal.org/developers/images/3.png",
-    },
-    {
-      id: 4,
-      name: "badge 4",
-      level: "4",
-      img: "https://sefglobal.org/developers/images/4.png",
-    },
-  ];
+  
 
   return (
     <div>
@@ -201,7 +191,7 @@ function ProfileView() {
               <div className="flex flex-col items-center pb-3">
                 <div className="flex gap-6 mt-5 center">
                   <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg w-40 h-20 py-3 px-6">
-                    <p className="font-semibold text-3xl text-gray-700">3</p>
+                    <p className="font-semibold text-3xl text-gray-700">{badge.length}</p>
                     <p className="text-gray-600">Badges Earned</p>
                   </div>
                   <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg h-20 py-3 px-6">
@@ -214,36 +204,53 @@ function ProfileView() {
                   </div>
                 </div>
               </div>
-              
+                            
               <div className="mt-3">
                 <Progress
-                  progress={Math.round((3 / 10) * 100)}
+                  progress={Math.round(( badge.length / allBadges.length) * 100)}
                   color="green"
                   size="lg"
-                  label={3 + " badges earned out of " + 10}
+                  label={ badge.length + " badges earned out of " + allBadges.length}
                   labelPosition="outside"
                 />
+                <br></br>
                 <div className="mt-5">
+                  {badge.length === 0 && (
+                    <div className="flex justify-center">
+                      
+                      <h5 className="text-sm tracking-tight text-gray-900 dark:text-white">
+                        - No Completed Badges - 
+                      </h5>
+                    </div>
+                  )}
                   <div className="flex flex-wrap gap-8">
-                    {badges.slice(0,4).map((badge) => {
-                      return (
+                    {badge.slice(0,4).map((badge) => {
+                      return (                    
                         <div className="mx-auto content-center place-items-center text-center mb-10">
-                          <img className="h-20.5 w-20" src={badge.img} alt="" />
+                          <br></br>
+                          <Link to={`/badges/${badge.id}`}>
+                          <img className="h-20.5 w-20" src={badge.photo} alt="badge photo here" />
+                          </Link>
+                          <Link to={`/badges/${badge.id}`}>
                           <p className="font-medium text-md text-gray-800">
-                            {badge.name}
+                            {badge.title}
                           </p>
+                          </Link>
                         </div>
+                        
                       );
                     })}
                   </div>
-                  <div className="flex justify-end mt-5">
-                    <button onClick={() => setIsBadgeModalVisible(true)}>
-                        <div className="flex">
-                          <p className="text-sm font-semibold">Show All Badges</p> 
-                          <HiChevronRight className="ml-2 mt-0.5" />
-                        </div>
-                    </button> 
-                  </div>
+                  {badge.length !== 0 && (
+                    <div className="flex justify-end mt-5">
+                      <button onClick={() => setIsBadgeModalVisible(true)}>
+                          <div className="flex">
+                            <p className="text-sm font-semibold">Show All Badges</p> 
+                            <HiChevronRight className="ml-2 mt-0.5" />
+                          </div>
+                      </button> 
+                    </div>
+                  )}
                   <BadgesModalPrompt show={isBadgeModalVisible} onClose={onBadgeModalClose} />
                 </div>
               </div>
