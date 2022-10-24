@@ -71,14 +71,14 @@ function PRModalPrompt({ show, onClose}: PRModalPromptProps) {
                                 </a>
                             </div>
                         </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap">
-                            <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
+                        <Table.Cell className="">
+                            <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer line-clamp-2">
                                 <a href={`${pullRequest.url}`}> 
                                     {pullRequest.title}
                                 </a>
                             </div>
                         </Table.Cell>
-                        <Table.Cell  className="whitespace-nowrap">
+                        <Table.Cell  className="">
                             <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
                                 <a href={`${pullRequest.repo_url}`}> 
                                     {pullRequest.repo_name}
