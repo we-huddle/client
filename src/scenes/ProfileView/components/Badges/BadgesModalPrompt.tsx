@@ -46,7 +46,7 @@ function BadgesModalPrompt({ show, onClose}: BadgesModalPromptProps) {
                 <div className="mx-auto content-center place-items-center text-center mb-10">
                   <br></br>
                   <Link to={`/badges/${badge.id}`}>
-                  <img className="h-20.5 w-20" src={badge.photo} alt="badge photo here" />
+                  <img className="h-20.5 w-20" src={badge.photo} alt="" />
                   </Link>
                   <Link to={`/badges/${badge.id}`}>
                   <p className="font-medium text-md text-gray-800">

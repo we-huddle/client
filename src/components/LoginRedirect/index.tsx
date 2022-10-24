@@ -1,7 +1,7 @@
 import {useContext, useEffect} from "react";
 import {useSearchParams} from "react-router-dom";
 import UserContext from "../../types/UserContext";
-import {API, TOKEN_KEY} from "../../constants";
+import {TOKEN_KEY} from "../../constants";
 
 
 function LoginRedirect() {
