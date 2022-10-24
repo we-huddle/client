@@ -1,8 +1,4 @@
-import { API, TOKEN_KEY } from "../../constants";
-
 function PublicHome() {
-  const authUrl = `${API.BASE}/authorize`;
-
   return (
     <div className="mx-auto md:mx-12 w-full h-full flex ">
       <div className="w-1/3 h-full font-bold mt-30 ml-20">
