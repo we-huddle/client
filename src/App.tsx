@@ -40,7 +40,7 @@ function App() {
           <Layout>
             <Routes>
               <Route path={"/login/success"} element={<LoginRedirect />} />
-              <Route path={"/"} element={<PublicHome />} />
+              <Route path={"/"} element={<LoginRedirect />} />
               <Route
                 path={"/sprints"}
                 element={<SprintsView isAgentView={false} />}
