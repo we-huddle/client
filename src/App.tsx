@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PublicHome from "./scenes/PublicHome";
 import LoginRedirect from "./components/LoginRedirect";
 import { Profile } from "./types/Profile";
 import { API, TOKEN_KEY } from "./constants";
@@ -15,6 +14,7 @@ import TaskDetailsView from "./scenes/TaskDetailsView";
 import BadgesView from "./scenes/BadgesView";
 import LeaderboardView from "./scenes/LeaderboardView";
 import BadgeDetailsView from "./scenes/BadgeDetailsView";
+import PublicHome from "./scenes/PublicHome";
 
 
 function App() {

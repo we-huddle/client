@@ -67,6 +67,22 @@ export class BadgeService {
     }
   }
 
+  static async getCompletedBadgesbyUser(profileId: string): Promise<BadgeDto[]> {
+    try {
+      const response = await axios.get<BadgeDto[]>(
+        `${API.BASE}/badges/completedByUser/${profileId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
   static async uploadBadgeImage(data: FormData): Promise<string> {
     try {
       const response = await axios.post<string>(
@@ -84,4 +100,5 @@ export class BadgeService {
       throw new Error();
     }
   }
+  
 }
