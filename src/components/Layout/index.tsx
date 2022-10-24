@@ -287,7 +287,7 @@ function Layout(props: LayoutProps) {
           <div className="sticky left-0 top-0 mt-5">
             <Navbar className="bg-gray-600">
               <div/>
-                <div className="flex">
+                <div className="flex justify-end">
                 <Button href={authUrl}>Login using github</Button>
                 <Navbar.Toggle />
               </div>
