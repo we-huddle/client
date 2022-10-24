@@ -14,6 +14,7 @@ import TaskDetailsView from "./scenes/TaskDetailsView";
 import BadgesView from "./scenes/BadgesView";
 import LeaderboardView from "./scenes/LeaderboardView";
 import BadgeDetailsView from "./scenes/BadgeDetailsView";
+import PublicHome from "./scenes/PublicHome";
 
 
 function App() {
@@ -39,7 +40,7 @@ function App() {
           <Layout>
             <Routes>
               <Route path={"/login/success"} element={<LoginRedirect />} />
-              <Route path={"/"} element={<LoginRedirect />} />
+              <Route path={"/"} element={<PublicHome />} />
               <Route
                 path={"/sprints"}
                 element={<SprintsView isAgentView={false} />}
