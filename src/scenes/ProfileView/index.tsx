@@ -1,7 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {Link, useLocation, useParams} from "react-router-dom";
 import {Badge, Button, Card, Progress} from "flowbite-react";
-
 import {
   FaStackOverflow,
   FaGithub,
@@ -42,6 +41,7 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
   const [badges, setBadges] = useState<BadgeDto[]>([]);
   const [allBadges, setAllBadges] = useState<BadgeDto[]>([]);
   const [followers, setFollowers] = useState<string[]>([]);
+  const location = useLocation();
 
   const fetchProfile = async () => {
     const fetchedProfile = await UserServices.getProfileById(id!)
@@ -138,6 +138,11 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
                       <p className="text-sm text-gray-400">
                         @{profile?.githubUsername}
                       </p>
+                      <div className="flex items-center text-sm text-gray-500 gap-4 pt-2">
+                        <Badge color="success">                            
+                            {profile?.role}                           
+                        </Badge>
+                      </div>
                     </div>
                     <p className="text-sm"><span className="font-semibold">{followers.length}</span> Followers</p>
                   </div>
@@ -154,15 +159,6 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
                         )}
                       </div>
                   )}
-                  <p className="text-lg font-semibold">{profile?.name}</p>
-                  <p className="text-sm text-gray-400">
-                    @{profile?.githubUsername}
-                  </p>
-                  <div className="flex items-center text-sm text-gray-500 gap-4 pt-2">
-                        <Badge color="success">                            
-                            {profile?.role}                           
-                        </Badge>
-                  </div>
                   {location.pathname === `/profile/${profile?.id}` && 
                     <button
                       className="inline-flex items-center rounded-md bg-blue-700 py-2 px-3 mt-2 text-center text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
