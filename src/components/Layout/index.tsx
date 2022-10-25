@@ -12,7 +12,7 @@ import {
   Sidebar,
 } from "flowbite-react/lib/esm/components";
 
-import { FaUser, FaAward, FaListUl, FaClipboardList } from "react-icons/fa";
+import {FaUser, FaAward, FaListUl, FaClipboardList, FaUsers} from "react-icons/fa";
 import { MdLeaderboard, MdNotifications, MdOutlineClose } from "react-icons/md";
 import { Profile } from "../../types/Profile";
 import { Notification } from "../../types/Notification";
@@ -68,6 +68,11 @@ function Layout(props: LayoutProps) {
       name: "Profile",
       icon: FaUser,
       matcher: "/profile/" + userProfile?.id,
+    },
+    {
+      name: "Feed",
+      icon: FaUsers,
+      matcher: "/feed",
     },
     {
       name: "Badges",

@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {Link, useLocation, useParams} from "react-router-dom";
-import {Card, Progress} from "flowbite-react/lib/esm/components";
+import {useContext, useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
+import {Button, Card, Progress} from "flowbite-react";
 import {
   FaStackOverflow,
   FaGithub,
@@ -13,7 +13,7 @@ import {UserServices} from "../../services/userServices";
 import {Profile} from "../../types/Profile";
 import {Task} from "../../types/Task";
 import {TaskService} from "../../services/taskService";
-import {HiChevronRight} from "react-icons/hi";
+import {HiChevronRight, HiOutlinePencil} from "react-icons/hi";
 import {PullRequest} from "../../types/PullRequest";
 import {PRService} from "../../services/prService";
 import BadgesModalPrompt from "./components/Badges/BadgesModalPrompt";
@@ -22,19 +22,21 @@ import CompletedTaskCard from "./components/Tasks/CompletedTasksCard";
 import PRModalPrompt from "./components/PullRequests/PRModalPrompt";
 import {BadgeService} from "../../services/badgeService";
 import {BadgeDto} from "../../types/HuddlerBadge";
+import UserContext from "../../types/UserContext";
 
 function ProfileView() {
   const {id} = useParams();
   const [profile, setProfile] = useState<Profile>();
+  const currentUser = useContext(UserContext);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isBadgeModalVisible, setIsBadgeModalVisible] = useState<boolean>(false);
   const [isTaskModalVisible, setIsTaskModalVisible] = useState<boolean>(false);
   const [isPRModalVisible, setIsPRModalVisible] = useState<boolean>(false);
   const [task, setTask] = useState<Task[]>([]);
   const [pullRequest, setPullRequest] = useState<PullRequest[]>([]);
-  const location = useLocation();
   const [badges, setBadges] = useState<BadgeDto[]>([]);
   const [allBadges, setAllBadges] = useState<BadgeDto[]>([]);
+  const [followers, setFollowers] = useState<string[]>([]);
 
   const fetchProfile = async () => {
     const fetchedProfile = await UserServices.getProfileById(id!)
@@ -61,6 +63,21 @@ function ProfileView() {
     setPullRequest(prList);
   }
 
+  const fetchFollowers = async () => {
+    const followersList = await UserServices.getFollowerList(id!);
+    setFollowers(followersList.map(follower => follower.id));
+  }
+
+  const followUser = async () => {
+    await UserServices.followUser(id!);
+    await fetchFollowers();
+  }
+
+  const unfollowUser = async () => {
+    await UserServices.unfollowUser(id!);
+    await fetchFollowers();
+  }
+
   const onPromptClose = () => {
     setIsModalVisible(false);
     fetchProfile();
@@ -81,13 +98,14 @@ function ProfileView() {
   useEffect(() => {
     fetchProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     fetchTasks();
     fetchPullRequests();
     fetchUserBadges();
     fetchAllBadges();
+    fetchFollowers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
 
@@ -102,25 +120,35 @@ function ProfileView() {
         <div className="grid grid-cols-10 gap-4">
           <div className="space-y-4 col-span-4">
             <Card>
-              <div className="flex">
+              <div className="flex relative">
                 <img
                   className="rounded-full w-32 h-32"
                   src={profile?.photo}
                   alt=""
                 />
                 <div className="mt-5 ml-6 mr-10">
-                  <p className="text-lg font-semibold">{profile?.name}</p>
-                  <p className="text-sm text-gray-400">
-                    @{profile?.githubUsername}
-                  </p>
-                  {location.pathname !== `/profile/user/${profile?.id}` &&
-                    <button
-                      className="inline-flex items-center rounded-md bg-blue-700 py-2 px-3 mt-2 text-center text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                      onClick={() => setIsModalVisible(true)}
-                    >
-                      Edit Profile
-                    </button>
-                  }
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-lg font-semibold">{profile?.name}</p>
+                      <p className="text-sm text-gray-400">
+                        @{profile?.githubUsername}
+                      </p>
+                    </div>
+                    <p className="text-sm"><span className="font-semibold">{followers.length}</span> Followers</p>
+                  </div>
+                  {currentUser && profile && currentUser.id === profile?.id ? (
+                      <div className="absolute top-0 right-0 text-gray-600 cursor-pointer">
+                        <HiOutlinePencil onClick={() => setIsModalVisible(true)} />
+                      </div>
+                    ) : (
+                      <div className="absolute top-0 right-0 my-2">
+                        {currentUser && followers.includes(currentUser.id)? (
+                          <Button onClick={unfollowUser} color="gray" pill>Unfollow</Button>
+                        ): (
+                          <Button onClick={followUser} pill>Follow</Button>
+                        )}
+                      </div>
+                  )}
                 </div>
               </div>
               <div>
