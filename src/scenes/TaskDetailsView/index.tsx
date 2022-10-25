@@ -209,7 +209,7 @@ function TaskDetailsView({ isAgentView }: TaskDetailsViewProps){
             <div className="flex flex-wrap gap-6">
               {completedBy.map((profile) => {
                 return (
-                  <Link to={`/profile/${profile.id}`}>
+                  <Link to={`/profile/user/${profile.id}`}>
                     <Tooltip content={profile.githubUsername}>
                       <Avatar key={profile.id} img={profile.photo} size="md" rounded />
                     </Tooltip>

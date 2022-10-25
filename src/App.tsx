@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PublicHome from "./scenes/PublicHome";
 import LoginRedirect from "./components/LoginRedirect";
 import { Profile } from "./types/Profile";
 import { API, TOKEN_KEY } from "./constants";
@@ -15,6 +14,8 @@ import TaskDetailsView from "./scenes/TaskDetailsView";
 import BadgesView from "./scenes/BadgesView";
 import LeaderboardView from "./scenes/LeaderboardView";
 import BadgeDetailsView from "./scenes/BadgeDetailsView";
+import PublicHome from "./scenes/PublicHome";
+import FeedView from "./scenes/FeedView";
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
                 path={"/agent/sprints/:id"}
                 element={<SprintDetailsView isAgentView={true} />}
               />
+              <Route path={"/profile/user/:id"} element={<ProfileView />} />
               <Route path={"/profile/:id"} element={<ProfileView />} />
               <Route
                 path={"/tasks"}
@@ -86,6 +88,10 @@ function App() {
               />
               <Route path={"/badges/:id"} element={<BadgeDetailsView  isAgentView={false} />}/>
               <Route path={"/agent/badges/:id"} element={<BadgeDetailsView  isAgentView={true} />}/>
+              <Route
+                path={"/feed"}
+                element={<FeedView />}
+              />
             </Routes>
           </Layout>
         </BrowserRouter>
