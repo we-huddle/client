@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from "react";
-import {Link, useLocation, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Badge, Button, Card, Progress} from "flowbite-react";
 import {
   FaStackOverflow,
@@ -41,7 +41,7 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
   const [badges, setBadges] = useState<BadgeDto[]>([]);
   const [allBadges, setAllBadges] = useState<BadgeDto[]>([]);
   const [followers, setFollowers] = useState<string[]>([]);
-  const location = useLocation();
+
 
   const fetchProfile = async () => {
     const fetchedProfile = await UserServices.getProfileById(id!)
@@ -116,12 +116,12 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
 
   return (
     <div>
-      <div className="px-8 w-full mt-3">
-        <EditProfilePrompt
-          show={isModalVisible}
-          onClose={onPromptClose}
-          userProfile={profile!!}
-        />
+      <div className="px-8 w-full mt-3">          
+           <EditProfilePrompt
+            show={isModalVisible}
+            onClose={onPromptClose}
+            userProfile={profile!!}
+          />          
         <div className="grid grid-cols-10 gap-4">
           <div className="space-y-4 col-span-4">
             <Card>
@@ -159,14 +159,6 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
                         )}
                       </div>
                   )}
-                  {location.pathname === `/profile/${profile?.id}` && 
-                    <button
-                      className="inline-flex items-center rounded-md bg-blue-700 py-2 px-3 mt-2 text-center text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                      onClick={() => setIsModalVisible(true)}
-                    >
-                      Edit Profile
-                    </button>
-                  }
                 </div>
               </div>
               <div>
