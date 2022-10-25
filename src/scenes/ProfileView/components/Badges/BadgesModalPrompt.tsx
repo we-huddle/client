@@ -21,6 +21,7 @@ function BadgesModalPrompt({show, onClose}: BadgesModalPromptProps) {
   useEffect(() => {
     fetchProfile();
     fetchBadges();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchProfile = async () => {

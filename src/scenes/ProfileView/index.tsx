@@ -80,6 +80,7 @@ function ProfileView() {
 
   useEffect(() => {
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -87,6 +88,7 @@ function ProfileView() {
     fetchPullRequests();
     fetchUserBadges();
     fetchAllBadges();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
 
   return (

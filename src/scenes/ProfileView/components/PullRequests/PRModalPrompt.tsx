@@ -28,6 +28,7 @@ function PRModalPrompt({show, onClose}: PRModalPromptProps) {
   useEffect(() => {
     fetchPullRequests();
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchProfile = async () => {

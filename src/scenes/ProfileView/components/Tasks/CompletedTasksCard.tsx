@@ -24,6 +24,7 @@ function CompletedTaskCard({task}: CompletedTaskProps) {
 
   useEffect(() => {
     fetchAnswers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchAnswers = async () => {

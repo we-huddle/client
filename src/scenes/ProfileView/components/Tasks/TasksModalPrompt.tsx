@@ -20,6 +20,7 @@ function TasksModalPrompt({show, onClose}: TaskModalPromptProps) {
   useEffect(() => {
     fetchTasks();
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchTasks = async () => {
