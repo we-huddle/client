@@ -15,6 +15,7 @@ import BadgesView from "./scenes/BadgesView";
 import LeaderboardView from "./scenes/LeaderboardView";
 import BadgeDetailsView from "./scenes/BadgeDetailsView";
 import PublicHome from "./scenes/PublicHome";
+import FeedView from "./scenes/FeedView";
 
 
 function App() {
@@ -87,6 +88,10 @@ function App() {
               />
               <Route path={"/badges/:id"} element={<BadgeDetailsView  isAgentView={false} />}/>
               <Route path={"/agent/badges/:id"} element={<BadgeDetailsView  isAgentView={true} />}/>
+              <Route
+                path={"/feed"}
+                element={<FeedView />}
+              />
             </Routes>
           </Layout>
         </BrowserRouter>

@@ -1,11 +1,25 @@
 import axios from "axios";
 import {API} from "../constants";
 import {Profile, PartialProfile} from "../types/Profile";
+import {FeedEvent} from "../types/FeedEvent";
 
 export class UserServices {
   static async fetchSelf(): Promise<Profile> {
     try {
       const response = await axios.get<Profile>(`${API.BASE}/user/self`, {
+        headers: {
+          Authorization: `Bearer ${API.TOKEN}`,
+        },
+      });
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+  static async fetchFeedEvents(): Promise<FeedEvent[]> {
+    try {
+      const response = await axios.get<FeedEvent[]>(`${API.BASE}/user/feed-events`, {
         headers: {
           Authorization: `Bearer ${API.TOKEN}`,
         },
