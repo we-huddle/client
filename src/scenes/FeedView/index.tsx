@@ -29,6 +29,13 @@ function FeedView() {
             Latest events of the huddlers you follow.
           </p>
         </div>
+        {feedEvents.length === 0 && (
+          <div className="flex justify-center">
+            <h5 className="text-sm tracking-tight text-gray-900 dark:text-white">
+              No events found
+            </h5>
+          </div>
+        )}
         {feedEvents.map(event => {
           return (
             <div className="flex justify-between items-center px-4 py-4 border-b-2 gap-20 border-gray-300 hover:bg-gray-50 cursor-pointer">
