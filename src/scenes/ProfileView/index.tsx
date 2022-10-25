@@ -130,14 +130,12 @@ function ProfileView() {
                     <p className="text-sm text-gray-600">{profile.bio}</p>
                   </div>
                 )}
-
                 {profile?.city && (
                   <div className="flex items-center mt-3 -ml-1">
                     <MdLocationOn className="text-gray-800" size="25px"/>
                     <p className="text-sm text-gray-600">{profile.city}</p>
                   </div>
                 )}
-
                 <div className="flex gap-3 mt-5">
                   {profile?.links?.github && (
                     <a

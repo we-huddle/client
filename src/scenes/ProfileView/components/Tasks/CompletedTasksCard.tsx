@@ -43,15 +43,17 @@ function CompletedTaskCard({task}: CompletedTaskProps) {
             <h5 className="text-m line-clamp-1 font-medium tracking-tight text-gray-900 dark:text-white">
               {task.title}
             </h5>
-            <div>
-              <h6 className="text-sm line-clamp-1 tracking-tight text-gray-900 dark:text-white">
-                {intlDateFormatter.format(new Date(answers[answers.length - 1].createdAt * 1000))}
-              </h6>
-            </div>
+            {answers.length > 0 && (
+              <div>
+                <h6 className="text-sm line-clamp-1 tracking-tight text-gray-900 dark:text-white">
+                  {intlDateFormatter.format(new Date(answers[answers.length - 1].createdAt * 1000))}
+                </h6>
+              </div>
+            )}
             <div className="flex justify-end items-center gap-2 mt-2 mb-1">
               {
                 {
-                  "DEV": <Badge color="info" icon={HiChip}>Devloper Task</Badge>,
+                  "DEV": <Badge color="info" icon={HiChip}>Developer Task</Badge>,
                   "QUIZ": <Badge color="info" icon={HiPencil}>Quiz Task</Badge>,
                 }[task.type]
               }

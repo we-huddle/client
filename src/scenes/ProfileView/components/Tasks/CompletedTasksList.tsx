@@ -42,11 +42,13 @@ function CompletedTaskList({task}: CompletedTaskProps) {
         <Timeline.Content>
           <Timeline.Time>
             <div className="flex w-96">
-              <div>
-                <h6 className="text-sm line-clamp-1 tracking-tight text-gray-900 dark:text-white">
-                  {intlDateFormatter.format(new Date(answers[answers.length - 1].createdAt * 1000))}
-                </h6>
-              </div>
+              {answers.length > 0 && (
+                <div>
+                  <h6 className="text-sm line-clamp-1 tracking-tight text-gray-900 dark:text-white">
+                    {intlDateFormatter.format(new Date(answers[answers.length - 1].createdAt * 1000))}
+                  </h6>
+                </div>
+              )}
               <div className="flex justify-end items-center gap-2 ml-16 mb-1">
                 {
                   {
