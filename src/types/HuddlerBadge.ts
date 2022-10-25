@@ -1,5 +1,11 @@
 import {Task} from "./Task";
 
+export interface EditBadge{
+  title: string,
+  description: string,
+  photo: string
+}
+
 export interface PartialBadge {
   title: string,
   description: string,

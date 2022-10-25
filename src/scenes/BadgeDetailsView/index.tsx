@@ -7,6 +7,7 @@ import {HiCheck, HiOutlineArrowLeft} from "react-icons/hi";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {BadgeWithDependencies} from "../../types/HuddlerBadge";
 import {BadgeService} from "../../services/badgeService";
+import EditBadgePrompt from "./components/EditBadgePrompt";
 
 interface BadgeDetailsViewProps {
   isAgentView: boolean,
@@ -18,10 +19,15 @@ function BadgeDetailsView({ isAgentView }: BadgeDetailsViewProps){
   const navigate = useNavigate();
   const [badge ,setBadge] = useState<BadgeWithDependencies | null>(null);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTask();
   }, [id]);
+
+  const onEditModalClose = () => {
+    setIsEditModalVisible(false)
+  }
 
   const fetchTask = async () => {
     setBadge(await BadgeService.getBadgeById(id!));
@@ -35,6 +41,7 @@ function BadgeDetailsView({ isAgentView }: BadgeDetailsViewProps){
     <div>
       {badge == null? "loading" : (
         <div className="px-8 space-y-8">
+          <EditBadgePrompt show={isEditModalVisible} onClose={onEditModalClose} badge={badge}/>
           <div className="flex justify-between items-center">
             <Button
               color="gray"
@@ -51,7 +58,7 @@ function BadgeDetailsView({ isAgentView }: BadgeDetailsViewProps){
                     label=""
                     inline={true}
                   >
-                    <Dropdown.Item>
+                    <Dropdown.Item onClick={() => setIsEditModalVisible(true)}>
                       Edit badge
                     </Dropdown.Item>
                     <Dropdown.Item>
