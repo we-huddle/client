@@ -274,7 +274,7 @@ function Layout(props: LayoutProps) {
                             </Dropdown.Item>
                           </Link>
                         ) : (
-                          <Link to={"/agent/tasks"}>
+                          <Link to={"/agent/sprints"}>
                             <Dropdown.Item>Switch to agent mode</Dropdown.Item>
                           </Link>
                         )}
