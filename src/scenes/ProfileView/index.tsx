@@ -1,32 +1,32 @@
-import {useContext, useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
-import {Button, Card, Progress} from "flowbite-react";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Button, Card, Progress } from "flowbite-react";
 import {
   FaStackOverflow,
   FaGithub,
   FaLinkedinIn,
   FaTwitter,
+  FaShareAlt,
 } from "react-icons/fa";
-import {MdLocationOn} from "react-icons/md";
+import { MdLocationOn } from "react-icons/md";
 import EditProfilePrompt from "./components/EditProfilePrompt";
-import {UserServices} from "../../services/userServices";
-import {Profile} from "../../types/Profile";
-import {Task} from "../../types/Task";
-import {TaskService} from "../../services/taskService";
-import {HiChevronRight, HiOutlinePencil} from "react-icons/hi";
-import {PullRequest} from "../../types/PullRequest";
-import {PRService} from "../../services/prService";
+import { UserServices } from "../../services/userServices";
+import { Profile } from "../../types/Profile";
+import { Task } from "../../types/Task";
+import { TaskService } from "../../services/taskService";
+import { HiChevronRight, HiOutlinePencil } from "react-icons/hi";
+import { PullRequest } from "../../types/PullRequest";
+import { PRService } from "../../services/prService";
 import BadgesModalPrompt from "./components/Badges/BadgesModalPrompt";
 import TasksModalPrompt from "./components/Tasks/TasksModalPrompt";
 import CompletedTaskCard from "./components/Tasks/CompletedTasksCard";
 import PRModalPrompt from "./components/PullRequests/PRModalPrompt";
+import { BadgeService } from "../../services/badgeService";
+import { BadgeDto } from "../../types/HuddlerBadge";
 import UserContext from "../../types/UserContext";
-import { Helmet } from "react-helmet"
-import HeadTags from "../../components/HeadTags";
 
 function ProfileView() {
   const { id } = useParams();
-  const userProfile = useContext(UserContext);
   const [profile, setProfile] = useState<Profile>();
   const currentUser = useContext(UserContext);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -41,24 +41,24 @@ function ProfileView() {
   const [followers, setFollowers] = useState<string[]>([]);
 
   const fetchProfile = async () => {
-    const fetchedProfile = await UserServices.getProfileById(id!)
+    const fetchedProfile = await UserServices.getProfileById(id!);
     setProfile(fetchedProfile);
   };
 
   const fetchUserBadges = async () => {
     const badgeList = await BadgeService.getCompletedBadgesbyUser(id!);
     setBadges(badgeList);
-  }
+  };
 
   const fetchAllBadges = async () => {
     const badgeList = await BadgeService.getBadges();
     setAllBadges(badgeList);
-  }
+  };
 
   const fetchTasks = async () => {
     const taskList = await TaskService.getUserCompletedTasks(id!);
     setTask(taskList);
-  }
+  };
 
   const fetchPullRequests = async () => {
     const prList = await PRService.getUserPR(id!);
@@ -67,18 +67,18 @@ function ProfileView() {
 
   const fetchFollowers = async () => {
     const followersList = await UserServices.getFollowerList(id!);
-    setFollowers(followersList.map(follower => follower.id));
-  }
+    setFollowers(followersList.map((follower) => follower.id));
+  };
 
   const followUser = async () => {
     await UserServices.followUser(id!);
     await fetchFollowers();
-  }
+  };
 
   const unfollowUser = async () => {
     await UserServices.unfollowUser(id!);
     await fetchFollowers();
-  }
+  };
 
   const onPromptClose = () => {
     setIsModalVisible(false);
@@ -109,7 +109,12 @@ function ProfileView() {
     fetchAllBadges();
     fetchFollowers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile])
+  }, [profile]);
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Link copied to clipboard");
+  };
 
   return (
     <div>
@@ -136,20 +141,30 @@ function ProfileView() {
                         @{profile?.githubUsername}
                       </p>
                     </div>
-                    <p className="text-sm"><span className="font-semibold">{followers.length}</span> Followers</p>
+                    <p className="text-sm">
+                      <span className="font-semibold">{followers.length}</span>{" "}
+                      Followers
+                    </p>
                   </div>
                   {currentUser && profile && currentUser.id === profile?.id ? (
-                      <div className="absolute top-0 right-0 text-gray-600 cursor-pointer">
-                        <HiOutlinePencil onClick={() => setIsModalVisible(true)} />
-                      </div>
-                    ) : (
-                      <div className="absolute top-0 right-0 my-2">
-                        {currentUser && followers.includes(currentUser.id)? (
-                          <Button onClick={unfollowUser} color="gray" pill>Unfollow</Button>
-                        ): (
-                          <Button onClick={followUser} pill>Follow</Button>
-                        )}
-                      </div>
+                    <div className="absolute top-0 right-0 text-gray-600 cursor-pointer flex space-x-3">
+                      <HiOutlinePencil
+                        onClick={() => setIsModalVisible(true)}
+                      />
+                      <FaShareAlt onClick={copyLink} />
+                    </div>
+                  ) : (
+                    <div className="absolute top-0 right-0 my-2">
+                      {currentUser && followers.includes(currentUser.id) ? (
+                        <Button onClick={unfollowUser} color="gray" pill>
+                          Unfollow
+                        </Button>
+                      ) : (
+                        <Button onClick={followUser} pill>
+                          Follow
+                        </Button>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
@@ -162,7 +177,7 @@ function ProfileView() {
                 )}
                 {profile?.city && (
                   <div className="flex items-center mt-3 -ml-1">
-                    <MdLocationOn className="text-gray-800" size="25px"/>
+                    <MdLocationOn className="text-gray-800" size="25px" />
                     <p className="text-sm text-gray-600">{profile.city}</p>
                   </div>
                 )}
@@ -224,32 +239,41 @@ function ProfileView() {
               <div className="flex flex-col items-center pb-3">
                 <div className="flex gap-6 mt-5 center">
                   <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg w-40 h-20 py-3 px-6">
-                    <p className="font-semibold text-3xl text-gray-700">{badges.length}</p>
+                    <p className="font-semibold text-3xl text-gray-700">
+                      {badges.length}
+                    </p>
                     <p className="text-gray-600">Badges Earned</p>
                   </div>
                   <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg h-20 py-3 px-6">
-                    <p className="font-semibold text-3xl text-gray-700">{task.length}</p>
+                    <p className="font-semibold text-3xl text-gray-700">
+                      {task.length}
+                    </p>
                     <p className="text-gray-600">Tasks Completed</p>
                   </div>
                   <div className="flex flex-col items-center pb-3 bg-gray-50 rounded-lg w-40 h-20 py-3 px-6">
-                    <p className="font-semibold text-3xl text-gray-700">{pullRequest.length}</p>
+                    <p className="font-semibold text-3xl text-gray-700">
+                      {pullRequest.length}
+                    </p>
                     <p className="text-gray-600">PR Count</p>
                   </div>
                 </div>
               </div>
               <div className="mt-3">
                 <Progress
-                  progress={Math.round((badges.length / allBadges.length) * 100)}
+                  progress={Math.round(
+                    (badges.length / allBadges.length) * 100
+                  )}
                   color="green"
                   size="lg"
-                  label={badges.length + " badges earned out of " + allBadges.length}
+                  label={
+                    badges.length + " badges earned out of " + allBadges.length
+                  }
                   labelPosition="outside"
                 />
                 <br></br>
                 <div className="mt-5">
                   {badges.length === 0 && (
                     <div className="flex justify-center">
-
                       <h5 className="text-sm tracking-tight text-gray-900 dark:text-white">
                         - No Completed Badges -
                       </h5>
@@ -261,7 +285,11 @@ function ProfileView() {
                         <div className="mx-auto content-center place-items-center text-center mb-10">
                           <br></br>
                           <Link to={`/badges/${badge.id}`}>
-                            <img className="h-20.5 w-20" src={badge.photo} alt=""/>
+                            <img
+                              className="h-20.5 w-20"
+                              src={badge.photo}
+                              alt=""
+                            />
                           </Link>
                           <Link to={`/badges/${badge.id}`}>
                             <p className="font-medium text-md text-gray-800">
@@ -276,16 +304,21 @@ function ProfileView() {
                     <div className="flex justify-end mt-5">
                       <button onClick={() => setIsBadgeModalVisible(true)}>
                         <div className="flex">
-                          <p className="text-sm font-semibold">Show All Badges</p>
-                          <HiChevronRight className="ml-2 mt-0.5"/>
+                          <p className="text-sm font-semibold">
+                            Show All Badges
+                          </p>
+                          <HiChevronRight className="ml-2 mt-0.5" />
                         </div>
                       </button>
                     </div>
                   )}
-                  <BadgesModalPrompt show={isBadgeModalVisible} onClose={onBadgeModalClose}/>
+                  <BadgesModalPrompt
+                    show={isBadgeModalVisible}
+                    onClose={onBadgeModalClose}
+                  />
                 </div>
               </div>
-              <hr className="mt-2"/>
+              <hr className="mt-2" />
               <p className="font-semibold">Recent Completed Tasks</p>
               {task.length === 0 && (
                 <div className="flex justify-center">
@@ -296,26 +329,24 @@ function ProfileView() {
               )}
               <div className="flex flex-wrap gap-4">
                 {task.slice(0, 2).map((task) => {
-                  return (
-                    <CompletedTaskCard
-                      key={task.id}
-                      task={task}
-                    />
-                  );
+                  return <CompletedTaskCard key={task.id} task={task} />;
                 })}
               </div>
-              <TasksModalPrompt show={isTaskModalVisible} onClose={onTaskModalClose}/>
+              <TasksModalPrompt
+                show={isTaskModalVisible}
+                onClose={onTaskModalClose}
+              />
               {task.length !== 0 && (
                 <div className="flex justify-end mt-5">
                   <button onClick={() => setIsTaskModalVisible(true)}>
                     <div className="flex text-m">
                       <p className="text-sm font-semibold">Show All Tasks</p>
-                      <HiChevronRight className="ml-2 mt-0.5"/>
+                      <HiChevronRight className="ml-2 mt-0.5" />
                     </div>
                   </button>
                 </div>
               )}
-              <hr className="mt-2"/>
+              <hr className="mt-2" />
               <p className="font-semibold">Recent Pull Requests</p>
               {pullRequest.length === 0 && (
                 <div className="flex justify-center">
@@ -328,23 +359,24 @@ function ProfileView() {
                 return (
                   <div>
                     <a href={`${pullRequest.url}`}>
-                      <div
-                        className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
+                      <div className="flex text-sm text-gray-500 gap-4 hover:underline hover:text-blue-700 hover:cursor-pointer">
                         <p className="w-13">#{pullRequest.number}</p>
                         <p className="truncate">{pullRequest.title}</p>
                       </div>
                     </a>
-                    <hr/>
+                    <hr />
                   </div>
                 );
               })}
-              <PRModalPrompt show={isPRModalVisible} onClose={onPRModalClose}/>
+              <PRModalPrompt show={isPRModalVisible} onClose={onPRModalClose} />
               {pullRequest.length !== 0 && (
                 <div className="flex justify-end mt-5">
                   <button onClick={() => setIsPRModalVisible(true)}>
                     <div className="flex text-m">
-                      <p className="text-sm font-semibold">Show All Pull Requests</p>
-                      <HiChevronRight className="ml-2 mt-0.5"/>
+                      <p className="text-sm font-semibold">
+                        Show All Pull Requests
+                      </p>
+                      <HiChevronRight className="ml-2 mt-0.5" />
                     </div>
                   </button>
                 </div>
@@ -353,7 +385,7 @@ function ProfileView() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
