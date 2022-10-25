@@ -9,7 +9,7 @@ function LoginRedirect() {
 
   useEffect(() => {
     if (userProfile) {
-      window.location.href = '/profile';
+      window.location.href = '/profile/'+ userProfile.id;
     } else {
       const sessionString = searchParams.get('session');
       if (sessionString) {

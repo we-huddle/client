@@ -17,6 +17,7 @@ import { MdLeaderboard, MdNotifications, MdOutlineClose } from "react-icons/md";
 import { Profile } from "../../types/Profile";
 import { Notification } from "../../types/Notification";
 
+
 interface LayoutProps {
   children: React.ReactElement;
   className?: string;
@@ -115,7 +116,8 @@ function Layout(props: LayoutProps) {
   ];
 
   return (
-    <div className="h-screen w-screen">
+  
+      <div className="h-screen w-screen">
       {userProfile ? (
         <div className="flex h-full">
           <div className="w-fit shadow-xl rounded-tr-2xl rounded-br-2xl z-40">
@@ -296,7 +298,9 @@ function Layout(props: LayoutProps) {
           <main className="mb-10">{children}</main>
         </div>
       )}
-    </div>
+      </div>
+  
+    
   );
 }
 
