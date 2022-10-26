@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 import { UserServices } from "../../services/userServices";
 import {  Profile } from "../../types/Profile";
 
-function UserManagement() {
+interface UserManagementProps {
+  isAgentView: boolean,
+}
+
+function UserManagement({ isAgentView }: UserManagementProps){
     const [profile, setProfile] = useState<Profile[]>([]);
 
     const fetchProfiles = async () => {
@@ -44,9 +48,11 @@ function UserManagement() {
               <th className="whitespace-nowrap p-5">
                 <div className="flex text-sm font-semibold text-gray-700 gap-4">Role</div>
               </th>
+              {isAgentView  && (
               <th className="whitespace-nowrap p-5">
                 <div className="flex text-sm font-semibold text-gray-700 gap-4">Agent Privilege</div>
               </th>
+              )}
               <th className="whitespace-nowrap p-5">
                 <div className="flex text-sm font-semibold text-gray-700 gap-4">User Profile</div>
               </th>
@@ -73,6 +79,7 @@ function UserManagement() {
                             {profile.githubUsername}
                       </div>
                     </th>
+                    
                     <th className="whitespace-nowrap p-5">
                     {profile.role === "HUDDLER" && (
                         <div className="flex items-center text-sm text-gray-500 gap-4">
@@ -88,7 +95,8 @@ function UserManagement() {
                             </Badge>
                         </div>
                     )}
-                    </th>
+                    </th>                    
+                    {isAgentView && (
                     <th className="whitespace-nowrap p-5">
                     {profile.role === "HUDDLER" && (
                         <div className="flex items-center gap-2">
@@ -107,14 +115,26 @@ function UserManagement() {
                         </div>
                     )}
                     </th>
+                    )}
                     <th className="whitespace-nowrap p-5">
-                      <div>                    
+                      <div>  
+                      {isAgentView && (                  
                       <Link to={`/agent/profile/user/${profile.id}`}>
                             <Button size="xs">
                                 <div className="w-12">View</div>
                                 <HiEye/>
                             </Button>
                         </Link>
+                        
+                        )}
+                        {!isAgentView &&(                  
+                          <Link to={`/profile/user/${profile.id}`}>
+                                <Button size="xs">
+                                    <div className="w-12">View</div>
+                                    <HiEye/>
+                                </Button>
+                            </Link>
+                        )}
                       </div>
                     </th>
                 </tr>
