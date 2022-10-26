@@ -33,3 +33,7 @@ export namespace Profile {
     HuddleAgent = "HUDDLE_AGENT",
   }
 }
+
+export interface ProfileRole {
+  role: Profile.Role;
+}
