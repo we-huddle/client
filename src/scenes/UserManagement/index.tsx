@@ -24,7 +24,7 @@ function UserManagement() {
 
   function handleSearch(keyword: string) {
     const searchText = keyword.trim().toLowerCase();
-    if (searchText == "") {
+    if (searchText === "") {
       fetchProfiles();
     } else {
       console.log("heell");
