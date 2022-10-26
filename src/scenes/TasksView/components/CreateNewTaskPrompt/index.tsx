@@ -208,7 +208,9 @@ function CreateNewTaskPrompt({ show, onClose }: CreateNewTaskPromptProps) {
                                 <p className="text-sm text-blue-500">Answer weight: {question.answerWeightKey}</p>
                               </div>
                               <div className="text-gray-500">
-                                <HiX onClick={() => removeQuestion(question.number)}/>
+                                <HiX onClick={() => {removeQuestion(question.number) ;
+                                  setTotalMark(totalMark - parseInt(question.answerWeightKey!.toString()));
+                                }}/>
                               </div>
                             </div>
                           );
