@@ -94,4 +94,36 @@ export class UserServices {
       throw new Error(e.response.data);
     }
   }
+
+  static async getAllProfiles(): Promise<Profile[]>  {
+    try {
+      const response = await axios.get<Profile[]>(
+        `${API.BASE}/user/allUsers`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+  static async updateRole(profileId: string) {
+    try {
+      await axios.put(
+          `${API.BASE}/user/updateRole/${profileId}`, {},
+          {
+            headers: {
+              Authorization: `Bearer ${API.TOKEN}`
+            }
+          }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
 }
