@@ -79,7 +79,6 @@ function UserManagement({ isAgentView }: UserManagementProps){
                             {profile.githubUsername}
                       </div>
                     </th>
-                    
                     <th className="whitespace-nowrap p-5">
                     {profile.role === "HUDDLER" && (
                         <div className="flex items-center text-sm text-gray-500 gap-4">
@@ -124,8 +123,7 @@ function UserManagement({ isAgentView }: UserManagementProps){
                                 <div className="w-12">View</div>
                                 <HiEye/>
                             </Button>
-                        </Link>
-                        
+                        </Link>                      
                         )}
                         {!isAgentView &&(                  
                           <Link to={`/profile/user/${profile.id}`}>

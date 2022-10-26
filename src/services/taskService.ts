@@ -6,14 +6,11 @@ import {Profile} from "../types/Profile";
 export class TaskService {
   static async getTasks(): Promise<Task[]> {
     try {
-      const response = await axios.get<Task[]>(
-        `${API.BASE}/tasks`,
-        {
-          headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
-        }
-      );
+      const response = await axios.get<Task[]>(`${API.BASE}/tasks`, {
+        headers: {
+          Authorization: `Bearer ${API.TOKEN}`,
+        },
+      });
       return response.data;
     } catch (e) {
       throw new Error();
@@ -23,11 +20,11 @@ export class TaskService {
   static async getTaskById(taskId: string, isAgent: boolean): Promise<Task> {
     try {
       const response = await axios.get<Task>(
-        `${API.BASE}/tasks/${taskId}${isAgent? '/agent' : ''}`,
+        `${API.BASE}/tasks/${taskId}${isAgent ? "/agent" : ""}`,
         {
           headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
         }
       );
       return response.data;
@@ -38,14 +35,11 @@ export class TaskService {
 
   static async getCompletedTasks(): Promise<Task[]> {
     try {
-      const response = await axios.get<Task[]>(
-        `${API.BASE}/tasks/completed`,
-        {
-          headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
-        }
-      );
+      const response = await axios.get<Task[]>(`${API.BASE}/tasks/completed`, {
+        headers: {
+          Authorization: `Bearer ${API.TOKEN}`,
+        },
+      });
       return response.data;
     } catch (e) {
       throw new Error();
@@ -54,16 +48,12 @@ export class TaskService {
 
   static async createTask(partialTask: PartialTask) {
     try {
-      const type = partialTask.type === Task.Type.DEV ? "dev" : "quiz"
-      await axios.post(
-        `${API.BASE}/tasks/create/${type}`,
-        partialTask,
-        {
-          headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
-        }
-      );
+      const type = partialTask.type === Task.Type.DEV ? "dev" : "quiz";
+      await axios.post(`${API.BASE}/tasks/create/${type}`, partialTask, {
+        headers: {
+          Authorization: `Bearer ${API.TOKEN}`,
+        },
+      });
     } catch (e) {
       throw new Error();
     }
@@ -71,16 +61,12 @@ export class TaskService {
 
   static async updateTask(taskId: string, partialTask: PartialTask) {
     try {
-      const type = partialTask.type === Task.Type.DEV ? "dev" : "quiz"
-      await axios.put(
-          `${API.BASE}/tasks/${taskId}/${type}`,
-          partialTask,
-          {
-            headers: {
-              Authorization: `Bearer ${API.TOKEN}`
-            }
-          }
-      );
+      const type = partialTask.type === Task.Type.DEV ? "dev" : "quiz";
+      await axios.put(`${API.BASE}/tasks/${taskId}/${type}`, partialTask, {
+        headers: {
+          Authorization: `Bearer ${API.TOKEN}`,
+        },
+      });
     } catch (e) {
       throw new Error();
     }
@@ -88,14 +74,11 @@ export class TaskService {
 
   static async deleteTask(taskId: string) {
     try {
-      await axios.delete(
-        `${API.BASE}/tasks/${taskId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
-        }
-      );
+      await axios.delete(`${API.BASE}/tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${API.TOKEN}`,
+        },
+      });
     } catch (e) {
       throw new Error();
     }
@@ -107,8 +90,8 @@ export class TaskService {
         `${API.BASE}/tasks/${taskId}/answer`,
         {
           headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
         }
       );
       return response.data;
@@ -117,17 +100,32 @@ export class TaskService {
     }
   }
 
-  static async submitQuizAnswers(taskId: string, quizAnswers: QuizAnswerPayload) {
+  static async getAnswersByProfile(taskId: string, profileId: string): Promise<Answer[]> {
     try {
-      await axios.post(
-        `${API.BASE}/tasks/${taskId}/answer`,
-        quizAnswers,
+      const response = await axios.get<Answer[]>(
+        `${API.BASE}/tasks/${taskId}/completedByUser/${profileId}/answer`,
         {
           headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
         }
       );
+      return response.data;
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+  static async submitQuizAnswers(
+    taskId: string,
+    quizAnswers: QuizAnswerPayload
+  ) {
+    try {
+      await axios.post(`${API.BASE}/tasks/${taskId}/answer`, quizAnswers, {
+        headers: {
+          Authorization: `Bearer ${API.TOKEN}`,
+        },
+      });
     } catch (e: any) {
       throw new Error(e.message());
     }
@@ -139,8 +137,8 @@ export class TaskService {
         `${API.BASE}/tasks/${taskId}/completed/users`,
         {
           headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
         }
       );
       return response.data;
@@ -155,8 +153,8 @@ export class TaskService {
         `${API.BASE}/tasks/completedByUser/${profileId}`,
         {
           headers: {
-            Authorization: `Bearer ${API.TOKEN}`
-          }
+            Authorization: `Bearer ${API.TOKEN}`,
+          },
         }
       );
       return response.data;
@@ -164,6 +162,4 @@ export class TaskService {
       throw new Error();
     }
   }
-
-
 }
