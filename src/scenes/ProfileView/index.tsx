@@ -1,6 +1,6 @@
-import {useContext, useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
-import {Badge, Button, Card, Progress} from "flowbite-react";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Badge, Button, Card, Progress } from "flowbite-react";
 import {
   FaStackOverflow,
   FaGithub,
@@ -146,9 +146,7 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
                         @{profile?.githubUsername}
                       </p>
                       <div className="flex items-center text-sm text-gray-500 gap-4 pt-2">
-                        <Badge color="success">                            
-                            {profile?.role}                           
-                        </Badge>
+                        <Badge color="success">{profile?.role}</Badge>
                       </div>
                     </div>
                     <p className="text-sm">
