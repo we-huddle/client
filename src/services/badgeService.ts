@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API } from "../constants";
-import {BadgeDto, BadgeWithDependencies, PartialBadge} from "../types/HuddlerBadge";
+import {BadgeDto, BadgeWithDependencies, PartialBadge, EditBadge} from "../types/HuddlerBadge";
 
 export class BadgeService {
   static async getBadges(): Promise<BadgeDto[]> {
@@ -45,6 +45,22 @@ export class BadgeService {
             Authorization: `Bearer ${API.TOKEN}`
           }
         }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
+  static async editBadge(badgeId: string, badge: EditBadge) {
+    try {
+      await axios.put(
+          `${API.BASE}/badges/${badgeId}`,
+          badge,
+          {
+            headers: {
+              Authorization: `Bearer ${API.TOKEN}`
+            }
+          }
       );
     } catch (e) {
       throw new Error();
