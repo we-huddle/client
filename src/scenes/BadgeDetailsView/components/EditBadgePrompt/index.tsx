@@ -24,7 +24,7 @@ function EditBadgePrompt({show, onClose, badge} : EditBadgePromptProps){
     const badge: EditBadge = {
       title: data.get("title")!.toString(),
       description: data.get("description")!.toString(),
-      photo: data.get("photo")!.toString()
+      photo: photo
     }
     await BadgeService.editBadge(id!, badge);
     setIsProcessing(false);
