@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Progress } from "flowbite-react";
+import { Badge, Button, Card, Progress } from "flowbite-react";
 import {
   FaStackOverflow,
   FaGithub,
@@ -25,7 +25,11 @@ import { BadgeService } from "../../services/badgeService";
 import { BadgeDto } from "../../types/HuddlerBadge";
 import UserContext from "../../types/UserContext";
 
-function ProfileView() {
+interface ProfileViewProps {
+  isAgentView: boolean;
+}
+
+function ProfileView({ isAgentView }: ProfileViewProps) {
   const { id } = useParams();
   const [profile, setProfile] = useState<Profile>();
   const currentUser = useContext(UserContext);
@@ -140,6 +144,9 @@ function ProfileView() {
                       <p className="text-sm text-gray-400">
                         @{profile?.githubUsername}
                       </p>
+                      <div className="flex items-center text-sm text-gray-500 gap-4 pt-2">
+                        <Badge color="success">{profile?.role}</Badge>
+                      </div>
                     </div>
                     <p className="text-sm">
                       <span className="font-semibold">{followers.length}</span>{" "}
