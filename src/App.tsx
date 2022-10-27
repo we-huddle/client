@@ -97,7 +97,11 @@ function App() {
                 />
               <Route
                 path={"/agent/members"}
-                element={<UserManagement />}
+                element={<UserManagement isAgentView={true}/>}
+              />
+              <Route
+                path={"/members"}
+                element={<UserManagement isAgentView={false}/>}
               />
             </Routes>
           </Layout>

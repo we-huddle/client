@@ -1,16 +1,17 @@
 import {Task} from "../../../../types/Task";
 import {Badge, Card} from "flowbite-react";
 import {HiChip, HiPencil} from "react-icons/hi";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Answer, AnswerStatus,} from "../../../../types/Task"
 import {useEffect, useState} from "react";
-import {TaskService} from "../../../../services/taskService";
+import { TaskService } from "../../../../services/taskService";
 
 interface CompletedTaskProps {
   task: Task,
 }
 
-function CompletedTaskCard({task}: CompletedTaskProps) {
+function CompletedTaskCard({ task }: CompletedTaskProps) {
+  const { id } = useParams();
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [, setIsCompleted] = useState<boolean>(false);
   const intlDateFormatter = Intl.DateTimeFormat('en', {
@@ -28,7 +29,7 @@ function CompletedTaskCard({task}: CompletedTaskProps) {
   }, []);
 
   const fetchAnswers = async () => {
-    const answerList = await TaskService.getAnswers(task.id);
+    const answerList = await TaskService.getAnswersByProfile(task.id, id!);
     setAnswers(answerList);
     setIsCompleted(
       answerList.filter((answer) => answer.status === AnswerStatus.COMPLETED).length !== 0

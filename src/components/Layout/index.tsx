@@ -11,10 +11,11 @@ import {
   Avatar,
   Sidebar,
 } from "flowbite-react/lib/esm/components";
-import {FaUser, FaAward, FaListUl, FaClipboardList, FaUsers} from "react-icons/fa";
+import {FaUser, FaAward, FaListUl, FaClipboardList, FaUsers, FaHeart} from "react-icons/fa";
 import { MdLeaderboard, MdNotifications, MdOutlineClose } from "react-icons/md";
 import { Profile } from "../../types/Profile";
 import { Notification } from "../../types/Notification";
+
 
 interface LayoutProps {
   children: React.ReactElement;
@@ -70,9 +71,14 @@ function Layout(props: LayoutProps) {
     },
     {
       name: "Feed",
-      icon: FaUsers,
+      icon: FaHeart,
       matcher: "/feed",
     },
+    {
+      name: "Members",
+      icon: FaUsers,
+      matcher: "/members",
+    }, 
     {
       name: "Badges",
       icon: FaAward,
@@ -124,7 +130,8 @@ function Layout(props: LayoutProps) {
   ];
 
   return (
-    <div className="h-screen w-screen">
+  
+      <div className="h-screen w-screen">
       {userProfile ? (
         <div className="flex h-full">
           <div className="w-fit shadow-xl rounded-tr-2xl rounded-br-2xl z-40">
@@ -293,10 +300,10 @@ function Layout(props: LayoutProps) {
         </div>
       ) : (
         <div className="w-full h-full overflow-x-hidden overflow-y-scroll relative">
-          <div className="sticky left-0 top-0">
+          <div className="sticky left-0 top-0 mt-5">
             <Navbar className="bg-gray-600">
-              <div />
-              <div className="flex justify-end">
+              <div/>
+                <div className="flex justify-end">
                 <Button href={authUrl}>Login using github</Button>
                 <Navbar.Toggle />
               </div>
@@ -305,7 +312,9 @@ function Layout(props: LayoutProps) {
           <main className="mb-10">{children}</main>
         </div>
       )}
-    </div>
+      </div>
+  
+    
   );
 }
 

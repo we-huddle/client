@@ -5,8 +5,12 @@ import { Link } from "react-router-dom";
 import { UserServices } from "../../services/userServices";
 import { Profile } from "../../types/Profile";
 
-function UserManagement() {
-  const [profile, setProfile] = useState<Profile[]>([]);
+interface UserManagementProps {
+  isAgentView: boolean,
+}
+
+function UserManagement({ isAgentView }: UserManagementProps){
+    const [profile, setProfile] = useState<Profile[]>([]);
 
   const fetchProfiles = async () => {
     const taskList = await UserServices.getAllProfiles();
@@ -98,11 +102,13 @@ function UserManagement() {
                   Role
                 </div>
               </th>
+              {isAgentView  && (
               <th className="whitespace-nowrap p-5">
                 <div className="flex text-sm font-semibold text-gray-700 gap-4">
                   Agent Privilege
                 </div>
               </th>
+              )}
               <th className="whitespace-nowrap p-5">
                 <div className="flex text-sm font-semibold text-gray-700 gap-4">
                   User Profile
@@ -140,8 +146,10 @@ function UserManagement() {
                         <Badge color="success">{profile.role}</Badge>
                       </div>
                     )}
-                  </th>
-                  <th className="whitespace-nowrap p-5">
+                    </th>                    
+                    {isAgentView && (
+                    <th className="whitespace-nowrap p-5">
+
                     {profile.role === "HUDDLER" && (
                       <div className="flex items-center gap-2">
                         <Button
@@ -164,17 +172,28 @@ function UserManagement() {
                         </Button>
                       </div>
                     )}
-                  </th>
-                  <th className="whitespace-nowrap p-5">
-                    <div>
+                    </th>
+                    )}
+                    <th className="whitespace-nowrap p-5">
+                      <div>  
+                      {isAgentView && (                  
                       <Link to={`/agent/profile/user/${profile.id}`}>
-                        <Button size="xs">
-                          <div className="w-12">View</div>
-                          <HiEye />
-                        </Button>
-                      </Link>
-                    </div>
-                  </th>
+                            <Button size="xs">
+                                <div className="w-12">View</div>
+                                <HiEye/>
+                            </Button>
+                        </Link>                      
+                        )}
+                        {!isAgentView &&(                  
+                          <Link to={`/profile/user/${profile.id}`}>
+                                <Button size="xs">
+                                    <div className="w-12">View</div>
+                                    <HiEye/>
+                                </Button>
+                            </Link>
+                        )}
+                      </div>
+                    </th>
                 </tr>
               );
             })}
