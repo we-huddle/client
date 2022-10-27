@@ -26,11 +26,11 @@ import { BadgeDto } from "../../types/HuddlerBadge";
 import UserContext from "../../types/UserContext";
 
 interface ProfileViewProps {
-  isAgentView: boolean;
+  isAgentView: boolean,
 }
 
 function ProfileView({ isAgentView }: ProfileViewProps) {
-  const { id } = useParams();
+  const {id} = useParams();
   const [profile, setProfile] = useState<Profile>();
   const currentUser = useContext(UserContext);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -43,6 +43,7 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
   const [badges, setBadges] = useState<BadgeDto[]>([]);
   const [allBadges, setAllBadges] = useState<BadgeDto[]>([]);
   const [followers, setFollowers] = useState<string[]>([]);
+
 
   const fetchProfile = async () => {
     const fetchedProfile = await UserServices.getProfileById(id!);
@@ -122,12 +123,12 @@ function ProfileView({ isAgentView }: ProfileViewProps) {
 
   return (
     <div>
-      <div className="px-8 w-full mt-3">
-        <EditProfilePrompt
-          show={isModalVisible}
-          onClose={onPromptClose}
-          userProfile={profile!!}
-        />
+      <div className="px-8 w-full mt-3">          
+           <EditProfilePrompt
+            show={isModalVisible}
+            onClose={onPromptClose}
+            userProfile={profile!!}
+          />          
         <div className="grid grid-cols-10 gap-4">
           <div className="space-y-4 col-span-4">
             <Card>

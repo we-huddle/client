@@ -11,8 +11,7 @@ import {
   Avatar,
   Sidebar,
 } from "flowbite-react/lib/esm/components";
-
-import {FaUser, FaAward, FaListUl, FaClipboardList, FaUsers} from "react-icons/fa";
+import {FaUser, FaAward, FaListUl, FaClipboardList, FaUsers, FaHeart} from "react-icons/fa";
 import { MdLeaderboard, MdNotifications, MdOutlineClose } from "react-icons/md";
 import { Profile } from "../../types/Profile";
 import { Notification } from "../../types/Notification";
@@ -72,9 +71,14 @@ function Layout(props: LayoutProps) {
     },
     {
       name: "Feed",
-      icon: FaUsers,
+      icon: FaHeart,
       matcher: "/feed",
     },
+    {
+      name: "Members",
+      icon: FaUsers,
+      matcher: "/members",
+    }, 
     {
       name: "Badges",
       icon: FaAward,
@@ -117,6 +121,11 @@ function Layout(props: LayoutProps) {
       name: "Leaderboard",
       icon: MdLeaderboard,
       matcher: "/agent/leaderboard",
+    },
+    {
+      name: "Members",
+      icon: FaUsers,
+      matcher: "/agent/members",
     },
   ];
 
@@ -272,7 +281,7 @@ function Layout(props: LayoutProps) {
                             </Dropdown.Item>
                           </Link>
                         ) : (
-                          <Link to={"/agent/tasks"}>
+                          <Link to={"/agent/sprints"}>
                             <Dropdown.Item>Switch to agent mode</Dropdown.Item>
                           </Link>
                         )}
