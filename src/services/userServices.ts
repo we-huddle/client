@@ -111,10 +111,10 @@ export class UserServices {
     }
   }
 
-  static async updateRole(profileId: string) {
+  static async updateRoleGrant(profileId: string) {
     try {
       await axios.put(
-          `${API.BASE}/user/updateRole/${profileId}`, {},
+          `${API.BASE}/user/updateRole/grantAgent/${profileId}`, {},
           {
             headers: {
               Authorization: `Bearer ${API.TOKEN}`
@@ -125,5 +125,21 @@ export class UserServices {
       throw new Error();
     }
   }
+
+  static async updateRoleRevoke(profileId: string) {
+    try {
+      await axios.put(
+          `${API.BASE}/user/updateRole/revokeAgent/${profileId}`, {},
+          {
+            headers: {
+              Authorization: `Bearer ${API.TOKEN}`
+            }
+          }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
 
 }
