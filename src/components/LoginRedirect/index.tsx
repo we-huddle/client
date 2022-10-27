@@ -24,7 +24,7 @@ function LoginRedirect() {
 
   return (
     // <div>Loading...</div>
-    <div className="w-full place-items-center"><Spinner /></div>
+    <div className="w-full text-center"><Spinner /></div>
     
   );
 }
