@@ -21,8 +21,13 @@ function UserManagement({ isAgentView }: UserManagementProps){
     fetchProfiles();
   }, []);
 
-  async function updateRole(profileId: string) {
-    await UserServices.updateRole(profileId);
+  async function updateRoleGrant(profileId: string) {
+    await UserServices.updateRoleGrant(profileId);
+    fetchProfiles();
+  }
+
+  async function updateRoleRevoke(profileId: string) {
+    await UserServices.updateRoleRevoke(profileId);
     fetchProfiles();
   }
 
@@ -154,7 +159,7 @@ function UserManagement({ isAgentView }: UserManagementProps){
                       <div className="flex items-center gap-2">
                         <Button
                           size="xs"
-                          onClick={() => updateRole(profile.id)}
+                          onClick={() => updateRoleGrant(profile.id)}
                         >
                           <div className="w-12">Grant</div>
                           <HiKey />
@@ -165,7 +170,7 @@ function UserManagement({ isAgentView }: UserManagementProps){
                       <div className="flex items-center gap-2">
                         <Button
                           size="xs"
-                          onClick={() => updateRole(profile.id)}
+                          onClick={() => updateRoleRevoke(profile.id)}
                         >
                           <div className="w-12">Revoke</div>
                           <HiKey />
