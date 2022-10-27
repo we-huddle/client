@@ -12,6 +12,7 @@ import IssueRow from "./components/IssueRow";
 import AddIssuesPrompt from "./components/AddIssuesPrompt";
 import EditSprintPrompt from "./components/EditSprintPrompt";
 import DeleteSprintPrompt from "./components/DeleteSprintPrompt";
+import SendReminderPrompt from "./components/SendReminderPrompt";
 
 interface SprintDetailsViewProps {
   isAgentView: boolean,
@@ -35,6 +36,7 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
   const [isCreateModalVisible, setIsCreateModalVisible] = useState<boolean>(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState<boolean>(false);
+  const [isReminderModalVisible, setIsReminderModalVisible] = useState<boolean>(false);
   const intlDateFormatter = Intl.DateTimeFormat('en', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 
   useEffect(() => {
@@ -48,6 +50,10 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
 
   const onDeleteModalClose = () => {
     setIsDeleteModalVisible(false)
+  }
+
+  const onReminderModalClose = () => {
+    setIsReminderModalVisible(false)
   }
 
   const fetchSprint = async () => {
@@ -99,6 +105,7 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
           )}
           <EditSprintPrompt show={isEditModalVisible} onClose={onEditModalClose} sprint={sprint}/>
           <DeleteSprintPrompt show={isDeleteModalVisible} onClose={onDeleteModalClose} sprint={sprint}/>
+          <SendReminderPrompt show={isReminderModalVisible} onClose={onReminderModalClose} sprint={sprint}/>
           <div className="flex justify-between items-center">
             <Button
               color="gray"
@@ -112,9 +119,12 @@ function SprintDetailsView({ isAgentView }: SprintDetailsViewProps) {
               <Button color="gray">
                 <div className="text-left">
                   <Dropdown
-                    label=""
+                    label="Options"
                     inline={true}
                   >
+                    <Dropdown.Item onClick={() => setIsReminderModalVisible(true)}>
+                      Reminder
+                    </Dropdown.Item>
                     <Dropdown.Item onClick={() => setIsEditModalVisible(true)}>
                       Edit sprint
                     </Dropdown.Item>

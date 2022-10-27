@@ -83,6 +83,22 @@ export class SprintsAndIssuesService {
     }
   }
 
+  static async sendRemind(sprintId: string, sprint: Sprint) {
+    try {
+      await axios.post(
+          `${API.BASE}/sprints/${sprintId}/send-reminder`,
+          sprint,
+          {
+            headers: {
+              Authorization: `Bearer ${API.TOKEN}`
+            }
+          }
+      );
+    } catch (e: any) {
+      throw new Error(e.response.data);
+    }
+  }
+
   static async getIssuesOfSprint(sprintId: string): Promise<Issue[]> {
     try {
       const response = await axios.get<Issue[]>(
