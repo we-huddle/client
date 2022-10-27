@@ -2,6 +2,7 @@ import {useContext, useEffect} from "react";
 import {useSearchParams} from "react-router-dom";
 import UserContext from "../../types/UserContext";
 import {TOKEN_KEY} from "../../constants";
+import { Spinner } from "flowbite-react";
 
 
 function LoginRedirect() {
@@ -22,7 +23,9 @@ function LoginRedirect() {
 
 
   return (
-    <div>Loading...</div>
+    // <div>Loading...</div>
+    <div className="w-full place-items-center"><Spinner /></div>
+    
   );
 }
 
