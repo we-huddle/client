@@ -9,6 +9,8 @@ import {BadgeWithDependencies} from "../../types/HuddlerBadge";
 import {BadgeService} from "../../services/badgeService";
 import EditBadgePrompt from "./components/EditBadgePrompt";
 
+import DeleteBadgePrompt from "./components/DeleteBadgePrompt";
+
 interface BadgeDetailsViewProps {
   isAgentView: boolean,
 }
@@ -20,6 +22,7 @@ function BadgeDetailsView({ isAgentView }: BadgeDetailsViewProps){
   const [badge ,setBadge] = useState<BadgeWithDependencies | null>(null);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTask();
@@ -37,11 +40,16 @@ function BadgeDetailsView({ isAgentView }: BadgeDetailsViewProps){
     }
   }
 
+  const onDeleteModalClose = () => {
+    setIsDeleteModalVisible(false)
+  }
+
   return(
     <div>
       {badge == null? "loading" : (
         <div className="px-8 space-y-8">
           <EditBadgePrompt show={isEditModalVisible} onClose={onEditModalClose} badge={badge}/>
+          <DeleteBadgePrompt show={isDeleteModalVisible} onClose={onDeleteModalClose} badge={badge}/>
           <div className="flex justify-between items-center">
             <Button
               color="gray"
@@ -61,7 +69,7 @@ function BadgeDetailsView({ isAgentView }: BadgeDetailsViewProps){
                     <Dropdown.Item onClick={() => setIsEditModalVisible(true)}>
                       Edit badge
                     </Dropdown.Item>
-                    <Dropdown.Item>
+                    <Dropdown.Item onClick={() => setIsDeleteModalVisible(true)}>
                       Delete badge
                     </Dropdown.Item>
                   </Dropdown>

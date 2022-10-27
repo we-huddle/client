@@ -36,7 +36,7 @@ function LeaderboardView() {
         <h1 className="text-3xl font-medium text-gray-900">Leaderboard</h1>
         <p className="font-normal text-gray-700 dark:text-gray-400">
           The list of top contributors on github.
-          Scores are automatically calculated by the number of pull requests sent by each individual contributor.
+          Scores are automatically calculated by the number of pull requests, tasks and badges achieved by each individual contributor.
         </p>
       </div>
       <div className="h-30 overflow-y-scroll">

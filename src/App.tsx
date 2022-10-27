@@ -15,6 +15,9 @@ import BadgesView from "./scenes/BadgesView";
 import LeaderboardView from "./scenes/LeaderboardView";
 import BadgeDetailsView from "./scenes/BadgeDetailsView";
 import PublicHome from "./scenes/PublicHome";
+import FeedView from "./scenes/FeedView";
+import UserManagement from "./scenes/UserManagement"
+
 
 
 function App() {
@@ -57,8 +60,9 @@ function App() {
                 path={"/agent/sprints/:id"}
                 element={<SprintDetailsView isAgentView={true} />}
               />
-              <Route path={"/profile/user/:id"} element={<ProfileView />} />
-              <Route path={"/profile/:id"} element={<ProfileView />} />
+              <Route path={"/profile/user/:id"} element={<ProfileView isAgentView={false}/>} />
+              <Route path={"/profile/:id"} element={<ProfileView isAgentView={false}/>} />
+              <Route path={"/agent/profile/user/:id"} element={<ProfileView isAgentView={true}/>} />
               <Route
                 path={"/tasks"}
                 element={<TasksView isAgentView={false} />}
@@ -87,6 +91,18 @@ function App() {
               />
               <Route path={"/badges/:id"} element={<BadgeDetailsView  isAgentView={false} />}/>
               <Route path={"/agent/badges/:id"} element={<BadgeDetailsView  isAgentView={true} />}/>
+              <Route
+                path={"/feed"}
+                element={<FeedView />}
+                />
+              <Route
+                path={"/agent/members"}
+                element={<UserManagement isAgentView={true}/>}
+              />
+              <Route
+                path={"/members"}
+                element={<UserManagement isAgentView={false}/>}
+              />
             </Routes>
           </Layout>
         </BrowserRouter>

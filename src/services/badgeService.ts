@@ -99,6 +99,21 @@ export class BadgeService {
     }
   }
 
+  static async deleteBadge(badgeId: string) {
+    try {
+      await axios.delete(
+        `${API.BASE}/badges/${badgeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API.TOKEN}`
+          }
+        }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+  }
+
   static async uploadBadgeImage(data: FormData): Promise<string> {
     try {
       const response = await axios.post<string>(
