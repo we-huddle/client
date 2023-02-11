@@ -16,7 +16,7 @@ function LoginRedirect() {
       const sessionString = searchParams.get('session');
       if (sessionString) {
         localStorage.setItem(TOKEN_KEY, sessionString);
-        window.location.reload();
+        window.location.href = `/`;
       }
     }
   }, [userProfile, searchParams]);
